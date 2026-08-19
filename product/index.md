@@ -19,3 +19,7 @@
 - [memory-system-proposal.md](memory-system-proposal.md) — 分层记忆管理系统提案（对齐角色功能清单的 8 类真实角色；记忆分三组——教育类/个人偏好类/学生个人学业记忆，附组织层级传导规则图：校长→学科组→备课组→任课教师逐级广播+默认值继承，班主任跨学科横向广播，学生记忆严格点对点隔离不进入广播体系；含每角色记忆点清单、L1-L3 分层架构、user prompt 尾部注入设计、可复用数据盘点与分期建议）
 - [data-assets-grading-system.md](data-assets-grading-system.md) — 批阅系统全量数据资产盘点（64 张表分域清单：组织与人/考试题目/批阅复核/学情聚合/校本库/偏好/学生端；非结构化四类：OSS 文件与 key 规范、自然语言文本、日志事件流、JSON 字段，逐类评估可否流水线结构化及现状；量级估算；与记忆系统提案的数据源映射与归属勘误）
 - [data-assets-grading-service.md](data-assets-grading-service.md) — 批阅服务全量数据资产盘点（26 张表分组清单：考试题目/批阅任务结果/内容寻址去重/成本用量报告/优化历史/样本回归抽查裁定/配置凭证，含 6 张表 student_id/student_name 字段逐表确认——全部元数据粒度无画像；非结构化四类：OSS 文件与共享桶 key 规范、自然语言文本、日志事件流、JSON 字段，逐类评估可否流水线结构化及现状；量级锚点 38.6k 任务实测；rubric_optimizer 样本摘要文本重点分析——### {student_name} 标题仅在内存 prompt 不落库，改样本{i} 可零成本去 PII；与记忆系统提案的数据源映射及两处补充标注）
+
+- [multi-tenant-data-architecture.md](multi-tenant-data-architecture.md) — 100 校规模多租户数据架构提案（PostgreSQL 优先）：基于已验证量级锚点推算容量（年增约 3,840 万行）；Hash(tenant_id) 两级分区 + RANGE 学期子分区 + Whale 租户逃生舱；行级安全(RLS)作为应用层 tenant_guard 的数据库级第二道防线；JSONB/GIN 承接现有半结构化字段，pgvector/HNSW 一个扩展覆盖相似题查重/错误模式聚类/校本库语义检索三个需求；OLTP/OLAP 三级递进分离策略（只读副本物化视图 → 列存扩展 → 独立 ClickHouse 触发式升级，非默认必需），并标注与记忆系统 L2 蒸馏任务的技术交集
+
+- [self-learning-engine.md](self-learning-engine.md) — 自适应学习引擎（高中全学科自适应教学系统）产品线调研：与批阅系统完全独立的第二条产品线，三个并行子仓库现状（`education-data-foundation` 生产级公司数据底座 · `自适应学习引擎` 早期主线 81 份方案文档+无远程本地 engine · `自适应学习引擎-全量实验室-v2` 后期主线 163 提交/68 PR 九微服务+teacher-web 前端）；九微服务接口契约与多 Agent 编排状态机详解；转引项目内部 2026-08-18 审计的五个未处置风险（含本地代码无远程备份、明文凭据 8 天未轮换等不可逆风险）

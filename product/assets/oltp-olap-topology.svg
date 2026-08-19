@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1720" height="920" viewBox="0 0 1720 920" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#303133"/>
+    </marker>
+    <marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9254de"/>
+    </marker>
+  </defs>
+
+  <text x="860" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2d3d">100 校规模 OLTP / OLAP 拓扑：分离到什么程度取决于查询模式，不是规模</text>
+  <text x="860" y="48" text-anchor="middle" font-size="11" fill="#909399">结论先行：不引入独立列式 OLAP 集群；用同一套 PostgreSQL 靠"逻辑复制 + 物化视图"分离读写负载，把 ClickHouse 列为触发式升级项而非首期必需</text>
+
+  <!-- Row 1: OLTP -->
+  <rect x="40" y="70" width="1640" height="230" rx="10" fill="#ecf5ff" stroke="#79bbff" stroke-dasharray="6 4"/>
+  <text x="55" y="92" font-size="13" font-weight="bold" fill="#1f6fb5">OLTP：批阅系统 / 批阅服务 各自的事务主库（延续既有"独立库不共享"边界）</text>
+
+  <rect x="70" y="108" width="480" height="175" rx="6" fill="#ffffff" stroke="#409eff" stroke-width="1.5"/>
+  <text x="310" y="132" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#1f2d3d">批阅系统 OLTP 主库</text>
+  <text x="310" y="152" text-anchor="middle" font-size="9.5" fill="#606266">高频短事务：建考·扫描认领·复核确认·权限校验</text>
+  <text x="310" y="170" text-anchor="middle" font-size="9.5" fill="#606266">典型查询：单租户单场次的点查/小范围扫描</text>
+  <text x="310" y="188" text-anchor="middle" font-size="9.5" fill="#606266">对应图 1 的两级分区模型（Hash 租户 × Range 学期）</text>
+  <text x="310" y="210" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#c0392b">不适合在这里跑的查询</text>
+  <text x="310" y="228" text-anchor="middle" font-size="9.5" fill="#606266">"全平台过去一年知识点薄弱度热力图"</text>
+  <text x="310" y="246" text-anchor="middle" font-size="9.5" fill="#606266">这类跨租户、跨学期、多表 JOIN 聚合查询</text>
+  <text x="310" y="264" text-anchor="middle" font-size="9.5" fill="#606266">会拖慢分区剪裁对短事务的保护效果</text>
+
+  <rect x="1170" y="108" width="480" height="175" rx="6" fill="#ffffff" stroke="#e6a23c" stroke-width="1.5"/>
+  <text x="1410" y="132" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#1f2d3d">批阅服务 OLTP 主库</text>
+  <text x="1410" y="152" text-anchor="middle" font-size="9.5" fill="#606266">高频短事务：任务队列状态机·预计算缓存回源</text>
+  <text x="1410" y="170" text-anchor="middle" font-size="9.5" fill="#606266">典型查询：按 paper_task_id/exam_id 的点查</text>
+  <text x="1410" y="188" text-anchor="middle" font-size="9.5" fill="#606266">向量写入也发生在这里（与源数据同事务，图 1 已述）</text>
+  <text x="1410" y="210" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#c0392b">不适合在这里跑的查询</text>
+  <text x="1410" y="228" text-anchor="middle" font-size="9.5" fill="#606266">"过去 90 天模型成本趋势 / 学科错误模式聚类"</text>
+  <text x="1410" y="246" text-anchor="middle" font-size="9.5" fill="#606266">这类分析型查询会与批阅主链路的低延迟要求</text>
+  <text x="1410" y="264" text-anchor="middle" font-size="9.5" fill="#606266">竞争同一批连接池与缓冲区，需要隔离</text>
+
+  <path d="M310,283 V320" fill="none" stroke="#303133" stroke-width="1.8" marker-end="url(#arr)"/>
+  <path d="M1410,283 V320" fill="none" stroke="#303133" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="330" y="305" font-size="9" fill="#606266">逻辑复制</text>
+  <text x="1430" y="305" font-size="9" fill="#606266">逻辑复制</text>
+
+  <!-- Row 2: 决策矩阵 -->
+  <rect x="40" y="320" width="1640" height="160" rx="10" fill="#f4f4f5" stroke="#909399"/>
+  <text x="55" y="342" font-size="13" font-weight="bold" fill="#606266">决策矩阵：三级分离策略，按查询模式递进选择，不是规模一到就跳到最右</text>
+
+  <rect x="65" y="352" width="380" height="115" rx="6" fill="#f0f9eb" stroke="#67c23a"/>
+  <text x="255" y="374" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#5a9216">阶段 0：只读副本（起步，本提案首选）</text>
+  <text x="255" y="392" text-anchor="middle" font-size="9.5" fill="#606266">同一套 PostgreSQL，流复制只读副本承接报表查询</text>
+  <text x="255" y="408" text-anchor="middle" font-size="9.5" fill="#606266">教学质量热力图等改为查物化视图（定时刷新）</text>
+  <text x="255" y="424" text-anchor="middle" font-size="9.5" fill="#606266">零新增组件，运维复杂度最低</text>
+  <text x="255" y="442" text-anchor="middle" font-size="9.5" fill="#606266">100 校规模下：完全够用（见图 1 容量估算）</text>
+  <text x="255" y="458" text-anchor="middle" font-size="9" fill="#909399">触发升级条件见右侧两档</text>
+
+  <rect x="465" y="352" width="380" height="115" rx="6" fill="#fff7e6" stroke="#ffd591"/>
+  <text x="655" y="374" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#ad6800">阶段 1：列存扩展（触发式，非默认）</text>
+  <text x="655" y="392" text-anchor="middle" font-size="9.5" fill="#606266">在只读副本上加装 pg_analytics / Hydra 列存扩展</text>
+  <text x="655" y="408" text-anchor="middle" font-size="9.5" fill="#606266">仍是同一套 PostgreSQL 生态，SQL 语法不变</text>
+  <text x="655" y="426" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#c0392b">触发条件</text>
+  <text x="655" y="444" text-anchor="middle" font-size="9.5" fill="#606266">物化视图刷新耗时持续超过业务可接受窗口</text>
+  <text x="655" y="460" text-anchor="middle" font-size="9" fill="#909399">（如全平台聚合报表要求分钟级新鲜度）</text>
+
+  <rect x="865" y="352" width="380" height="115" rx="6" fill="#fdf6ec" stroke="#e6a23c" stroke-width="1.5"/>
+  <text x="1055" y="374" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#ad6800">阶段 2：独立 ClickHouse（触发式，非默认）</text>
+  <text x="1055" y="392" text-anchor="middle" font-size="9.5" fill="#606266">CDC（如 Debezium）同步到独立列式集群</text>
+  <text x="1055" y="410" text-anchor="middle" font-size="9.5" fill="#606266">沿用数据架构提案已提出的技术选型，非新增</text>
+  <text x="1055" y="428" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#c0392b">触发条件（任一满足）</text>
+  <text x="1055" y="446" text-anchor="middle" font-size="9.5" fill="#606266">① 校数突破 500+ 或引入区域教育局跨校看板</text>
+  <text x="1055" y="462" text-anchor="middle" font-size="9.5" fill="#606266">② 列存扩展方案的查询延迟已无法满足 SLA</text>
+
+  <rect x="1265" y="352" width="385" height="115" rx="6" fill="#f3e8ff" stroke="#9254de"/>
+  <text x="1457" y="374" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#6a3fa0">与记忆系统提案的关系</text>
+  <text x="1457" y="394" text-anchor="middle" font-size="9.5" fill="#606266">L2 语义记忆的蒸馏任务本质是一类 OLAP 查询</text>
+  <text x="1457" y="410" text-anchor="middle" font-size="9.5" fill="#606266">（按学生/教师/班级聚合 L1 事件表）</text>
+  <text x="1457" y="428" text-anchor="middle" font-size="9.5" fill="#606266">应跑在只读副本上，不占用 OLTP 主库连接池</text>
+  <text x="1457" y="446" text-anchor="middle" font-size="9.5" fill="#606266">这是本图与记忆系统提案唯一的直接交集</text>
+  <text x="1457" y="462" text-anchor="middle" font-size="9" fill="#909399">蒸馏结果写回主库供 user prompt 召回（不变）</text>
+
+  <path d="M255,467 V500" fill="none" stroke="#67c23a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M655,467 V500" fill="none" stroke="#e6a23c" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr)"/>
+  <path d="M1055,467 V500" fill="none" stroke="#e6a23c" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr)"/>
+
+  <!-- Row 3: 具体查询消费方 -->
+  <rect x="40" y="500" width="1640" height="200" rx="10" fill="#fff3e0" stroke="#e6852a" stroke-dasharray="6 4"/>
+  <text x="55" y="522" font-size="13" font-weight="bold" fill="#ad4e00">消费方：谁在读只读副本 / 物化视图（均已是既有文档中明确存在的查询场景）</text>
+
+  <rect x="70" y="538" width="380" height="145" rx="6" fill="#ffffff" stroke="#e6852a"/>
+  <text x="260" y="560" text-anchor="middle" font-size="11" font-weight="bold" fill="#1f2d3d">校级/学科组教学质量报表</text>
+  <text x="260" y="580" text-anchor="middle" font-size="9.5" fill="#606266">全校概览/教学质量热力图/教师发展画像</text>
+  <text x="260" y="598" text-anchor="middle" font-size="9.5" fill="#606266">（角色功能清单中校长/教务主任的既有页面）</text>
+  <text x="260" y="618" text-anchor="middle" font-size="9.5" fill="#606266">刷新频率：T+1 或每小时，非实时</text>
+  <text x="260" y="638" text-anchor="middle" font-size="9.5" fill="#606266">当前实现：读时多域 JOIN 实算（已知性能隐患）</text>
+  <text x="260" y="658" text-anchor="middle" font-size="9.5" fill="#c0392b">迁移收益：改查物化视图后不再拖累 OLTP</text>
+
+  <rect x="470" y="538" width="380" height="145" rx="6" fill="#ffffff" stroke="#e6852a"/>
+  <text x="660" y="560" text-anchor="middle" font-size="11" font-weight="bold" fill="#1f2d3d">记忆系统 L2 蒸馏任务</text>
+  <text x="660" y="580" text-anchor="middle" font-size="9.5" fill="#606266">按 student_id/teacher_id/class_id 聚合 L1 事件表</text>
+  <text x="660" y="598" text-anchor="middle" font-size="9.5" fill="#606266">student_answers/score_audits → 错误频次/风格画像</text>
+  <text x="660" y="618" text-anchor="middle" font-size="9.5" fill="#606266">异步批处理或事件触发，非用户请求路径</text>
+  <text x="660" y="638" text-anchor="middle" font-size="9.5" fill="#606266">读只读副本，不阻塞批阅主链路的短事务</text>
+  <text x="660" y="658" text-anchor="middle" font-size="9.5" fill="#c0392b">详见：记忆系统提案 §5</text>
+
+  <rect x="870" y="538" width="380" height="145" rx="6" fill="#ffffff" stroke="#e6852a"/>
+  <text x="1060" y="560" text-anchor="middle" font-size="11" font-weight="bold" fill="#1f2d3d">模型成本与用量分析</text>
+  <text x="1060" y="580" text-anchor="middle" font-size="9.5" fill="#606266">usage_json/llm_call_logs 的运营侧成本趋势报表</text>
+  <text x="1060" y="600" text-anchor="middle" font-size="9.5" fill="#606266">（批阅服务已有的成本追踪能力，见软件架构文档）</text>
+  <text x="1060" y="620" text-anchor="middle" font-size="9.5" fill="#606266">按 provider/模型/学科的多维切片聚合</text>
+  <text x="1060" y="640" text-anchor="middle" font-size="9.5" fill="#606266">财务对账场景，可接受分钟级延迟</text>
+  <text x="1060" y="660" text-anchor="middle" font-size="9.5" fill="#c0392b">100 校放量后是行数增长最快的表之一</text>
+
+  <rect x="1270" y="538" width="380" height="145" rx="6" fill="#ffffff" stroke="#e6852a"/>
+  <text x="1460" y="560" text-anchor="middle" font-size="11" font-weight="bold" fill="#1f2d3d">向量检索（pgvector）</text>
+  <text x="1460" y="580" text-anchor="middle" font-size="9.5" fill="#606266">相似题查重/错误模式聚类/校本库语义检索</text>
+  <text x="1460" y="600" text-anchor="middle" font-size="9.5" fill="#606266">（图 1 已列，此处标注读写分工）</text>
+  <text x="1460" y="620" text-anchor="middle" font-size="9.5" fill="#606266">写入：主库（与源数据同事务，保证一致性）</text>
+  <text x="1460" y="640" text-anchor="middle" font-size="9.5" fill="#606266">检索：只读副本（HNSW 索引可异步同步）</text>
+  <text x="1460" y="660" text-anchor="middle" font-size="9.5" fill="#c0392b">与前三者共用同一只读副本，无需再拆</text>
+
+  <path d="M260,538 V500" fill="none" stroke="#e6852a" stroke-width="1.3" stroke-dasharray="3 2"/>
+  <path d="M660,538 V500" fill="none" stroke="#9254de" stroke-width="1.3" stroke-dasharray="3 2"/>
+  <path d="M1060,538 V500" fill="none" stroke="#e6852a" stroke-width="1.3" stroke-dasharray="3 2"/>
+  <path d="M1460,538 V500" fill="none" stroke="#e6852a" stroke-width="1.3" stroke-dasharray="3 2"/>
+
+  <!-- Row 4: 总结 -->
+  <rect x="40" y="720" width="1640" height="160" rx="10" fill="#ffffff" stroke="#909399"/>
+  <text x="860" y="744" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">回答"是否要分离 OLTP/OLAP"：分离的是负载与查询路径，不必分离到独立技术栈</text>
+  <text x="860" y="766" text-anchor="middle" font-size="10" fill="#606266">100 校规模下（年增约 3,840 万行 student_answers，详见图 1），单一 PostgreSQL 实例 + 只读副本 + 物化视图已能覆盖全部已知查询场景；</text>
+  <text x="860" y="784" text-anchor="middle" font-size="10" fill="#606266">这与既有数据架构提案中"ClickHouse 用于学情分析"的设想并不矛盾——本图把它从"首期必需组件"降级为"阶段 2 的触发式升级项"，</text>
+  <text x="860" y="802" text-anchor="middle" font-size="10" fill="#606266">理由是：现有量级尚未到需要独立列式集群的门槛，过早引入会增加运维面而收益有限；判断标准应是查询延迟是否已经无法满足业务 SLA，而非预先设定的校数门槛。</text>
+  <text x="860" y="826" text-anchor="middle" font-size="9.5" fill="#909399">对既有提案的态度：不是推翻，是排序——ClickHouse/向量检索在数据架构提案 §3 中本就被标注为"按需引入项，非首期必须"，本图给出了具体的触发条件而非停留在"按需"两字。</text>
+  <text x="860" y="852" text-anchor="middle" font-size="9.5" fill="#909399">回滚路径：物化视图 → 列存扩展 → 独立 ClickHouse 三级递进均可逆，不存在"选错就要推倒重来"的分支，降低了架构决策的时间紧迫性。</text>
+
+  <!-- Legend -->
+  <path d="M60,900 H100" fill="none" stroke="#303133" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="108" y="904" font-size="9.5" fill="#606266">数据流 / 演进方向</text>
+
+  <path d="M300,893 H340" fill="none" stroke="#67c23a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="348" y="897" font-size="9.5" fill="#606266">默认路径（本提案首选）</text>
+
+  <path d="M580,893 H620" fill="none" stroke="#e6a23c" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr)"/>
+  <text x="628" y="897" font-size="9.5" fill="#606266">触发式升级（非默认，条件满足才做）</text>
+
+  <path d="M960,893 H1000" fill="none" stroke="#909399" stroke-width="1.3" stroke-dasharray="3 2"/>
+  <text x="1008" y="897" font-size="9.5" fill="#606266">消费方归属关系</text>
+</svg>

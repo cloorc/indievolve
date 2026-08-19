@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1720" height="1000" viewBox="0 0 1720 1000" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#303133"/>
+    </marker>
+  </defs>
+
+  <text x="860" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2d3d">100 校多租户 PostgreSQL 数据模型：声明式两级分区 + 行级安全 + JSONB/向量</text>
+  <text x="860" y="48" text-anchor="middle" font-size="11" fill="#909399">左：单表两级分区结构（Hash 租户分桶 × Range 时间子分区）；右：PostgreSQL 原生能力如何承接现有半结构化字段与记忆系统的向量检索需求</text>
+
+  <!-- Zone A -->
+  <rect x="40" y="70" width="1020" height="850" rx="10" fill="#ecf5ff" stroke="#79bbff" stroke-dasharray="6 4"/>
+  <text x="55" y="92" font-size="13" font-weight="bold" fill="#1f6fb5">A. 声明式两级分区（以 student_answers 主事实表为例）</text>
+
+  <rect x="70" y="108" width="960" height="55" rx="6" fill="#ffffff" stroke="#409eff" stroke-width="1.5"/>
+  <text x="550" y="130" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#1f2d3d">student_answers（PARTITION BY HASH(tenant_id)）</text>
+  <text x="550" y="148" text-anchor="middle" font-size="9.5" fill="#606266">对应现有 grading-system 的 modules/marking 同名表，迁移后按租户哈希分桶</text>
+
+  <path d="M550,163 V185" fill="none" stroke="#303133" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <text x="70" y="200" font-size="10.5" font-weight="bold" fill="#606266">第一级：16 个 Hash 分桶（每桶承载约 6 所学校，按 tenant_id 哈希均匀分布）</text>
+
+  <rect x="70" y="210" width="205" height="85" rx="6" fill="#ffffff" stroke="#606266"/>
+  <text x="172" y="232" text-anchor="middle" font-size="11" font-weight="bold" fill="#1f2d3d">Bucket 0</text>
+  <text x="172" y="250" text-anchor="middle" font-size="9" fill="#606266">tenant_id % 16 = 0</text>
+  <text x="172" y="266" text-anchor="middle" font-size="9" fill="#606266">约 6 所学校</text>
+  <text x="172" y="282" text-anchor="middle" font-size="9" fill="#909399">独立索引/统计信息</text>
+
+  <rect x="290" y="210" width="205" height="85" rx="6" fill="#ffffff" stroke="#606266"/>
+  <text x="392" y="232" text-anchor="middle" font-size="11" font-weight="bold" fill="#1f2d3d">Bucket 1</text>
+  <text x="392" y="250" text-anchor="middle" font-size="9" fill="#606266">tenant_id % 16 = 1</text>
+  <text x="392" y="266" text-anchor="middle" font-size="9" fill="#606266">约 6 所学校</text>
+
+  <rect x="510" y="210" width="205" height="85" rx="6" fill="#ffffff" stroke="#606266"/>
+  <text x="612" y="232" text-anchor="middle" font-size="11" font-weight="bold" fill="#1f2d3d">Bucket 2</text>
+  <text x="612" y="250" text-anchor="middle" font-size="9" fill="#606266">tenant_id % 16 = 2</text>
+  <text x="612" y="266" text-anchor="middle" font-size="9" fill="#606266">约 6 所学校</text>
+
+  <rect x="730" y="210" width="120" height="85" rx="6" fill="#f4f4f5" stroke="#c0c4cc" stroke-dasharray="4 3"/>
+  <text x="790" y="245" text-anchor="middle" font-size="10" fill="#909399">…</text>
+  <text x="790" y="263" text-anchor="middle" font-size="9" fill="#909399">共 16 桶</text>
+
+  <rect x="870" y="210" width="160" height="85" rx="6" fill="#fdf6ec" stroke="#e6a23c"/>
+  <text x="950" y="232" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#ad6800">Bucket 15</text>
+  <text x="950" y="250" text-anchor="middle" font-size="9" fill="#606266">tenant_id % 16 = 15</text>
+  <text x="950" y="266" text-anchor="middle" font-size="9" fill="#606266">含 1 所 Whale 租户</text>
+  <text x="950" y="282" text-anchor="middle" font-size="9" fill="#ad6800">（见下方特殊处理）</text>
+
+  <path d="M172,295 V320" fill="none" stroke="#303133" stroke-width="1.3" marker-end="url(#arr)"/>
+  <text x="70" y="332" font-size="10.5" font-weight="bold" fill="#606266">第二级：Bucket 内再按学期 Range 分区（示例展开 Bucket 0，其余 15 桶结构相同）</text>
+
+  <rect x="70" y="342" width="150" height="65" rx="5" fill="#f0f7ff" stroke="#c6e2ff"/>
+  <text x="145" y="366" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#1f2d3d">2024-H2</text>
+  <text x="145" y="384" text-anchor="middle" font-size="8.5" fill="#909399">冷数据，只读</text>
+
+  <rect x="230" y="342" width="150" height="65" rx="5" fill="#f0f7ff" stroke="#c6e2ff"/>
+  <text x="305" y="366" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#1f2d3d">2025-H1</text>
+  <text x="305" y="384" text-anchor="middle" font-size="8.5" fill="#909399">冷数据，只读</text>
+
+  <rect x="390" y="342" width="150" height="65" rx="5" fill="#f0f7ff" stroke="#c6e2ff"/>
+  <text x="465" y="366" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#1f2d3d">2025-H2</text>
+  <text x="465" y="384" text-anchor="middle" font-size="8.5" fill="#909399">温数据</text>
+
+  <rect x="550" y="342" width="150" height="65" rx="5" fill="#ecf5ff" stroke="#409eff" stroke-width="1.5"/>
+  <text x="625" y="366" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#1f2d3d">2026-H1（当前）</text>
+  <text x="625" y="384" text-anchor="middle" font-size="8.5" fill="#1f6fb5">热数据，读写活跃</text>
+
+  <rect x="710" y="342" width="180" height="65" rx="5" fill="#f4f4f5" stroke="#c0c4cc" stroke-dasharray="4 3"/>
+  <text x="800" y="370" text-anchor="middle" font-size="9" fill="#909399">pg_partman 自动</text>
+  <text x="800" y="386" text-anchor="middle" font-size="9" fill="#909399">创建下一学期分区</text>
+
+  <rect x="70" y="425" width="460" height="140" rx="6" fill="#fff7e6" stroke="#ffd591"/>
+  <text x="300" y="447" text-anchor="middle" font-size="11" font-weight="bold" fill="#ad6800">Whale 租户逃生舱（少数超大规模学校/学区）</text>
+  <text x="300" y="466" text-anchor="middle" font-size="9.5" fill="#606266">单独的 Hash 分桶 + 独立表空间（tablespace）</text>
+  <text x="300" y="482" text-anchor="middle" font-size="9.5" fill="#606266">压力大时可整桶迁移到专属物理副本</text>
+  <text x="300" y="498" text-anchor="middle" font-size="9.5" fill="#606266">不影响其余 99 校所在的共享分桶</text>
+  <text x="300" y="518" text-anchor="middle" font-size="9" fill="#909399">判定阈值建议：单校年阅卷量 &gt; 校均 5 倍时迁出</text>
+  <text x="300" y="534" text-anchor="middle" font-size="9" fill="#909399">（如区域教育局统一账号覆盖多校的场景）</text>
+  <text x="300" y="550" text-anchor="middle" font-size="9" fill="#909399">对比：不分区/单表方案在此规模下全表扫描不可行</text>
+
+  <rect x="550" y="425" width="460" height="140" rx="6" fill="#f0f9eb" stroke="#67c23a"/>
+  <text x="780" y="447" text-anchor="middle" font-size="11" font-weight="bold" fill="#5a9216">分区收益（对比现状 MySQL 单表无分区）</text>
+  <text x="780" y="466" text-anchor="middle" font-size="9.5" fill="#606266">跨 100 校查询靠分区剪裁只扫描目标桶+目标学期</text>
+  <text x="780" y="482" text-anchor="middle" font-size="9.5" fill="#606266">冷分区可迁移到低成本存储或直接归档卸载</text>
+  <text x="780" y="498" text-anchor="middle" font-size="9.5" fill="#606266">对比"每租户一张表"：16 桶远少于 100 张表</text>
+  <text x="780" y="514" text-anchor="middle" font-size="9.5" fill="#606266">对比"单表无分区"：避免全表扫描与索引膨胀</text>
+  <text x="780" y="534" text-anchor="middle" font-size="9" fill="#909399">RLS（见右侧）与分区正交，两者叠加使用</text>
+  <text x="780" y="550" text-anchor="middle" font-size="9" fill="#909399">互不冲突：分区解决性能，RLS 解决越权</text>
+
+  <rect x="70" y="585" width="940" height="145" rx="6" fill="#ffffff" stroke="#909399"/>
+  <text x="540" y="607" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1f2d3d">容量估算（假设值，非实测——推算方法见正文）</text>
+  <text x="540" y="628" text-anchor="middle" font-size="9.5" fill="#606266">假设：100 校，校均 1,500 名学生，校均每年 40 场「年级×学科」阅卷批次，每批次 480 份（复用已验证锚点）</text>
+  <text x="540" y="646" text-anchor="middle" font-size="9.5" fill="#606266">推算：校均年阅卷量 ≈ 1.9 万份 → 100 校年总量 ≈ 192 万份 → 每份 20 题 → student_answers 年增量 ≈ 3,840 万行</text>
+  <text x="540" y="664" text-anchor="middle" font-size="9.5" fill="#606266">5 年累积总量 ≈ 1.9 亿行；分摊到 16 个 Hash 分桶后，单桶 5 年累积 ≈ 1,200 万行——单分区量级完全在 PostgreSQL 舒适区间内</text>
+  <text x="540" y="686" text-anchor="middle" font-size="9.5" fill="#606266">结论：该规模不需要引入分布式 PG（如 Citus）或另建 OLAP 引擎即可支撑，见图 2 的 OLTP/OLAP 决策</text>
+  <text x="540" y="708" text-anchor="middle" font-size="9" fill="#909399">对照锚点来源：批阅系统/批阅服务数据资产盘点 §0（480 卷/场、15–25 题/份、38.6k 任务实测锚点）</text>
+
+  <!-- Zone B -->
+  <rect x="1080" y="70" width="600" height="850" rx="10" fill="#fdf6ec" stroke="#e6a23c" stroke-dasharray="6 4"/>
+  <text x="1095" y="92" font-size="13" font-weight="bold" fill="#ad6800">B. PostgreSQL 原生能力承接现有需求</text>
+
+  <rect x="1100" y="108" width="560" height="170" rx="6" fill="#ffffff" stroke="#e6a23c" stroke-width="1.5"/>
+  <text x="1380" y="130" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">行级安全 Row-Level Security</text>
+  <text x="1380" y="150" text-anchor="middle" font-size="9" fill="#606266">CREATE POLICY tenant_isolation ON student_answers</text>
+  <text x="1380" y="166" text-anchor="middle" font-size="9" fill="#606266">USING (tenant_id = current_setting('app.tenant_id')::bigint);</text>
+  <text x="1380" y="186" text-anchor="middle" font-size="9.5" fill="#c0392b" font-weight="bold">相比现状的改进</text>
+  <text x="1380" y="204" text-anchor="middle" font-size="9" fill="#606266">现状（MySQL）：应用层 SQLAlchemy 事件钩子 tenant_guard</text>
+  <text x="1380" y="220" text-anchor="middle" font-size="9" fill="#606266">自动注入 WHERE，属于应用层防护，漏配即可能越权</text>
+  <text x="1380" y="238" text-anchor="middle" font-size="9" fill="#606266">RLS 是数据库级强制：即便应用层 SQL 漏写租户过滤</text>
+  <text x="1380" y="254" text-anchor="middle" font-size="9" fill="#606266">条件，数据库仍会拒绝返回其他租户的行——纵深防御</text>
+
+  <rect x="1100" y="296" width="560" height="185" rx="6" fill="#ffffff" stroke="#e6a23c" stroke-width="1.5"/>
+  <text x="1380" y="318" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">JSONB + GIN 索引</text>
+  <text x="1380" y="338" text-anchor="middle" font-size="9.5" fill="#606266">承接现有半结构化字段（原 MySQL JSON 列迁移到 JSONB）：</text>
+  <text x="1380" y="356" text-anchor="middle" font-size="9" fill="#606266">exam_questions.rubric_json / knowledge_points_json</text>
+  <text x="1380" y="372" text-anchor="middle" font-size="9" fill="#606266">scan_papers.region_images / question_config_snapshots.content</text>
+  <text x="1380" y="392" text-anchor="middle" font-size="9.5" fill="#606266">CREATE INDEX ... USING GIN (rubric_json jsonb_path_ops);</text>
+  <text x="1380" y="410" text-anchor="middle" font-size="9.5" fill="#606266">对高频查询字段（如知识点 ID 数组）额外建表达式索引</text>
+  <text x="1380" y="430" text-anchor="middle" font-size="9" fill="#909399">保留半结构化灵活性（评分细则版本多变）</text>
+  <text x="1380" y="446" text-anchor="middle" font-size="9" fill="#909399">同时不牺牲可查询性，无需为每次 schema 变更走迁移</text>
+  <text x="1380" y="464" text-anchor="middle" font-size="9" fill="#909399">对应数据架构 L2「知识点标签打通」缺口的落地方式之一</text>
+
+  <rect x="1100" y="497" width="560" height="205" rx="6" fill="#ffffff" stroke="#e6a23c" stroke-width="1.5"/>
+  <text x="1380" y="519" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">pgvector + HNSW 索引</text>
+  <text x="1380" y="539" text-anchor="middle" font-size="9.5" fill="#606266">embedding vector(1536)  ·  USING hnsw (embedding vector_cosine_ops)</text>
+  <text x="1380" y="559" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#c0392b">三个具体用途（均已在既有文档中提出需求）</text>
+  <text x="1380" y="577" text-anchor="middle" font-size="9" fill="#606266">① 试卷库/知识点库相似题查重（数据架构 L2 曾提议 Milvus）</text>
+  <text x="1380" y="593" text-anchor="middle" font-size="9" fill="#606266">② 错误模式向量聚类（供记忆系统 student_academic_memory</text>
+  <text x="1380" y="609" text-anchor="middle" font-size="9" fill="#606266">   的蒸馏管道，替代纯人工 error_pattern 枚举标签）</text>
+  <text x="1380" y="625" text-anchor="middle" font-size="9" fill="#606266">③ 校本库语义检索（kb_resources 内容抽取后的向量化）</text>
+  <text x="1380" y="647" text-anchor="middle" font-size="9.5" fill="#5a9216" font-weight="bold">选型收益：用 PG 原生扩展覆盖首期需求</text>
+  <text x="1380" y="665" text-anchor="middle" font-size="9" fill="#606266">避免额外引入独立 Milvus 集群，降低运维面</text>
+  <text x="1380" y="681" text-anchor="middle" font-size="9" fill="#606266">数据量增长到十亿级向量时再评估专用向量库</text>
+
+  <rect x="1100" y="720" width="560" height="180" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="1380" y="742" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1f2d3d">连接与物理形态</text>
+  <text x="1380" y="762" text-anchor="middle" font-size="9.5" fill="#606266">PgBouncer / PgCat 连接池：百级租户 × 多服务并发连接</text>
+  <text x="1380" y="780" text-anchor="middle" font-size="9.5" fill="#606266">主库 + 双可用区物理复制（对应部署架构中已提出但</text>
+  <text x="1380" y="796" text-anchor="middle" font-size="9.5" fill="#606266">尚未落地的"双可用区"目标，本提案是其中数据层的补齐）</text>
+  <text x="1380" y="816" text-anchor="middle" font-size="9.5" fill="#606266">批阅系统、批阅服务各自独立一套本模型（边界不变，</text>
+  <text x="1380" y="832" text-anchor="middle" font-size="9.5" fill="#606266">延续既有"交叉点②：共享基础设施不共享数据"原则）</text>
+  <text x="1380" y="852" text-anchor="middle" font-size="9" fill="#909399">逻辑复制引出的 OLAP 只读实例见图 2</text>
+  <text x="1380" y="868" text-anchor="middle" font-size="9" fill="#909399">（本图只覆盖 OLTP 主库内部结构）</text>
+  <text x="1380" y="884" text-anchor="middle" font-size="9" fill="#909399">向量写入发生在主库（与源数据同事务），检索可读副本</text>
+
+  <!-- Legend -->
+  <path d="M60,955 H100" fill="none" stroke="#303133" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="108" y="959" font-size="9.5" fill="#606266">分区/数据流方向</text>
+
+  <rect x="260" y="948" width="24" height="14" fill="#fdf6ec" stroke="#e6a23c"/>
+  <text x="294" y="959" font-size="9.5" fill="#606266">特殊处理（Whale 租户）</text>
+
+  <rect x="500" y="948" width="24" height="14" fill="#f0f9eb" stroke="#67c23a"/>
+  <text x="534" y="959" font-size="9.5" fill="#606266">相对现状的收益/改进</text>
+
+  <rect x="740" y="948" width="24" height="14" fill="#f4f4f5" stroke="#c0c4cc" stroke-dasharray="4 3"/>
+  <text x="774" y="959" font-size="9.5" fill="#606266">自动化/待办（pg_partman 等）</text>
+</svg>

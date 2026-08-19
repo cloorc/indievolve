@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="1700" height="1190">
+ <defs>
+  <marker id="arr" markerHeight="7" markerWidth="7" orient="auto-start-reverse" refX="9" refY="5" viewBox="0 0 10 10">
+   <path d="m0,0l10,5l-10,5l0,-10z" fill="#303133"/>
+  </marker>
+ </defs>
+
+ <!-- Title -->
+ <text x="850" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2d3d">自适应学习引擎产品线：三仓两线现状与风险</text>
+ <text x="850" y="49" text-anchor="middle" font-size="11" fill="#909399">教育数据底座（公司级共享资产）+ 两条独立演进的 engine 主线；两条主线互不相通，无共同提交</text>
+ <text x="850" y="65" text-anchor="middle" font-size="10.5" fill="#606266" font-style="italic">两条 engine 线于 2026-08-10~08-12 从同一份代码分叉，此后各自独立演进，未见任何共同提交</text>
+
+ <!-- LEFT ZONE: 自适应学习引擎 (早期主线) -->
+ <rect x="40" y="80" width="780" height="520" rx="10" fill="#f4f4f5" stroke="#909399" stroke-dasharray="6 4"/>
+ <text x="430" y="102" text-anchor="middle" font-size="14" font-weight="bold" fill="#606266">自适应学习引擎/（早期主线）</text>
+ <text x="430" y="119" text-anchor="middle" font-size="10" fill="#909399">本地目录 · 无 GitHub 远程 · 2026-08-19 仍在增长</text>
+
+ <!-- Box A: engine 本地试点代码 -->
+ <rect x="60" y="135" width="740" height="175" rx="6" fill="#ffffff" stroke="#909399"/>
+ <text x="430" y="156" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f2d3d">engine/ 本地试点代码</text>
+ <text x="430" y="173" text-anchor="middle" font-size="10" fill="#909399">本地 git 仓库 · 无 remote</text>
+ <text x="430" y="193" text-anchor="middle" font-size="10.5" fill="#606266">main 停在 08-11（13 提交）</text>
+ <text x="430" y="209" text-anchor="middle" font-size="10.5" fill="#606266">事实主干：feat/pilot-paper-rehearsal</text>
+ <text x="430" y="225" text-anchor="middle" font-size="10.5" fill="#606266">148 提交，持续增长，从未推送远程</text>
+ <text x="430" y="241" text-anchor="middle" font-size="10.5" fill="#606266">20 条历史分支：17 条已被主干吸收</text>
+ <text x="430" y="257" text-anchor="middle" font-size="10.5" fill="#606266">2 条独有分支未合并（8786+295 行）</text>
+ <text x="430" y="273" text-anchor="middle" font-size="10.5" fill="#606266">.worktrees/ 19 个未收口，占 2.2G</text>
+ <text x="430" y="292" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#c0392b">【高危】无远程备份，硬盘损坏即全部丢失</text>
+
+ <!-- Box B: adaptive-engine 已停用 -->
+ <rect x="60" y="320" width="740" height="90" rx="6" fill="#fafafa" stroke="#c0c4cc"/>
+ <text x="430" y="341" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#606266">adaptive-engine/（已停用）</text>
+ <text x="430" y="359" text-anchor="middle" font-size="10" fill="#909399">仅 1 个提交 · 2026-08-07 后停止更新</text>
+ <text x="430" y="375" text-anchor="middle" font-size="10" fill="#909399">AGENTS.md 仍误称其为「基线 B 硬约束」</text>
+ <text x="430" y="391" text-anchor="middle" font-size="10" fill="#909399">实际已被 engine/ 取代，检索路由表未同步</text>
+
+ <!-- Box C: 81份方案 HTML 文档体系 -->
+ <rect x="60" y="420" width="740" height="115" rx="6" fill="#ffffff" stroke="#909399"/>
+ <text x="430" y="441" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#1f2d3d">81 份方案 HTML 文档体系</text>
+ <text x="430" y="459" text-anchor="middle" font-size="10.5" fill="#606266">24 份现行 + 37 份归档 · 唯一入口：总纲与资产地图_08-08</text>
+ <text x="430" y="475" text-anchor="middle" font-size="10.5" fill="#606266">「已死数字黑名单」机制防止旧结论以多数票复活</text>
+ <text x="430" y="493" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#ad6800">【中危】路由表滞后 10 天，21 份文档未登记</text>
+ <text x="430" y="509" text-anchor="middle" font-size="9.5" fill="#909399">（含 3 份已直接推翻旧计划口径的关键文档）</text>
+
+ <!-- Footnote: 目标 -->
+ <rect x="60" y="545" width="740" height="40" rx="6" fill="#f4f4f5" stroke="#c0c4cc" stroke-dasharray="3 3"/>
+ <text x="430" y="561" text-anchor="middle" font-size="10" font-weight="bold" fill="#606266">这一层的目标</text>
+ <text x="430" y="577" text-anchor="middle" font-size="9.5" fill="#909399">早期方案沉淀 + 本地试点验证，工程治理最薄弱</text>
+
+ <!-- RIGHT ZONE: 自适应学习引擎-全量实验室-v2 (后期主线) -->
+ <rect x="880" y="80" width="780" height="520" rx="10" fill="#f0f9eb" stroke="#67c23a" stroke-dasharray="6 4"/>
+ <text x="1270" y="102" text-anchor="middle" font-size="14" font-weight="bold" fill="#3c8618">自适应学习引擎-全量实验室-v2/（后期主线）</text>
+ <text x="1270" y="119" text-anchor="middle" font-size="10" fill="#67c23a">github.com/IndievolveLabs/adaptive-learning-engine-lab</text>
+
+ <!-- Box A: engine 九微服务 -->
+ <rect x="900" y="135" width="740" height="175" rx="6" fill="#ffffff" stroke="#67c23a"/>
+ <text x="1270" y="156" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f2d3d">engine/ 九微服务 + 契约体系</text>
+ <text x="1270" y="173" text-anchor="middle" font-size="10" fill="#529b2e">唯一有远程且持续交付 · 163 提交 / 68 PR</text>
+ <text x="1270" y="193" text-anchor="middle" font-size="10.5" fill="#606266">decision·diagnosis·evidence·item·kp</text>
+ <text x="1270" y="209" text-anchor="middle" font-size="10.5" fill="#606266">memory·misconception·profile·rubric_svc</text>
+ <text x="1270" y="225" text-anchor="middle" font-size="10.5" fill="#606266">九服务互相隔离，跨表访问一律走 HTTP</text>
+ <text x="1270" y="241" text-anchor="middle" font-size="10.5" fill="#606266">CONTRACT.md 2242 行：DDL/契约/缺口三级标记</text>
+ <text x="1270" y="257" text-anchor="middle" font-size="10.5" fill="#606266">全部约束条目均本机 PostgreSQL 实测过</text>
+ <text x="1270" y="273" text-anchor="middle" font-size="10.5" fill="#606266">近期交付：pilot launchpad、区域门控、</text>
+ <text x="1270" y="289" text-anchor="middle" font-size="10.5" fill="#606266">教师课堂闭环、三角函数内容资产</text>
+
+ <!-- Box B: teacher-web 前端 -->
+ <rect x="900" y="320" width="740" height="90" rx="6" fill="#ffffff" stroke="#95d475"/>
+ <text x="1270" y="341" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#1f2d3d">teacher-web/ 教师端前端</text>
+ <text x="1270" y="359" text-anchor="middle" font-size="10" fill="#606266">React 19 + TypeScript + Vite + Tailwind + Radix UI</text>
+ <text x="1270" y="375" text-anchor="middle" font-size="10" fill="#606266">11,372 个文件，含 Vitest 测试（RegionPage 等）</text>
+ <text x="1270" y="391" text-anchor="middle" font-size="10" fill="#909399">三仓中唯一有可运行前端产品雏形的部分</text>
+
+ <!-- Box C: 多Agent编排合同 -->
+ <rect x="900" y="420" width="740" height="115" rx="6" fill="#ffffff" stroke="#67c23a"/>
+ <text x="1270" y="441" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#1f2d3d">多 Agent 编排合同（WORKFLOW.md）</text>
+ <text x="1270" y="459" text-anchor="middle" font-size="10.5" fill="#606266">完整状态机：proposed → … → merged</text>
+ <text x="1270" y="475" text-anchor="middle" font-size="10.5" fill="#606266">Codex=Lead/集成 · Claude=模块owner/异构审查</text>
+ <text x="1270" y="491" text-anchor="middle" font-size="10.5" fill="#606266">DeepSeek V4 Flash=默认受约束执行主力</text>
+ <text x="1270" y="507" text-anchor="middle" font-size="10.5" fill="#606266">9 步固定验证顺序 + 7 项任务准入条件 + 背压熔断</text>
+
+ <!-- Footnote: 目标 -->
+ <rect x="900" y="545" width="740" height="40" rx="6" fill="#f0f9eb" stroke="#95d475" stroke-dasharray="3 3"/>
+ <text x="1270" y="561" text-anchor="middle" font-size="10" font-weight="bold" fill="#3c8618">这一层的目标</text>
+ <text x="1270" y="577" text-anchor="middle" font-size="9.5" fill="#529b2e">产品化交付 + 多 Agent 工程化编排，纪律最完整</text>
+
+ <!-- FOUNDATION: education-data-foundation -->
+ <rect x="440" y="625" width="800" height="165" rx="8" fill="#e6fffb" stroke="#13c2c2" stroke-width="1.5"/>
+ <text x="840" y="648" text-anchor="middle" font-size="14" font-weight="bold" fill="#08979c">education-data-foundation/（公司数据底座）</text>
+ <text x="840" y="665" text-anchor="middle" font-size="10" fill="#13c2c2">github.com/IndievolveLabs/platform-data-foundation-service · 2026-08-18 活跃</text>
+ <text x="840" y="686" text-anchor="middle" font-size="10.5" fill="#606266">128.3 万题目 · 7.6 万知识资产 · 1,140 条课标条款</text>
+ <text x="840" y="702" text-anchor="middle" font-size="10.5" fill="#606266">内容寻址（SHA-256 + RFC 8785）+ append-only 发布治理</text>
+ <text x="840" y="722" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#08979c">定位：自适应学习引擎是「首个消费者」（AGENTS.md 原话）</text>
+ <text x="840" y="738" text-anchor="middle" font-size="10" fill="#606266">P0.2 基线来源标注为 adaptive_engine_teacher_analysis_v7</text>
+ <text x="840" y="758" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#ad6800">【待裁定】与两条 engine 线尚未见已实现的集成</text>
+ <text x="840" y="775" text-anchor="middle" font-size="9.5" fill="#909399">不修改自适应引擎、不写引擎库、不介入推题策略或学生状态</text>
+
+ <!-- Arrows: foundation -> two engine zones (designed consumer relationship, dashed = not yet implemented) -->
+ <line x1="600" y1="625" x2="310" y2="601" stroke="#13c2c2" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+ <line x1="1080" y1="625" x2="1400" y2="601" stroke="#13c2c2" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+ <text x="840" y="612" text-anchor="middle" font-size="9.5" font-style="italic" fill="#08979c">设计上的消费者关系（AGENTS.md）· 尚未见已实现集成</text>
+
+ <!-- RISK PANEL -->
+ <rect x="40" y="815" width="1620" height="330" rx="10" fill="#fff1f0" stroke="#f56c6c" stroke-dasharray="6 4"/>
+ <text x="850" y="840" text-anchor="middle" font-size="13" font-weight="bold" fill="#c0392b">五个风险（转引自项目内部 2026-08-18 审计 · 截至本报告未见处置记录）</text>
+
+ <!-- R1 -->
+ <rect x="90" y="860" width="490" height="140" rx="6" fill="#ffffff" stroke="#f56c6c"/>
+ <text x="335" y="884" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#c0392b">R1【不可逆】148 提交无远程备份</text>
+ <text x="335" y="903" text-anchor="middle" font-size="9.5" fill="#606266">自适应学习引擎/engine/ 的事实主干分支</text>
+ <text x="335" y="919" text-anchor="middle" font-size="9.5" fill="#606266">feat/pilot-paper-rehearsal 从未推送远程</text>
+ <text x="335" y="935" text-anchor="middle" font-size="9.5" fill="#606266">本次复核：已增至 148 提交（审计时 144）</text>
+ <text x="335" y="951" text-anchor="middle" font-size="9.5" fill="#606266">硬盘损坏即造成不可恢复的代码损失</text>
+ <text x="335" y="973" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#c0392b">状态：截至 2026-08-19 未见处置记录</text>
+
+ <!-- R2 -->
+ <rect x="605" y="860" width="490" height="140" rx="6" fill="#ffffff" stroke="#f56c6c"/>
+ <text x="850" y="884" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#c0392b">R2【不可逆】明文凭据 8 天未轮换</text>
+ <text x="850" y="903" text-anchor="middle" font-size="9.5" fill="#606266">input/API.txt · input/.env 含服务器口令、</text>
+ <text x="850" y="919" text-anchor="middle" font-size="9.5" fill="#606266">OpenRouter/Groq/批阅服务 key、数据库口令</text>
+ <text x="850" y="935" text-anchor="middle" font-size="9.5" fill="#606266">08-10 登记为阻塞项，API.txt 08-14 仍被改动</text>
+ <text x="850" y="951" text-anchor="middle" font-size="9.5" fill="#606266">说明凭据仍在被使用，并非遗留文件</text>
+ <text x="850" y="973" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#c0392b">状态：截至 2026-08-19 未见处置记录</text>
+
+ <!-- R3 -->
+ <rect x="1120" y="860" width="490" height="140" rx="6" fill="#ffffff" stroke="#e6a23c"/>
+ <text x="1365" y="884" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#ad6800">R3 两条 engine 线主线归属未裁定</text>
+ <text x="1365" y="903" text-anchor="middle" font-size="9.5" fill="#606266">两条线仅在 08-10~08-12 分叉自同一份代码</text>
+ <text x="1365" y="919" text-anchor="middle" font-size="9.5" fill="#606266">此后各自独立演进，无任何共同提交</text>
+ <text x="1365" y="935" text-anchor="middle" font-size="9.5" fill="#606266">三种可能：任一为主线，或分管不同范畴</text>
+ <text x="1365" y="951" text-anchor="middle" font-size="9.5" fill="#606266">需要人工拍板，无法从代码差异自动推断</text>
+ <text x="1365" y="973" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#ad6800">状态：需用户决策</text>
+
+ <!-- R4 -->
+ <rect x="80" y="1015" width="750" height="115" rx="6" fill="#ffffff" stroke="#e6a23c"/>
+ <text x="455" y="1039" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#ad6800">R4 19 个 worktree 未收口，占 2.2G（约 61% 目录体积）</text>
+ <text x="455" y="1059" text-anchor="middle" font-size="9.5" fill="#606266">17 条已被主分支完全吸收，内容不丢，可安全清理</text>
+ <text x="455" y="1075" text-anchor="middle" font-size="9.5" fill="#606266">2 条含独有提交（8786+295 行）需逐个 diff 后再定</text>
+ <text x="455" y="1091" text-anchor="middle" font-size="9.5" fill="#606266">建议顺序：先备份远程（R1）→ 裁定主线（R3）→ 再清理</text>
+
+ <!-- R5 -->
+ <rect x="870" y="1015" width="750" height="115" rx="6" fill="#ffffff" stroke="#c0c4cc"/>
+ <text x="1245" y="1039" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#606266">R5 检索路由表滞后 10 天，21 份文档未登记</text>
+ <text x="1245" y="1059" text-anchor="middle" font-size="9.5" fill="#606266">AGENTS.md/CLAUDE.md 唯一入口仍指向 08-08 版本</text>
+ <text x="1245" y="1075" text-anchor="middle" font-size="9.5" fill="#606266">含 3 份已直接推翻旧计划口径的关键文档未回写</text>
+ <text x="1245" y="1091" text-anchor="middle" font-size="9.5" fill="#606266">纯增量修复、零风险，可随时处理</text>
+
+ <!-- Footer -->
+ <text x="850" y="1168" text-anchor="middle" font-size="9" fill="#909399">数据来源：本地 git 实测（2026-08-19）+ 项目内部 2026-08-18 审计文档 · 完整分析见 self-learning-engine.md</text>
+</svg>
