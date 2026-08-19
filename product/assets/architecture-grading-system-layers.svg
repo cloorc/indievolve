@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1470" height="880" viewBox="0 0 1470 880" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#606266"/>
+    </marker>
+  </defs>
+
+  <text x="700" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2d3d">批阅系统后端分层架构（aireview-grading-system / backend）</text>
+  <text x="700" y="56" text-anchor="middle" font-size="12" fill="#909399">依赖方向自上而下：routes → service → models/infra；虚线框为运行期织入的横切机制</text>
+
+  <!-- 行标签：统一 x=30，纵向对齐各行方框中心 -->
+  <text x="30" y="140" font-size="13" font-weight="bold" fill="#909399">接入层</text>
+  <text x="30" y="270" font-size="13" font-weight="bold" fill="#909399">接口层</text>
+  <text x="30" y="400" font-size="13" font-weight="bold" fill="#909399">业务层</text>
+  <text x="30" y="530" font-size="13" font-weight="bold" fill="#909399">数据层</text>
+  <text x="30" y="660" font-size="13" font-weight="bold" fill="#909399">适配层</text>
+  <text x="30" y="790" font-size="13" font-weight="bold" fill="#909399">外部系统</text>
+
+  <!-- 接入层：x 从 160 起，行 y=105..165 -->
+  <rect x="160" y="100" width="340" height="64" rx="6" fill="#fdf6ec" stroke="#e6a23c"/>
+  <text x="330" y="126" text-anchor="middle" font-size="13" font-weight="bold" fill="#8a5a00">TenantContextMiddleware</text>
+  <text x="330" y="146" text-anchor="middle" font-size="10" fill="#8a5a00">Host 二级域名/X-Tenant-Id → contextvar</text>
+
+  <rect x="540" y="100" width="340" height="64" rx="6" fill="#fdf6ec" stroke="#e6a23c"/>
+  <text x="710" y="126" text-anchor="middle" font-size="13" font-weight="bold" fill="#8a5a00">ApiLogMiddleware</text>
+  <text x="710" y="146" text-anchor="middle" font-size="10" fill="#8a5a00">API 出入参/IP/耗时 → api_logs</text>
+
+  <rect x="920" y="100" width="340" height="64" rx="6" fill="#fdf6ec" stroke="#e6a23c"/>
+  <text x="1090" y="126" text-anchor="middle" font-size="13" font-weight="bold" fill="#8a5a00">统一错误信封 + CORS</text>
+  <text x="1090" y="146" text-anchor="middle" font-size="10" fill="#8a5a00">{success,code,message} · 生产隐藏 detail</text>
+
+  <!-- 接口层：行 y=235..299 -->
+  <rect x="160" y="230" width="340" height="64" rx="6" fill="#ecf5ff" stroke="#409eff"/>
+  <text x="330" y="256" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f6fb5">modules/*/routes.py</text>
+  <text x="330" y="276" text-anchor="middle" font-size="10" fill="#1f6fb5">内部接口 · require_menu / require_tenant_user</text>
+
+  <rect x="540" y="230" width="340" height="64" rx="6" fill="#ecf5ff" stroke="#409eff"/>
+  <text x="710" y="256" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f6fb5">modules/*/open_routes.py</text>
+  <text x="710" y="276" text-anchor="middle" font-size="10" fill="#1f6fb5">开放接口 · X-API-Key / X-Device-Key 鉴权</text>
+
+  <rect x="920" y="230" width="340" height="64" rx="6" fill="#ecf5ff" stroke="#409eff"/>
+  <text x="1090" y="256" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f6fb5">schemas.py（pydantic v2）</text>
+  <text x="1090" y="276" text-anchor="middle" font-size="10" fill="#1f6fb5">入参校验 · 统一响应模型</text>
+
+  <!-- 业务层：行 y=365..429 -->
+  <rect x="160" y="360" width="340" height="64" rx="6" fill="#f0f9eb" stroke="#67c23a"/>
+  <text x="330" y="386" text-anchor="middle" font-size="13" font-weight="bold" fill="#3d6b1f">modules/*/service.py</text>
+  <text x="330" y="406" text-anchor="middle" font-size="10" fill="#3d6b1f">业务编排 · 25 个域模块</text>
+
+  <rect x="540" y="360" width="340" height="64" rx="6" fill="#f0f9eb" stroke="#67c23a"/>
+  <text x="710" y="386" text-anchor="middle" font-size="13" font-weight="bold" fill="#3d6b1f">域内专项件</text>
+  <text x="710" y="406" text-anchor="middle" font-size="10" fill="#3d6b1f">grading_remote / completion_guard / scope_resolver</text>
+
+  <rect x="920" y="360" width="340" height="64" rx="6" fill="#f0f9eb" stroke="#67c23a"/>
+  <text x="1090" y="386" text-anchor="middle" font-size="13" font-weight="bold" fill="#3d6b1f">app/worker.py（单副本）</text>
+  <text x="1090" y="406" text-anchor="middle" font-size="10" fill="#3d6b1f">批阅提交/回拉 · 题目提取 · 标注 三条循环</text>
+
+  <!-- 数据层：行 y=495..559 -->
+  <rect x="160" y="490" width="340" height="64" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="330" y="516" text-anchor="middle" font-size="13" font-weight="bold" fill="#4a4a4a">modules/*/models.py</text>
+  <text x="330" y="536" text-anchor="middle" font-size="10" fill="#4a4a4a">SQLAlchemy 2.0 async · Id/Tenant/Timestamp Mixin</text>
+
+  <rect x="540" y="490" width="340" height="64" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="710" y="516" text-anchor="middle" font-size="13" font-weight="bold" fill="#4a4a4a">app/infra/db.py</text>
+  <text x="710" y="536" text-anchor="middle" font-size="10" fill="#4a4a4a">aiomysql 连接池 · get_session / background_session</text>
+
+  <rect x="920" y="490" width="340" height="64" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="1090" y="516" text-anchor="middle" font-size="13" font-weight="bold" fill="#4a4a4a">db/migrations（Alembic ×62）</text>
+  <text x="1090" y="536" text-anchor="middle" font-size="10" fill="#4a4a4a">迁移 + 幂等种子（菜单/字典/内置角色）</text>
+
+  <!-- 适配层：行 y=625..689 -->
+  <rect x="160" y="620" width="340" height="64" rx="6" fill="#fef0f0" stroke="#f56c6c"/>
+  <text x="330" y="646" text-anchor="middle" font-size="13" font-weight="bold" fill="#a33">app/infra/grading_service.py</text>
+  <text x="330" y="666" text-anchor="middle" font-size="10" fill="#a33">批阅服务 REST 封装（X-API-Key）</text>
+
+  <rect x="540" y="620" width="340" height="64" rx="6" fill="#fef0f0" stroke="#f56c6c"/>
+  <text x="710" y="646" text-anchor="middle" font-size="13" font-weight="bold" fill="#a33">app/infra/analytics_service.py</text>
+  <text x="710" y="666" text-anchor="middle" font-size="10" fill="#a33">学情系统只读 REST 封装</text>
+
+  <rect x="920" y="620" width="340" height="64" rx="6" fill="#fef0f0" stroke="#f56c6c"/>
+  <text x="1090" y="646" text-anchor="middle" font-size="13" font-weight="bold" fill="#a33">oss / redis / llm_client / wechat / sms</text>
+  <text x="1090" y="666" text-anchor="middle" font-size="10" fill="#a33">对象存储 · 缓存熔断 · LLM 网关 · 第三方</text>
+
+  <!-- 外部系统：行 y=755..819 -->
+  <rect x="160" y="750" width="250" height="64" rx="6" fill="#ffffff" stroke="#606266"/>
+  <text x="285" y="776" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f2d3d">预处理系统</text>
+  <text x="285" y="796" text-anchor="middle" font-size="10" fill="#606266">Open API 推送扫描卷</text>
+
+  <rect x="460" y="750" width="250" height="64" rx="6" fill="#ffffff" stroke="#606266"/>
+  <text x="585" y="776" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f2d3d">批阅服务 grading_service</text>
+  <text x="585" y="796" text-anchor="middle" font-size="10" fill="#606266">提交 → 轮询 → 报告</text>
+
+  <rect x="760" y="750" width="250" height="64" rx="6" fill="#ffffff" stroke="#606266"/>
+  <text x="885" y="776" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f2d3d">学情分析系统</text>
+  <text x="885" y="796" text-anchor="middle" font-size="10" fill="#606266">只读拉取已算好的学情数据</text>
+
+  <rect x="1060" y="750" width="200" height="64" rx="6" fill="#ffffff" stroke="#606266"/>
+  <text x="1160" y="776" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f2d3d">MySQL / Redis / OSS</text>
+  <text x="1160" y="796" text-anchor="middle" font-size="10" fill="#606266">阿里云新加坡实例</text>
+
+  <!-- 纵向依赖箭头 -->
+  <path d="M330,164 V226" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M710,164 V226" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M330,294 V356" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M710,294 V356" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M330,424 V486" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M710,424 V486" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M330,554 V616" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M710,554 V616" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M330,684 V746" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M585,684 V746" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M885,684 V746" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M1160,684 V746" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- 横切机制虚线框（右侧） -->
+  <rect x="1290" y="100" width="168" height="554" rx="8" fill="none" stroke="#b88230" stroke-dasharray="6 4" stroke-width="1.5"/>
+  <text x="1374" y="126" text-anchor="middle" font-size="11" font-weight="bold" fill="#b88230">横切机制（运行期织入）</text>
+  <text x="1374" y="180" text-anchor="middle" font-size="11" font-weight="bold" fill="#b88230">tenant_guard</text>
+  <text x="1374" y="198" text-anchor="middle" font-size="10" fill="#b88230">SELECT 自动注入</text>
+  <text x="1374" y="214" text-anchor="middle" font-size="10" fill="#b88230">tenant_id ∈ {当前, 0}</text>
+  <text x="1374" y="290" text-anchor="middle" font-size="11" font-weight="bold" fill="#b88230">雪花发号</text>
+  <text x="1374" y="308" text-anchor="middle" font-size="10" fill="#b88230">snowflake.next_id</text>
+  <text x="1374" y="384" text-anchor="middle" font-size="11" font-weight="bold" fill="#b88230">软删哨兵</text>
+  <text x="1374" y="402" text-anchor="middle" font-size="10" fill="#b88230">1970-01-01 00:00:00</text>
+  <text x="1374" y="478" text-anchor="middle" font-size="11" font-weight="bold" fill="#b88230">请求签名</text>
+  <text x="1374" y="496" text-anchor="middle" font-size="10" fill="#b88230">HMAC signKey 会话级</text>
+  <text x="1374" y="572" text-anchor="middle" font-size="11" font-weight="bold" fill="#b88230">app_config</text>
+  <text x="1374" y="590" text-anchor="middle" font-size="10" fill="#b88230">运行时配置缓存</text>
+</svg>

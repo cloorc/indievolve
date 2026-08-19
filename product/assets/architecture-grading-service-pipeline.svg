@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1560" height="1000" viewBox="0 0 1560 1000" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#606266"/>
+    </marker>
+  </defs>
+
+  <text x="780" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2d3d">五 Agent 批阅流水线：预计算 → 提交 → 提取 → 评分 → 验证 → 汇聚</text>
+  <text x="780" y="56" text-anchor="middle" font-size="12" fill="#909399">数据契约（UGP 协议对象贯穿全程）：QuestionContext → StudentResponse → GradeResult → ValidationResult</text>
+
+  <!-- ================= 阶段 A：预计算 ================= -->
+  <rect x="40" y="78" width="1480" height="160" rx="8" fill="#fcfcfd" stroke="#c0c4cc" stroke-dasharray="6,4"/>
+  <text x="60" y="102" font-size="12" font-weight="bold" fill="#909399">阶段 A · 建考/题库时 · 后台预计算（每题一次）</text>
+
+  <rect x="80" y="120" width="300" height="56" rx="6" fill="#fdf6ec" stroke="#e6a23c"/>
+  <text x="230" y="144" text-anchor="middle" font-size="12" font-weight="bold" fill="#8a5a00">题库下推 / PDF 题目提取</text>
+  <text x="230" y="164" text-anchor="middle" font-size="10" fill="#8a5a00">create-with-questions · extract-questions</text>
+
+  <rect x="440" y="120" width="300" height="56" rx="6" fill="#f0f9eb" stroke="#67c23a"/>
+  <text x="590" y="144" text-anchor="middle" font-size="12" font-weight="bold" fill="#3d6b1f">Agent1 题目分析 question_analyzer</text>
+  <text x="590" y="164" text-anchor="middle" font-size="10" fill="#3d6b1f">→ QuestionContext（题型 · 难度 · 置信度）</text>
+
+  <rect x="800" y="120" width="300" height="56" rx="6" fill="#f0f9eb" stroke="#67c23a"/>
+  <text x="950" y="144" text-anchor="middle" font-size="12" font-weight="bold" fill="#3d6b1f">Agent3 评分细则 + Agent2 提取细则</text>
+  <text x="950" y="164" text-anchor="middle" font-size="10" fill="#3d6b1f">→ ReferenceAnswer(rubric) · extraction_rules</text>
+
+  <rect x="1160" y="120" width="300" height="56" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="1310" y="144" text-anchor="middle" font-size="12" font-weight="bold" fill="#4a4a4a">Redis 预计算缓存</text>
+  <text x="1310" y="164" text-anchor="middle" font-size="10" fill="#4a4a4a">exam:{id}:q:{qn}:context · rubric · rules</text>
+
+  <line x1="380" y1="148" x2="436" y2="148" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="740" y1="148" x2="796" y2="148" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="1100" y1="148" x2="1156" y2="148" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- 预计算缓存 → 阶段0（沿列间空隙绕行） -->
+  <polyline points="1310,176 1310,205 1130,205 1130,440 1104,440" fill="none" stroke="#909399" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="1216" y="198" text-anchor="middle" font-size="9" fill="#909399">批阅时读取</text>
+
+  <!-- ================= 阶段 B：批阅时 ================= -->
+  <rect x="40" y="262" width="1480" height="712" rx="8" fill="#fcfcfd" stroke="#c0c4cc" stroke-dasharray="6,4"/>
+  <text x="60" y="286" font-size="12" font-weight="bold" fill="#909399">阶段 B · 提交试卷 · 批阅时（每份试卷走一遍）</text>
+
+  <!-- 第 1 行：提交与入队 -->
+  <rect x="80" y="310" width="300" height="56" rx="6" fill="#fdf6ec" stroke="#e6a23c"/>
+  <text x="230" y="334" text-anchor="middle" font-size="12" font-weight="bold" fill="#8a5a00">上游批阅系统（Java）</text>
+  <text x="230" y="354" text-anchor="middle" font-size="10" fill="#8a5a00">POST submit-precut-paper · 区域图片 URL</text>
+
+  <rect x="440" y="310" width="300" height="56" rx="6" fill="#ecf5ff" stroke="#409eff"/>
+  <text x="590" y="334" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f6fb5">paper_pipeline 整卷管道</text>
+  <text x="590" y="354" text-anchor="middle" font-size="10" fill="#1f6fb5">区域映射 · 上传 MinIO · 学生信息识别(异步)</text>
+
+  <rect x="800" y="310" width="300" height="56" rx="6" fill="#ecf5ff" stroke="#409eff"/>
+  <text x="950" y="334" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f6fb5">逐题子任务 submit_task</text>
+  <text x="950" y="354" text-anchor="middle" font-size="10" fill="#1f6fb5">出生点先落 MySQL pending 再入队</text>
+
+  <rect x="1160" y="310" width="300" height="56" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="1310" y="334" text-anchor="middle" font-size="12" font-weight="bold" fill="#4a4a4a">Redis 队列 grading:queue</text>
+  <text x="1310" y="354" text-anchor="middle" font-size="10" fill="#4a4a4a">BRPOP 原子移动 + in-flight 凭据</text>
+
+  <line x1="380" y1="338" x2="436" y2="338" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="740" y1="338" x2="796" y2="338" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="1100" y1="338" x2="1156" y2="338" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- 第 2 行：worker 认领 + 阶段 0/1/2（从右向左蛇形） -->
+  <rect x="1160" y="420" width="300" height="100" rx="6" fill="#ecf5ff" stroke="#409eff"/>
+  <text x="1310" y="444" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f6fb5">TaskManager worker 认领</text>
+  <text x="1310" y="466" text-anchor="middle" font-size="10" fill="#1f6fb5">Lua CAS：pending→processing</text>
+  <text x="1310" y="484" text-anchor="middle" font-size="10" fill="#1f6fb5">调用 SubjectiveGradingService</text>
+
+  <rect x="800" y="420" width="300" height="100" rx="6" fill="#f0f9eb" stroke="#67c23a"/>
+  <text x="950" y="444" text-anchor="middle" font-size="12" font-weight="bold" fill="#3d6b1f">阶段 0 · 读取缓存</text>
+  <text x="950" y="466" text-anchor="middle" font-size="10" fill="#3d6b1f">命中预计算缓存（context/rubric）</text>
+  <text x="950" y="484" text-anchor="middle" font-size="10" fill="#3d6b1f">未命中 → 拒识 cache_miss</text>
+
+  <rect x="440" y="420" width="300" height="100" rx="6" fill="#f0f9eb" stroke="#67c23a"/>
+  <text x="590" y="444" text-anchor="middle" font-size="12" font-weight="bold" fill="#3d6b1f">阶段 1 · 答案提取（Agent2）</text>
+  <text x="590" y="466" text-anchor="middle" font-size="10" fill="#3d6b1f">Pass1 提取 → Pass2 独立提取 → 仲裁</text>
+  <text x="590" y="484" text-anchor="middle" font-size="10" fill="#3d6b1f">失败降级图片直评 → StudentResponse</text>
+
+  <rect x="80" y="420" width="300" height="100" rx="6" fill="#f0f9eb" stroke="#67c23a"/>
+  <text x="230" y="444" text-anchor="middle" font-size="12" font-weight="bold" fill="#3d6b1f">阶段 2 · 评分（Agent4）</text>
+  <text x="230" y="466" text-anchor="middle" font-size="10" fill="#3d6b1f">自适应采样 1/3/5 次（按置信度）</text>
+  <text x="230" y="484" text-anchor="middle" font-size="10" fill="#3d6b1f">低置信度后备模型重试 → GradeResult</text>
+
+  <line x1="1310" y1="366" x2="1310" y2="416" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="1160" y1="470" x2="1104" y2="470" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="800" y1="470" x2="744" y2="470" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="440" y1="470" x2="384" y2="470" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- 第 3 行：阶段 3 / 决策 / 汇聚 / 落库（从左向右） -->
+  <rect x="80" y="580" width="300" height="100" rx="6" fill="#f0f9eb" stroke="#67c23a"/>
+  <text x="230" y="604" text-anchor="middle" font-size="12" font-weight="bold" fill="#3d6b1f">阶段 3 · 质量验证（Agent5）</text>
+  <text x="230" y="626" text-anchor="middle" font-size="10" fill="#3d6b1f">学科策略门控（可跳过）· 交叉验证</text>
+  <text x="230" y="644" text-anchor="middle" font-size="10" fill="#3d6b1f">→ ValidationResult（备选分/异常旗标）</text>
+
+  <rect x="440" y="580" width="300" height="100" rx="6" fill="#fdf6ec" stroke="#e6a23c"/>
+  <text x="590" y="604" text-anchor="middle" font-size="12" font-weight="bold" fill="#8a5a00">决策层 · 校准与拒识</text>
+  <text x="590" y="626" text-anchor="middle" font-size="10" fill="#8a5a00">验证备选分校准分数；差异大 → 人工复审</text>
+  <text x="590" y="644" text-anchor="middle" font-size="10" fill="#8a5a00">仅交叉验证不通过才拒识</text>
+
+  <rect x="800" y="580" width="300" height="100" rx="6" fill="#ecf5ff" stroke="#409eff"/>
+  <text x="950" y="604" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f6fb5">汇聚 recalculate_paper_results</text>
+  <text x="950" y="626" text-anchor="middle" font-size="10" fill="#1f6fb5">汇总 total / objective / subjective 得分</text>
+  <text x="950" y="644" text-anchor="middle" font-size="10" fill="#1f6fb5">聚合 usage：token · 费用 · by_model</text>
+
+  <rect x="1160" y="580" width="300" height="100" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="1310" y="604" text-anchor="middle" font-size="12" font-weight="bold" fill="#4a4a4a">MySQL 终态主存</text>
+  <text x="1310" y="626" text-anchor="middle" font-size="10" fill="#4a4a4a">paper_tasks · grading_tasks 落库</text>
+  <text x="1310" y="644" text-anchor="middle" font-size="10" fill="#4a4a4a">写 fence key 防陈旧投递重跑</text>
+
+  <line x1="230" y1="520" x2="230" y2="576" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="380" y1="630" x2="436" y2="630" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="740" y1="630" x2="796" y2="630" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="1100" y1="630" x2="1156" y2="630" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- 第 4 行：并行的客观题旁路 / 细则优化 / 成本 / 结果回拉 -->
+  <rect x="80" y="740" width="300" height="100" rx="6" fill="#e6f7f5" stroke="#13c2c2" stroke-dasharray="5,3"/>
+  <text x="230" y="764" text-anchor="middle" font-size="12" font-weight="bold" fill="#0e7a75">客观题子任务（并行路径）</text>
+  <text x="230" y="786" text-anchor="middle" font-size="10" fill="#0e7a75">worker 按 task_type 分流：ObjectiveGrader</text>
+  <text x="230" y="804" text-anchor="middle" font-size="10" fill="#0e7a75">VLM 识别 + 自适应投票 → 比对判分</text>
+
+  <rect x="440" y="740" width="300" height="100" rx="6" fill="#ecf5ff" stroke="#409eff"/>
+  <text x="590" y="764" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f6fb5">rubric_optimizer 细则优化</text>
+  <text x="590" y="786" text-anchor="middle" font-size="10" fill="#1f6fb5">N 份（默认 3）完成后自动触发</text>
+  <text x="590" y="804" text-anchor="middle" font-size="10" fill="#1f6fb5">优化结果回写 Redis / MySQL</text>
+
+  <rect x="800" y="740" width="300" height="100" rx="6" fill="#ecf5ff" stroke="#409eff"/>
+  <text x="950" y="764" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f6fb5">成本聚合（usage）</text>
+  <text x="950" y="786" text-anchor="middle" font-size="10" fill="#1f6fb5">每子任务 token/费用 → 整卷 usage_json</text>
+  <text x="950" y="804" text-anchor="middle" font-size="10" fill="#1f6fb5">批次粒度聚合 · total_cost_cny</text>
+
+  <rect x="1160" y="740" width="300" height="100" rx="6" fill="#fdf6ec" stroke="#e6a23c"/>
+  <text x="1310" y="764" text-anchor="middle" font-size="12" font-weight="bold" fill="#8a5a00">结果回拉（上游轮询）</text>
+  <text x="1310" y="786" text-anchor="middle" font-size="10" fill="#8a5a00">GET /paper/paper-results/{id}</text>
+  <text x="1310" y="804" text-anchor="middle" font-size="10" fill="#8a5a00">总分 · 批语 · 置信度 · 费用</text>
+
+  <line x1="950" y1="680" x2="950" y2="736" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="1310" y1="680" x2="1310" y2="736" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <polyline points="880,680 880,710 590,710 590,736" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="735" y="704" text-anchor="middle" font-size="9" fill="#606266">批量完成后触发</text>
+
+  <!-- 第 5 行：LLM 调用底座与对象存储 -->
+  <rect x="80" y="880" width="420" height="80" rx="6" fill="#f9f0ff" stroke="#b37feb"/>
+  <text x="290" y="908" text-anchor="middle" font-size="12" font-weight="bold" fill="#6b3fa0">学科 × 模型角色路由</text>
+  <text x="290" y="930" text-anchor="middle" font-size="10" fill="#6b3fa0">subject_model_router：单学科 &gt; 学科组 &gt; 角色默认</text>
+
+  <rect x="560" y="880" width="500" height="80" rx="6" fill="#f9f0ff" stroke="#b37feb"/>
+  <text x="810" y="908" text-anchor="middle" font-size="12" font-weight="bold" fill="#6b3fa0">四个 LLM Provider</text>
+  <text x="810" y="930" text-anchor="middle" font-size="10" fill="#6b3fa0">OpenRouter（主聚合） · Gemini 直连 · DashScope 千问 · 硅基流动</text>
+
+  <rect x="1120" y="880" width="400" height="80" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="1320" y="908" text-anchor="middle" font-size="12" font-weight="bold" fill="#4a4a4a">MinIO / OSS 对象存储</text>
+  <text x="1320" y="930" text-anchor="middle" font-size="10" fill="#4a4a4a">区域图片存取；内存 base64 用完即弃</text>
+
+  <line x1="500" y1="920" x2="556" y2="920" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Agent LLM 调用虚线（沿列间空隙从 Agent 行直达路由层） -->
+  <line x1="410" y1="520" x2="410" y2="876" stroke="#b37feb" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+  <text x="620" y="548" text-anchor="middle" font-size="10" fill="#6b3fa0">Agent2/4/5 的 LLM 调用均经学科×角色路由（虚线）</text>
+</svg>

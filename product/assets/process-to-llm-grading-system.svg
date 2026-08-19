@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="760" viewBox="0 0 1180 760" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #444; stroke-width: 1.2; rx: 6; }
+      .llm-in { fill: #e8f4e8; stroke: #2e7d32; stroke-width: 1.5; }
+      .llm-out { fill: #fdeaea; stroke: #c62828; stroke-width: 1.5; }
+      .lane { fill: #f7f7f7; stroke: #bbb; stroke-width: 1; stroke-dasharray: 5 4; }
+      .t { font-size: 13px; fill: #222; }
+      .ts { font-size: 11.5px; fill: #555; }
+      .h { font-size: 15px; font-weight: bold; fill: #111; }
+      .lt { font-size: 13px; font-weight: bold; fill: #333; }
+      .tag { font-size: 10.5px; fill: #fff; }
+    </style>
+  </defs>
+
+  <text x="20" y="30" class="h">批阅系统：业务路径 → LLM 调用点（aireview-grading-system）</text>
+
+  <!-- lanes -->
+  <rect x="20" y="50" width="340" height="690" class="lane" rx="8"/>
+  <rect x="380" y="50" width="420" height="690" class="lane" rx="8"/>
+  <rect x="820" y="50" width="340" height="320" class="lane" rx="8"/>
+  <rect x="820" y="390" width="340" height="350" class="lane" rx="8"/>
+
+  <text x="36" y="76" class="lt">业务入口（API）</text>
+  <text x="396" y="76" class="lt">中间环节（本系统 service / worker）</text>
+  <text x="836" y="76" class="lt">本系统 LLM 网关（modules/llm）</text>
+  <text x="836" y="416" class="lt">外部服务（自身路由 LLM）</text>
+
+  <!-- Entry boxes -->
+  <rect x="36" y="100" width="308" height="56" class="box" rx="6"/>
+  <text x="50" y="123" class="t">建考：POST /exams/{id}/finish-setup</text>
+  <text x="50" y="142" class="ts">并行起「答题卡标注」+「题目提取」</text>
+
+  <rect x="36" y="180" width="308" height="56" class="box" rx="6"/>
+  <text x="50" y="203" class="t">扫描：POST /open/v1/scan/…/papers</text>
+  <text x="50" y="222" class="ts">预处理系统推卷（X-API-Key, scan:push）</text>
+
+  <rect x="36" y="260" width="308" height="56" class="box" rx="6"/>
+  <text x="50" y="283" class="t">自动批阅：POST /marking/exams/{id}/auto-grade</text>
+  <text x="50" y="302" class="ts">或扫描事件自动触发（worker 兜底）</text>
+
+  <rect x="36" y="340" width="308" height="56" class="box" rx="6"/>
+  <text x="50" y="363" class="t">讲评：POST /lecture/items/{id}/generate</text>
+  <text x="50" y="382" class="ts">「换个说法」逐题生成讲评要点</text>
+
+  <rect x="36" y="420" width="308" height="56" class="box" rx="6"/>
+  <text x="50" y="443" class="t">学情：GET /analytics/students/{id}/deep-analysis</text>
+  <text x="50" y="462" class="ts">错因归因 / 深度分析读侧代理</text>
+
+  <rect x="36" y="500" width="308" height="76" class="box" rx="6"/>
+  <text x="50" y="523" class="t">复核三模式 / 学生端报告 / 管理报表</text>
+  <text x="50" y="542" class="ts">marking 队列·确认、student 成绩报告、</text>
+  <text x="50" y="559" class="ts">manage 概览/质量——纯本地数据与规则</text>
+
+  <rect x="36" y="600" width="308" height="44" class="box" rx="6"/>
+  <text x="50" y="619" class="t">AI 备课（前端 /teach）</text>
+  <text x="50" y="636" class="ts">后端不存在，前端 mock，无 API</text>
+
+  <!-- Middle boxes -->
+  <rect x="396" y="100" width="388" height="56" class="box" rx="6"/>
+  <text x="410" y="123" class="t">external_tasks(card_annotate) → worker _annotate_loop</text>
+  <text x="410" y="142" class="ts">app/helpers/adaptive_cutting（视觉切答题区）</text>
+
+  <rect x="396" y="180" width="388" height="56" class="box" rx="6"/>
+  <text x="410" y="203" class="t">scan/service.py recognize_paper（:714）</text>
+  <text x="410" y="222" class="ts">裁信息区图 + 本场花名册候选 → 视觉模型匹配学号</text>
+
+  <rect x="396" y="260" width="388" height="56" class="box" rx="6"/>
+  <text x="410" y="283" class="t">grading_remote.sync_exam_bg（题目提取）</text>
+  <text x="410" y="302" class="ts">infra/grading_service.extract_questions → 轮询落库</text>
+
+  <rect x="396" y="340" width="388" height="56" class="box" rx="6"/>
+  <text x="410" y="363" class="t">trigger_grade → external_tasks(grade_paper)</text>
+  <text x="410" y="382" class="ts">worker _grade_loop → submit_papers → poll_results</text>
+
+  <rect x="396" y="420" width="388" height="56" class="box" rx="6"/>
+  <text x="410" y="443" class="t">lecture/service.py generate_talk_points（:291）</text>
+  <text x="410" y="462" class="ts">题目+答案+全班失分统计 → 讲评要点（ moderation 审核）</text>
+
+  <rect x="396" y="500" width="388" height="56" class="box" rx="6"/>
+  <text x="410" y="523" class="t">analytics _resolve_deep_analysis（:502）</text>
+  <text x="410" y="542" class="ts">按学号（姓名兜底）匹配学情系统，优雅降级</text>
+
+  <rect x="396" y="600" width="388" height="44" class="box" rx="6"/>
+  <text x="410" y="627" class="t">本地 SQL / 规则计算（review_rules、聚合统计）</text>
+
+  <!-- In-system LLM gateway box -->
+  <rect x="836" y="100" width="308" height="120" class="llm-in" rx="6"/>
+  <text x="850" y="123" class="t" font-weight="bold">modules/llm（场景化网关）</text>
+  <text x="850" y="143" class="ts">scene：adaptive_cutting（默认 openrouter）</text>
+  <text x="850" y="161" class="ts">scene：scan_recognition（默认 qwen-vl-max）</text>
+  <text x="850" y="179" class="ts">scene：lecture_talk（默认 qwen-plus）</text>
+  <text x="850" y="197" class="ts">熔断 + 主备降级 + 多 Key 轮询 + llm_call_logs</text>
+
+  <rect x="836" y="250" width="308" height="90" class="llm-in" rx="6"/>
+  <text x="850" y="273" class="t">POST /internal/llm/chat（scope=llm:call）</text>
+  <text x="850" y="292" class="ts">为外部服务预留的统一 key 收敛端点</text>
+  <text x="850" y="310" class="ts" fill="#c62828">⚠ 当前无任何调用方（死端点）</text>
+
+  <!-- External boxes -->
+  <rect x="836" y="440" width="308" height="120" class="llm-out" rx="6"/>
+  <text x="850" y="463" class="t" font-weight="bold">批阅服务 grading_service</text>
+  <text x="850" y="483" class="ts">题目提取 + 整卷评分（5-Agent 流水线）</text>
+  <text x="850" y="501" class="ts">自有 provider_manager：17 个 MODEL_ROLES</text>
+  <text x="850" y="519" class="ts">客观题千问 / 主观题 OpenRouter→Claude·GPT</text>
+  <text x="850" y="537" class="ts" fill="#c62828">⚠ 不经过本系统网关与 llm_call_logs</text>
+
+  <rect x="836" y="590" width="308" height="76" class="llm-out" rx="6"/>
+  <text x="850" y="613" class="t" font-weight="bold">学情分析系统（attribution-engine）</text>
+  <text x="850" y="633" class="ts">错因归因 / 深度分析（本系统只读代理）</text>
+  <text x="850" y="651" class="ts">其内部 LLM 调用独立，本系统不落库归因</text>
+
+  <!-- arrows: entry -> middle -->
+  <line x1="344" y1="128" x2="396" y2="128" stroke="#555" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <line x1="344" y1="208" x2="396" y2="208" stroke="#555" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <line x1="344" y1="128" x2="370" y2="128" stroke="none"/>
+  <path d="M 344 142 C 370 150, 370 280, 396 288" fill="none" stroke="#555" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <line x1="344" y1="288" x2="396" y2="288" stroke="#555" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <path d="M 344 300 C 370 310, 370 360, 396 368" fill="none" stroke="#555" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <line x1="344" y1="368" x2="396" y2="448" stroke="#555" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <line x1="344" y1="448" x2="396" y2="528" stroke="#555" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <line x1="344" y1="538" x2="396" y2="622" stroke="#555" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <line x1="344" y1="622" x2="396" y2="622" stroke="#999" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+
+  <!-- arrows: middle -> LLM / external -->
+  <line x1="784" y1="128" x2="836" y2="140" stroke="#2e7d32" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <line x1="784" y1="208" x2="836" y2="170" stroke="#2e7d32" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <path d="M 784 448 C 806 448, 810 205, 836 195" fill="none" stroke="#2e7d32" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <line x1="784" y1="288" x2="836" y2="480" stroke="#c62828" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <line x1="784" y1="368" x2="836" y2="500" stroke="#c62828" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <line x1="784" y1="528" x2="836" y2="620" stroke="#c62828" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- legend -->
+  <rect x="800" y="690" width="14" height="14" fill="none" stroke="#2e7d32" stroke-width="2"/>
+  <text x="820" y="702" class="ts">绿线 = 本系统 LLM 网关（modules/llm）</text>
+  <rect x="800" y="712" width="14" height="14" fill="none" stroke="#c62828" stroke-width="2"/>
+  <text x="820" y="724" class="ts">红线 = 转发外部服务（其内部独立路由 LLM）</text>
+
+  <!-- footer note -->
+  <text x="36" y="700" class="ts">身份/上下文传递：scan_recognition 注入本场花名册（学号+姓名）；整卷批阅向批阅服务传</text>
+  <text x="36" y="718" class="ts">学号/姓名/租户 code·name；lecture_talk 仅传全班失分聚合。</text>
+  <text x="36" y="738" class="ts">复核三模式 / 学生端报告 / 管理报表 / AI 备课：无 LLM 调用（本地规则、拼装或前端 mock）。</text>
+</svg>

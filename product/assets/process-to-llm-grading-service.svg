@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="880" viewBox="0 0 1240 880" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+    <marker id="arrowb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1565c0"/>
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #444; stroke-width: 1.2; }
+      .ok { fill: #eef7ee; stroke: #2e7d32; stroke-width: 1.5; }
+      .pii { fill: #fdeaea; stroke: #c62828; stroke-width: 1.8; }
+      .cache { fill: #e3f0fb; stroke: #1565c0; stroke-width: 1.5; stroke-dasharray: 6 4; }
+      .lane { fill: #f7f7f7; stroke: #bbb; stroke-width: 1; stroke-dasharray: 5 4; }
+      .t { font-size: 13px; fill: #222; }
+      .ts { font-size: 11.5px; fill: #555; }
+      .tw { font-size: 11.5px; fill: #b71c1c; }
+      .h { font-size: 15px; font-weight: bold; fill: #111; }
+      .lt { font-size: 13.5px; font-weight: bold; fill: #333; }
+      .flow { stroke: #1565c0; stroke-width: 1.6; stroke-dasharray: 5 4; fill: none; }
+    </style>
+  </defs>
+
+  <text x="20" y="30" class="h">批阅服务：五 Agent 流水线 LLM 调用点与 Prompt 数据流（aireview-grading-service）</text>
+
+  <!-- lanes -->
+  <rect x="20" y="50" width="380" height="700" class="lane" rx="8"/>
+  <rect x="420" y="50" width="440" height="700" class="lane" rx="8"/>
+  <rect x="880" y="50" width="340" height="700" class="lane" rx="8"/>
+
+  <text x="36" y="76" class="lt">① 预计算（建考期 · 题目级）</text>
+  <text x="436" y="76" class="lt">② 批阅时（每生 × 每题）</text>
+  <text x="896" y="76" class="lt">③ 批后（整卷汇聚后）</text>
+
+  <!-- ===== lane 1 ===== -->
+  <rect x="36" y="100" width="348" height="92" class="box ok" rx="6"/>
+  <text x="48" y="121" class="t">题目提取 QuestionExtractorService.extract</text>
+  <text x="48" y="140" class="ts">core/pdf/question_extractor.py:522（两步提取+可选投票）</text>
+  <text x="48" y="158" class="ts">prompt：试卷PDF页图+提取指令 / 答案PDF+答案指令</text>
+  <text x="48" y="176" class="ts">身份：无（建考期无学生数据）</text>
+
+  <rect x="36" y="212" width="348" height="92" class="box ok" rx="6"/>
+  <text x="48" y="233" class="t">Agent1 题目分析 analyze_text</text>
+  <text x="48" y="252" class="ts">core/subjective/agents/question_analyzer.py:88</text>
+  <text x="48" y="270" class="ts">prompt：题目文本 + 题型/难度/评分维度分析指令</text>
+  <text x="48" y="288" class="ts">角色 question_analysis_model · 身份：无</text>
+
+  <rect x="36" y="324" width="348" height="92" class="box ok" rx="6"/>
+  <text x="48" y="345" class="t">Agent3 参考答案/细则生成 generate_rubric</text>
+  <text x="48" y="364" class="ts">core/subjective/agents/reference_generator.py:784</text>
+  <text x="48" y="382" class="ts">prompt：题面+学科 few-shot+细则/档位/备选解法指令</text>
+  <text x="48" y="400" class="ts">角色 rubric_generation_model · 身份：无</text>
+
+  <rect x="36" y="436" width="348" height="92" class="box ok" rx="6"/>
+  <text x="48" y="457" class="t">提取细则生成 generate_extraction_rules</text>
+  <text x="48" y="476" class="ts">core/subjective/agents/answer_extractor.py:330</text>
+  <text x="48" y="494" class="ts">prompt：题面 + 评分细则 + 逐题提取要点生成指令</text>
+  <text x="48" y="512" class="ts">角色 extraction_rules_model · 身份：无</text>
+
+  <rect x="36" y="560" width="348" height="110" class="cache" rx="6"/>
+  <text x="48" y="582" class="lt">预计算产物缓存（Redis，TTL 30d）</text>
+  <text x="48" y="602" class="t">exam:{exam_id}:q:{qn}:context/rubric/rules</text>
+  <text x="48" y="621" class="ts">题目级共享：全场所有学生复用同一份产物</text>
+  <text x="48" y="639" class="ts">批阅主链路只读缓存，未命中→拒识 cache_miss</text>
+  <text x="48" y="657" class="ts">（Agent2 的 system prompt 另走跨学生缓存复用）</text>
+
+  <!-- ===== lane 2 ===== -->
+  <rect x="436" y="100" width="408" height="100" class="box pii" rx="6"/>
+  <text x="448" y="121" class="t">学生信息识别 recognize_student_info（仅原始整卷模式）</text>
+  <text x="448" y="140" class="ts">core/ai/student_info_recognizer.py:591；预切割模式整条跳过</text>
+  <text x="448" y="158" class="ts">prompt：固定识别指令 + ⚠全班花名册（学号:姓名）+ 信息区图</text>
+  <text x="448" y="176" class="ts">角色 student_info_model（+ student_info_vote_model 投票）</text>
+  <text x="448" y="193" class="tw">⚠ 唯一把他人身份数据（花名册）放进 prompt 的位置</text>
+
+  <rect x="436" y="224" width="408" height="80" class="box ok" rx="6"/>
+  <text x="448" y="245" class="t">客观题识别 ObjectiveRecognizer.build_prompt</text>
+  <text x="448" y="264" class="ts">core/objective/recognizer.py:232</text>
+  <text x="448" y="282" class="ts">prompt：识别指令+题号清单+答题区图（不泄露标准答案）·身份：无</text>
+  <text x="448" y="298" class="ts">角色 objective_vision_model（+ answer_vote_model）</text>
+
+  <rect x="436" y="324" width="408" height="130" class="box ok" rx="6"/>
+  <text x="448" y="345" class="t">Agent2 答案提取 extract（Pass1/Pass2/仲裁）</text>
+  <text x="448" y="364" class="ts">core/subjective/agents/answer_extractor.py:404</text>
+  <text x="448" y="382" class="ts">system：铁律骨架 + shared 共享块×4 + 学科专项（跨学生复用）</text>
+  <text x="448" y="400" class="ts">user：base + 题号锁定 + 题面锚点 + extraction_rules + 填空铁律</text>
+  <text x="448" y="418" class="ts">+ 当生本题答题区原图（必要时附 OCR 增强参考图）</text>
+  <text x="448" y="438" class="ts">角色 answer_extraction_model · 身份：无</text>
+
+  <rect x="436" y="474" width="408" height="130" class="box ok" rx="6"/>
+  <text x="448" y="495" class="t">Agent4 自适应评分 grade_with_adaptive_sampling</text>
+  <text x="448" y="514" class="ts">core/subjective/agents/grader.py:4356（置信度决定 1/3/5 次采样）</text>
+  <text x="448" y="532" class="ts">prompt：题目 + 参考答案 + rubric(含档位) + 关键概念 + 备选解法</text>
+  <text x="448" y="550" class="ts">+ &lt;student_answer&gt;（注入防护/涂改约定）+ 必要时附原图</text>
+  <text x="448" y="568" class="ts">角色 grading_model（直评：fill_blank/subjective_direct_model）</text>
+  <text x="448" y="588" class="ts">身份：无（无学号/姓名/历史成绩/历史错题/画像）</text>
+
+  <rect x="436" y="624" width="408" height="100" class="box ok" rx="6"/>
+  <text x="448" y="645" class="t">Agent5 质量验证 validate（学科策略门控，可整体跳过）</text>
+  <text x="448" y="664" class="ts">core/subjective/agents/validator.py:137</text>
+  <text x="448" y="682" class="ts">prompt：题目+标准答案+rubric+student_answer+待验证评分结果</text>
+  <text x="448" y="700" class="ts">角色 validator_model（默认 Claude Opus 4.6）· 身份：无</text>
+
+  <!-- ===== lane 3 ===== -->
+  <rect x="896" y="100" width="308" height="120" class="box pii" rx="6"/>
+  <text x="908" y="121" class="t">细则自动优化 rubric_optimizer</text>
+  <text x="908" y="140" class="ts">core/subjective/rubric_optimizer.py:433</text>
+  <text x="908" y="158" class="ts">（默认 3 份完成后自动触发）</text>
+  <text x="908" y="176" class="ts">prompt：当前细则 + 全班该题得分/</text>
+  <text x="908" y="194" class="ts">提取样本摘要（rubric_optimization_model）</text>
+  <text x="908" y="212" class="tw">⚠ 样本以「### {student_name}」为标题</text>
+
+  <rect x="896" y="250" width="308" height="110" class="box ok" rx="6"/>
+  <text x="908" y="271" class="t">评阅报告 paper_report.call_llm</text>
+  <text x="908" y="290" class="ts">core/reports/paper_report.py:1047</text>
+  <text x="908" y="308" class="ts">prompt：当卷该生的作答/得分/AI评语/错因</text>
+  <text x="908" y="326" class="ts">→ 逐题失分分析（paper_report_model）</text>
+  <text x="908" y="344" class="ts">无姓名学号、无历史考试数据</text>
+
+  <!-- cache read flow: cache box -> gutter -> agents 2/4/5 -->
+  <path class="flow" d="M 384 615 L 410 615" marker-end="url(#arrowb)"/>
+  <path class="flow" d="M 410 615 L 410 389" />
+  <path class="flow" d="M 410 389 L 434 389" marker-end="url(#arrowb)"/>
+  <path class="flow" d="M 410 539 L 434 539" marker-end="url(#arrowb)"/>
+  <path class="flow" d="M 410 674 L 434 674" marker-end="url(#arrowb)"/>
+
+  <!-- stage flow arrows between lane titles -->
+  <line x1="402" y1="70" x2="418" y2="70" stroke="#555" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <line x1="862" y1="70" x2="878" y2="70" stroke="#555" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <!-- ===== legend ===== -->
+  <rect x="20" y="768" width="1200" height="96" fill="#fafafa" stroke="#ccc" rx="8"/>
+  <rect x="40" y="786" width="26" height="16" class="ok"/>
+  <text x="74" y="799" class="ts">绿框：prompt 不含任何学生身份数据</text>
+  <rect x="40" y="814" width="26" height="16" class="pii"/>
+  <text x="74" y="827" class="ts">红框：prompt 携带学生身份数据（全系统仅此 2 处）</text>
+  <rect x="40" y="842" width="26" height="16" class="cache"/>
+  <text x="74" y="855" class="ts">蓝虚线：题目级共享缓存（学生无关，可复用）</text>
+  <text x="480" y="799" class="t">实测总结论：</text>
+  <text x="480" y="822" class="ts">学号/姓名/租户字段仅作元数据落库（paper_tasks/grading_tasks），不进入任何评分类 prompt；</text>
+  <text x="480" y="840" class="ts">历史成绩 / 历史错题 / 学习特征 / 学生画像未进入任何 LLM 调用；</text>
+  <text x="480" y="858" class="ts">跨考试按学生聚合已有读接口（GET /api/v1/learning/grading-results?student_id=），是个性化改造的现成数据源。</text>
+</svg>

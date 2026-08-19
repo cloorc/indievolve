@@ -1,0 +1,177 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="900" viewBox="0 0 1480 900" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#606266"/>
+    </marker>
+    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f56c6c"/>
+    </marker>
+  </defs>
+
+  <text x="740" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2d3d">批阅系统核心业务模块依赖图（import 语句实测）</text>
+  <text x="740" y="56" text-anchor="middle" font-size="12" fill="#909399">灰箭头 = 普通依赖（A→B 表示 A import B）；红双向箭头 = 包级循环依赖（C1–C4）；为可读性仅绘主边，完整清单见下方速查表</text>
+
+  <!-- 行标签 -->
+  <text x="20" y="140" font-size="13" font-weight="bold" fill="#909399">共享内核</text>
+  <text x="20" y="280" font-size="13" font-weight="bold" fill="#909399">批阅主链路</text>
+  <text x="20" y="412" font-size="13" font-weight="bold" fill="#909399">管理/知识资产</text>
+  <text x="20" y="560" font-size="13" font-weight="bold" fill="#909399">外围/支撑</text>
+
+  <!-- Row0 共享内核 y=110..162 -->
+  <rect x="150" y="110" width="130" height="52" rx="6" fill="#fdf6ec" stroke="#e6a23c" stroke-width="1.5"/>
+  <text x="215" y="133" text-anchor="middle" font-size="13" font-weight="bold" fill="#8a5a00">iam</text>
+  <text x="215" y="151" text-anchor="middle" font-size="9" fill="#8a5a00">账号/登录/权限</text>
+
+  <rect x="315" y="110" width="130" height="52" rx="6" fill="#fdf6ec" stroke="#e6a23c" stroke-width="1.5"/>
+  <text x="380" y="133" text-anchor="middle" font-size="13" font-weight="bold" fill="#8a5a00">org</text>
+  <text x="380" y="151" text-anchor="middle" font-size="9" fill="#8a5a00">组织/数据范围</text>
+
+  <rect x="480" y="110" width="130" height="52" rx="6" fill="#fdf6ec" stroke="#e6a23c" stroke-width="1.5"/>
+  <text x="545" y="133" text-anchor="middle" font-size="13" font-weight="bold" fill="#8a5a00">platform</text>
+  <text x="545" y="151" text-anchor="middle" font-size="9" fill="#8a5a00">运营后台/open API</text>
+
+  <rect x="645" y="110" width="130" height="52" rx="6" fill="#fdf6ec" stroke="#e6a23c" stroke-width="1.5"/>
+  <text x="710" y="133" text-anchor="middle" font-size="13" font-weight="bold" fill="#8a5a00">files</text>
+  <text x="710" y="151" text-anchor="middle" font-size="9" fill="#8a5a00">文件直传</text>
+
+  <rect x="810" y="110" width="130" height="52" rx="6" fill="#fdf6ec" stroke="#e6a23c" stroke-width="1.5"/>
+  <text x="875" y="133" text-anchor="middle" font-size="13" font-weight="bold" fill="#8a5a00">tasks</text>
+  <text x="875" y="151" text-anchor="middle" font-size="9" fill="#8a5a00">external_tasks 模型</text>
+
+  <!-- Row1 主链路 y=250..302 -->
+  <rect x="150" y="250" width="130" height="52" rx="6" fill="#ecf5ff" stroke="#409eff" stroke-width="1.5"/>
+  <text x="215" y="273" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f6fb5">exam</text>
+  <text x="215" y="291" text-anchor="middle" font-size="9" fill="#1f6fb5">建考/卷面确认</text>
+
+  <rect x="315" y="250" width="130" height="52" rx="6" fill="#ecf5ff" stroke="#409eff" stroke-width="1.5"/>
+  <text x="380" y="273" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f6fb5">scan</text>
+  <text x="380" y="291" text-anchor="middle" font-size="9" fill="#1f6fb5">扫描件接收</text>
+
+  <rect x="480" y="250" width="130" height="52" rx="6" fill="#ecf5ff" stroke="#409eff" stroke-width="2"/>
+  <text x="545" y="273" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f6fb5">marking</text>
+  <text x="545" y="291" text-anchor="middle" font-size="9" fill="#1f6fb5">批阅/复核（核心）</text>
+
+  <rect x="645" y="250" width="130" height="52" rx="6" fill="#ecf5ff" stroke="#409eff" stroke-width="1.5"/>
+  <text x="710" y="273" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f6fb5">printing</text>
+  <text x="710" y="291" text-anchor="middle" font-size="9" fill="#1f6fb5">留痕打印</text>
+
+  <rect x="810" y="250" width="130" height="52" rx="6" fill="#ecf5ff" stroke="#409eff" stroke-width="1.5"/>
+  <text x="875" y="273" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f6fb5">analytics</text>
+  <text x="875" y="291" text-anchor="middle" font-size="9" fill="#1f6fb5">学情</text>
+
+  <rect x="975" y="250" width="130" height="52" rx="6" fill="#ecf5ff" stroke="#409eff" stroke-width="1.5"/>
+  <text x="1040" y="273" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f6fb5">lecture</text>
+  <text x="1040" y="291" text-anchor="middle" font-size="9" fill="#1f6fb5">讲评/PPTX</text>
+
+  <!-- Row2 管理/知识资产 y=390..442 -->
+  <rect x="150" y="390" width="130" height="52" rx="6" fill="#f0f9eb" stroke="#67c23a" stroke-width="1.5"/>
+  <text x="215" y="413" text-anchor="middle" font-size="13" font-weight="bold" fill="#3d6b1f">manage</text>
+  <text x="215" y="431" text-anchor="middle" font-size="9" fill="#3d6b1f">管理空间</text>
+
+  <rect x="315" y="390" width="130" height="52" rx="6" fill="#f0f9eb" stroke="#67c23a" stroke-width="1.5"/>
+  <text x="380" y="413" text-anchor="middle" font-size="13" font-weight="bold" fill="#3d6b1f">qbank</text>
+  <text x="380" y="431" text-anchor="middle" font-size="9" fill="#3d6b1f">题库(组卷)</text>
+
+  <rect x="480" y="390" width="130" height="52" rx="6" fill="#f0f9eb" stroke="#67c23a" stroke-width="1.5"/>
+  <text x="545" y="413" text-anchor="middle" font-size="13" font-weight="bold" fill="#3d6b1f">tiku</text>
+  <text x="545" y="431" text-anchor="middle" font-size="9" fill="#3d6b1f">题库(开放API)</text>
+
+  <rect x="645" y="390" width="130" height="52" rx="6" fill="#f0f9eb" stroke="#67c23a" stroke-width="1.5"/>
+  <text x="710" y="413" text-anchor="middle" font-size="13" font-weight="bold" fill="#3d6b1f">knowledge</text>
+  <text x="710" y="431" text-anchor="middle" font-size="9" fill="#3d6b1f">知识点图谱属主</text>
+
+  <rect x="810" y="390" width="130" height="52" rx="6" fill="#f0f9eb" stroke="#67c23a" stroke-width="1.5"/>
+  <text x="875" y="413" text-anchor="middle" font-size="13" font-weight="bold" fill="#3d6b1f">llm</text>
+  <text x="875" y="431" text-anchor="middle" font-size="9" fill="#3d6b1f">LLM 网关</text>
+
+  <!-- Row3 外围/支撑 y=530..582 -->
+  <rect x="150" y="530" width="130" height="52" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="215" y="553" text-anchor="middle" font-size="13" font-weight="bold" fill="#4a4a4a">admin</text>
+  <text x="215" y="571" text-anchor="middle" font-size="9" fill="#4a4a4a">平台管理</text>
+
+  <rect x="315" y="530" width="130" height="52" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="380" y="553" text-anchor="middle" font-size="13" font-weight="bold" fill="#4a4a4a">student</text>
+  <text x="380" y="571" text-anchor="middle" font-size="9" fill="#4a4a4a">学生端</text>
+
+  <rect x="480" y="530" width="130" height="52" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="545" y="553" text-anchor="middle" font-size="13" font-weight="bold" fill="#4a4a4a">device</text>
+  <text x="545" y="571" text-anchor="middle" font-size="9" fill="#4a4a4a">设备凭证</text>
+
+  <rect x="645" y="530" width="130" height="52" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="710" y="553" text-anchor="middle" font-size="13" font-weight="bold" fill="#4a4a4a">feedback</text>
+  <text x="710" y="571" text-anchor="middle" font-size="9" fill="#4a4a4a">反馈</text>
+
+  <rect x="810" y="530" width="130" height="52" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="875" y="553" text-anchor="middle" font-size="13" font-weight="bold" fill="#4a4a4a">kb</text>
+  <text x="875" y="571" text-anchor="middle" font-size="9" fill="#4a4a4a">校本库</text>
+
+  <rect x="975" y="530" width="130" height="52" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="1040" y="553" text-anchor="middle" font-size="13" font-weight="bold" fill="#4a4a4a">prefs</text>
+  <text x="1040" y="571" text-anchor="middle" font-size="9" fill="#4a4a4a">偏好</text>
+
+  <rect x="1140" y="530" width="130" height="52" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="1205" y="553" text-anchor="middle" font-size="13" font-weight="bold" fill="#4a4a4a">syslog</text>
+  <text x="1205" y="571" text-anchor="middle" font-size="9" fill="#4a4a4a">API 日志</text>
+
+  <rect x="1305" y="530" width="130" height="52" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="1370" y="553" text-anchor="middle" font-size="13" font-weight="bold" fill="#4a4a4a">moderation</text>
+  <text x="1370" y="571" text-anchor="middle" font-size="9" fill="#4a4a4a">内容审核(独立)</text>
+
+  <!-- ====== 普通依赖边 ====== -->
+  <!-- files → iam（上方绕行） -->
+  <path d="M710,110 V88 H215 V106" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- platform → files -->
+  <path d="M614,136 H641" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- platform → tasks（下方绕行） -->
+  <path d="M580,162 V186 H875 V166" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- scan → exam -->
+  <path d="M311,276 H284" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- marking → scan -->
+  <path d="M476,276 H449" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- marking → printing -->
+  <path d="M614,276 H641" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- lecture → analytics -->
+  <path d="M971,276 H944" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- manage → marking（上方绕行） -->
+  <path d="M240,390 V330 H530 V306" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- qbank → tiku -->
+  <path d="M449,416 H476" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- tiku → knowledge -->
+  <path d="M614,416 H641" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- llm → platform（右侧通道上行） -->
+  <path d="M806,400 H792 V145 H614" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ====== 循环依赖（红双向） ====== -->
+  <!-- C1: iam ↔ org -->
+  <path d="M284,136 H311" fill="none" stroke="#f56c6c" stroke-width="2" marker-start="url(#arrR)" marker-end="url(#arrR)"/>
+  <text x="297" y="128" text-anchor="middle" font-size="10" font-weight="bold" fill="#f56c6c">C1</text>
+  <!-- C2: exam ↔ manage -->
+  <path d="M215,306 V386" fill="none" stroke="#f56c6c" stroke-width="2" marker-start="url(#arrR)" marker-end="url(#arrR)"/>
+  <text x="228" y="350" font-size="10" font-weight="bold" fill="#f56c6c">C2</text>
+  <!-- C3: marking ↔ analytics（下方绕行） -->
+  <path d="M590,306 V336 H880 V306" fill="none" stroke="#f56c6c" stroke-width="2" marker-start="url(#arrR)" marker-end="url(#arrR)"/>
+  <text x="735" y="330" text-anchor="middle" font-size="10" font-weight="bold" fill="#f56c6c">C3</text>
+  <!-- C4: platform ↔ marking -->
+  <path d="M545,166 V246" fill="none" stroke="#f56c6c" stroke-width="2" marker-start="url(#arrR)" marker-end="url(#arrR)"/>
+  <text x="558" y="210" font-size="10" font-weight="bold" fill="#f56c6c">C4</text>
+
+  <!-- ====== 依赖速查表 ====== -->
+  <rect x="40" y="640" width="1400" height="240" rx="8" fill="#fafafa" stroke="#dcdfe6"/>
+  <text x="60" y="668" font-size="14" font-weight="bold" fill="#1f2d3d">依赖关系速查（grep 实测 import，A → B 表示 A 依赖 B）</text>
+
+  <text x="60" y="696" font-size="11" fill="#4a4a4a">主链路：scan → exam/iam/org/platform；marking → analytics/exam/files/iam/org/platform/printing/scan/tasks</text>
+  <text x="60" y="718" font-size="11" fill="#4a4a4a">exam → files/iam/manage/org/platform/tasks/tiku；printing → exam/files/iam/marking/org/scan</text>
+  <text x="60" y="740" font-size="11" fill="#4a4a4a">analytics → exam/iam/marking/org/tasks；lecture → analytics/exam/files/iam/marking/org/scan</text>
+  <text x="60" y="762" font-size="11" fill="#4a4a4a">管理/知识：manage → analytics/exam/iam/kb/marking/org；qbank → platform/tiku；tiku → iam/knowledge/platform</text>
+  <text x="60" y="784" font-size="11" fill="#4a4a4a">knowledge → platform；llm → platform；knowledge 是公司知识图谱属主（knowledge_points 主数据）</text>
+  <text x="60" y="806" font-size="11" fill="#4a4a4a">外围：admin → iam/org；student → analytics/exam/iam/marking/org；device/feedback → iam/platform</text>
+  <text x="60" y="828" font-size="11" fill="#4a4a4a">kb → files/iam/org；prefs → iam；syslog → platform；moderation / tasks 无模块间依赖（叶子）</text>
+
+  <text x="820" y="696" font-size="11" font-weight="bold" fill="#f56c6c">C1 iam↔org：iam.wx_service 引 org.models.Student；org.importer 引 iam.models.User</text>
+  <text x="820" y="718" font-size="11" font-weight="bold" fill="#f56c6c">C2 exam↔manage：exam.service 调 manage.service（阅卷模式）；manage.service 查 exam.models</text>
+  <text x="820" y="740" font-size="11" font-weight="bold" fill="#f56c6c">C3 marking↔analytics：marking.routes 调 analytics.service；analytics.service 读 marking.models</text>
+  <text x="820" y="762" font-size="11" font-weight="bold" fill="#f56c6c">C4 platform↔marking/exam/tiku/kb/llm：platform.stats 反向汇总各域 models；</text>
+  <text x="820" y="784" font-size="11" font-weight="bold" fill="#f56c6c">　 各域 open_routes 正向复用 platform.open_auth 鉴权（knowledge/tiku/marking/scan 同型）</text>
+  <text x="820" y="812" font-size="11" fill="#909399">注：目前均以「一方只 import models、另一方 import service」错层规避运行时死锁，</text>
+  <text x="820" y="834" font-size="11" fill="#909399">　 但包级耦合已成事实，拆服务/换 ORM 时会集中爆雷。</text>
+</svg>

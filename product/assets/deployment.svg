@@ -9,14 +9,14 @@
   </defs>
 
   <!-- 标题 -->
-  <text x="750" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2d3d">IndieVolve AI 批阅系统 — 部署架构图</text>
+  <text x="750" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2d3d">Indievolve AI 批阅系统 — 部署架构图</text>
 
   <!-- 三个区域 -->
   <rect x="30" y="60" width="560" height="760" rx="10" fill="#f4f4f5" stroke="#909399" stroke-dasharray="8 5"/>
   <rect x="640" y="60" width="490" height="760" rx="10" fill="#ecf5ff" stroke="#79bbff" stroke-dasharray="8 5"/>
   <rect x="1180" y="60" width="290" height="760" rx="10" fill="#fdf6ec" stroke="#e6a23c" stroke-dasharray="8 5"/>
   <text x="48" y="92" font-size="14" font-weight="bold" fill="#606266">学校侧（边缘部署）</text>
-  <text x="658" y="92" font-size="14" font-weight="bold" fill="#1f6fb5">阿里云 · 中心云（双可用区）</text>
+  <text x="658" y="92" font-size="14" font-weight="bold" fill="#1f6fb5">阿里云 · 中心云（规划态，实测为单机部署 *）</text>
   <text x="1198" y="92" font-size="14" font-weight="bold" fill="#b88230">外部依赖</text>
 
   <!-- 学校侧：设备 -->
@@ -54,13 +54,13 @@
 
   <!-- 云端 -->
   <rect x="775" y="120" width="220" height="45" rx="6" fill="#ffffff" stroke="#409eff" stroke-width="1.5"/>
-  <text x="885" y="147" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f2d3d">ALB 负载均衡</text>
+  <text x="885" y="147" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f2d3d">NLB 负载均衡</text>
 
   <rect x="670" y="200" width="430" height="140" rx="8" fill="#ffffff" stroke="#409eff" stroke-dasharray="5 4"/>
   <text x="685" y="222" font-size="13" font-weight="bold" fill="#1f6fb5">批阅系统（学校租户面：考试 / 批阅 / 讲评）</text>
   <rect x="690" y="235" width="240" height="50" rx="6" fill="#ecf5ff" stroke="#409eff"/>
   <text x="810" y="257" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">后端 × 2</text>
-  <text x="810" y="275" text-anchor="middle" font-size="10" fill="#606266">负载均衡（ECS 16C32G · 弹性伸缩）</text>
+  <text x="810" y="275" text-anchor="middle" font-size="10" fill="#606266">2 副本（2026-08 压测实测选定）*</text>
   <rect x="950" y="235" width="130" height="50" rx="6" fill="#ecf5ff" stroke="#409eff"/>
   <text x="1015" y="257" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">同步 Worker</text>
   <text x="1015" y="275" text-anchor="middle" font-size="10" fill="#606266">×1 · 结果回拉</text>
@@ -78,22 +78,23 @@
 
   <rect x="670" y="655" width="240" height="55" rx="6" fill="#ffffff" stroke="#409eff"/>
   <text x="790" y="677" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">RDS MySQL</text>
-  <text x="790" y="695" text-anchor="middle" font-size="10" fill="#606266">双可用区 · 15 天备份</text>
+  <text x="790" y="695" text-anchor="middle" font-size="10" fill="#606266">阿里云新加坡 · 15 天备份</text>
   <rect x="670" y="720" width="240" height="55" rx="6" fill="#ffffff" stroke="#409eff"/>
   <text x="790" y="742" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">云数据库 Redis</text>
-  <text x="790" y="760" text-anchor="middle" font-size="10" fill="#606266">双可用区</text>
+  <text x="790" y="760" text-anchor="middle" font-size="10" fill="#606266">阿里云新加坡</text>
 
   <!-- 外部依赖 -->
-  <rect x="1200" y="300" width="240" height="95" rx="6" fill="#ffffff" stroke="#e6a23c" stroke-width="1.5"/>
-  <text x="1320" y="325" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f2d3d">千问 3.7 Plus 大模型</text>
-  <text x="1320" y="347" text-anchor="middle" font-size="11" fill="#606266">分学科自定义模型 + 评分细则</text>
-  <text x="1320" y="365" text-anchor="middle" font-size="11" fill="#606266">语文 / 数学开启思考模式</text>
-  <text x="1320" y="383" text-anchor="middle" font-size="10" fill="#909399">客观 100% · 主观 95.4%（样本库）</text>
+  <rect x="1200" y="300" width="240" height="90" rx="6" fill="#ffffff" stroke="#e6a23c"/>
+  <text x="1320" y="325" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f2d3d">华为云 OBS</text>
+  <text x="1320" y="347" text-anchor="middle" font-size="11" fill="#606266">华汉云历史答题卡原图</text>
+  <text x="1320" y="365" text-anchor="middle" font-size="11" fill="#606266">数据迁移源（16 并发下载）</text>
 
-  <rect x="1200" y="500" width="240" height="85" rx="6" fill="#ffffff" stroke="#e6a23c"/>
-  <text x="1320" y="525" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f2d3d">华为云 OBS</text>
-  <text x="1320" y="547" text-anchor="middle" font-size="11" fill="#606266">华汉云历史答题卡原图</text>
-  <text x="1320" y="565" text-anchor="middle" font-size="11" fill="#606266">数据迁移源（16 并发下载）</text>
+  <rect x="1200" y="410" width="240" height="110" rx="6" fill="#ffffff" stroke="#e6a23c" stroke-width="1.5"/>
+  <text x="1320" y="431" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f2d3d">多模型路由（LLM API）</text>
+  <text x="1320" y="450" text-anchor="middle" font-size="10" fill="#606266">客观题：千问 DashScope 为主</text>
+  <text x="1320" y="466" text-anchor="middle" font-size="10" fill="#606266">主观题：OpenRouter→Claude/GPT/Gemini</text>
+  <text x="1320" y="482" text-anchor="middle" font-size="10" fill="#606266">分学科模型 + 学科级思考开关</text>
+  <text x="1320" y="500" text-anchor="middle" font-size="9" fill="#909399">客观 100% · 主观 95.4%（样本库）</text>
 
   <!-- 连线：学校侧内部 -->
   <path d="M280,147 H310 V205 H340" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
@@ -122,16 +123,17 @@
   <text x="672" y="648" font-size="10" fill="#909399">考试 / 成绩 / 题库</text>
 
   <!-- 连线：外部依赖 -->
-  <path d="M995,582 H1140 V347 H1200" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M995,582 H1140 V465 H1200" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
   <text x="1068" y="572" text-anchor="middle" font-size="10" fill="#909399">LLM API 调用</text>
   <path d="M1015,285 V527 H995" fill="none" stroke="#909399" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#arrGray)"/>
   <text x="1023" y="400" font-size="10" fill="#909399">结果同步</text>
-  <path d="M1200,542 H1155 V270 H1100" fill="none" stroke="#909399" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#arrGray)"/>
-  <text x="1172" y="410" font-size="10" fill="#909399" transform="rotate(-90 1172 410)" text-anchor="middle">历史数据迁移</text>
+  <path d="M1200,345 H1155 V270 H1100" fill="none" stroke="#909399" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#arrGray)"/>
+  <text x="1172" y="305" font-size="10" fill="#909399" transform="rotate(-90 1172 305)" text-anchor="middle">历史数据迁移</text>
 
   <!-- 图例 -->
   <path d="M60,845 H100" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
   <text x="108" y="849" font-size="10" fill="#606266">业务调用</text>
   <path d="M190,845 H230" fill="none" stroke="#909399" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#arrGray)"/>
   <text x="238" y="849" font-size="10" fill="#909399">数据同步 / 迁移</text>
+  <text x="380" y="849" font-size="9" fill="#c0392b">* 代码库证据为单机 Docker Compose 部署（阿里云新加坡 MySQL/Redis），双可用区/ALB/弹性伸缩为规划目标，尚无 IaC 证据（详见批阅系统代码调研）</text>
 </svg>

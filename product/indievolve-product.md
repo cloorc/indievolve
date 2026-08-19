@@ -3,5 +3,5 @@ type: concept
 aliases: [indievolve-product]
 ---
 
-# IndieVolve 主要产品
+# Indievolve 主要产品
 

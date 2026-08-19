@@ -1,4 +1,4 @@
-# Contributing to IndieVolve
+# Contributing to Indievolve
 
 Thanks for your interest in contributing! This repository is an OKF v0.1 knowledge bundle — contributions are Markdown files, so no build tooling is required.
 

@@ -1,0 +1,165 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1660" height="1100" viewBox="0 0 1660 1100" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#606266"/>
+    </marker>
+  </defs>
+
+  <text x="830" y="32" text-anchor="middle" font-size="21" font-weight="bold" fill="#1f2d3d">Indievolve 分层记忆管理系统架构（提案）</text>
+  <text x="830" y="54" text-anchor="middle" font-size="12" fill="#909399">基于批阅系统/批阅服务 API-流程报告实测（product/api-and-process-grading-*.md）整理</text>
+
+  <!-- 行标签 -->
+  <text x="25" y="144" font-size="13" font-weight="bold" fill="#909399">L1 事件记忆</text>
+  <text x="25" y="160" font-size="11" fill="#909399">（复用现有表）</text>
+  <text x="25" y="289" font-size="13" font-weight="bold" fill="#909399">蒸馏任务</text>
+  <text x="25" y="414" font-size="13" font-weight="bold" fill="#909399">L2 语义记忆</text>
+  <text x="25" y="430" font-size="11" fill="#909399">（新增最小表）</text>
+  <text x="25" y="549" font-size="13" font-weight="bold" fill="#909399">L3 画像</text>
+  <text x="25" y="565" font-size="11" fill="#909399">（人工确认）</text>
+  <text x="25" y="674" font-size="13" font-weight="bold" fill="#909399">记忆召回</text>
+  <text x="25" y="690" font-size="13" font-weight="bold" fill="#909399">服务</text>
+  <text x="25" y="789" font-size="13" font-weight="bold" fill="#909399">注入点</text>
+  <text x="25" y="805" font-size="11" fill="#909399">（Prompt）</text>
+  <text x="25" y="924" font-size="13" font-weight="bold" fill="#909399">角色消费方</text>
+  <text x="25" y="940" font-size="11" fill="#909399">（召回场景）</text>
+
+  <!-- Row A: L1 事件记忆（复用现有表） -->
+  <rect x="170" y="90" width="466" height="120" rx="6" fill="#f0f9eb" stroke="#67c23a"/>
+  <text x="403" y="112" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">学生作答与批注（复用）</text>
+  <text x="403" y="132" text-anchor="middle" font-size="11" fill="#5a9216">student_answers 双列AI/人工分</text>
+  <text x="403" y="150" text-anchor="middle" font-size="10" fill="#606266">score_audits 只追加审计</text>
+  <text x="403" y="168" text-anchor="middle" font-size="9" fill="#909399">来源：grading-system 已有表，无需新建</text>
+
+  <rect x="657" y="90" width="466" height="120" rx="6" fill="#f0f9eb" stroke="#67c23a"/>
+  <text x="890" y="112" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">教师复核操作记录（复用）</text>
+  <text x="890" y="132" text-anchor="middle" font-size="11" fill="#5a9216">marking 三模式复核</text>
+  <text x="890" y="150" text-anchor="middle" font-size="10" fill="#606266">已收进/改两笔/换说法 信号</text>
+  <text x="890" y="168" text-anchor="middle" font-size="9" fill="#909399">来源：roles-and-features.md 实测交互</text>
+
+  <rect x="1144" y="90" width="466" height="120" rx="6" fill="#f0f9eb" stroke="#67c23a"/>
+  <text x="1377" y="112" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">跨考试历史与成长事件（复用）</text>
+  <text x="1377" y="132" text-anchor="middle" font-size="11" fill="#5a9216">learning: grading-results?student_id=</text>
+  <text x="1377" y="150" text-anchor="middle" font-size="10" fill="#606266">打卡/成就事件（学生端）</text>
+  <text x="1377" y="168" text-anchor="middle" font-size="9" fill="#909399">来源：批阅服务已具备按学生聚合读接口</text>
+
+  <path d="M403,210 V250" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M890,210 V250" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M1377,210 V250" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Row B: 蒸馏任务 -->
+  <rect x="170" y="250" width="1440" height="70" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="890" y="276" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f2d3d">异步蒸馏任务（按 student_id / teacher_id / class_id，事件触发或每日批处理）</text>
+  <text x="890" y="298" text-anchor="middle" font-size="11" fill="#606266">只读 L1 现有表 → 抽取结构化事实；不改动两仓库现有写路径，无新增写入负担</text>
+
+  <path d="M890,320 V340" fill="none" stroke="#606266" stroke-width="1.5"/>
+  <path d="M403,340 H1377" fill="none" stroke="#606266" stroke-width="1.5"/>
+  <path d="M403,340 V360" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M890,340 V360" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M1377,340 V360" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Row C: L2 语义记忆（新增） -->
+  <rect x="170" y="360" width="466" height="120" rx="6" fill="#ecf5ff" stroke="#409eff"/>
+  <text x="403" y="382" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">学生语义记忆（新增）</text>
+  <text x="403" y="402" text-anchor="middle" font-size="11" fill="#1f6fb5">student_semantic_memory</text>
+  <text x="403" y="420" text-anchor="middle" font-size="10" fill="#606266">学科×知识点×错误类型×频次</text>
+  <text x="403" y="438" text-anchor="middle" font-size="9" fill="#909399">供批阅反馈/讲评生成召回使用</text>
+
+  <rect x="657" y="360" width="466" height="120" rx="6" fill="#ecf5ff" stroke="#409eff"/>
+  <text x="890" y="382" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">教师风格与评语记忆（新增）</text>
+  <text x="890" y="402" text-anchor="middle" font-size="11" fill="#1f6fb5">teacher_style_profile</text>
+  <text x="890" y="420" text-anchor="middle" font-size="10" fill="#606266">habitual_comments 常用评语库</text>
+  <text x="890" y="438" text-anchor="middle" font-size="9" fill="#909399">由 score_audits 人工改分差异蒸馏</text>
+
+  <rect x="1144" y="360" width="466" height="120" rx="6" fill="#ecf5ff" stroke="#409eff"/>
+  <text x="1377" y="382" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">班级语义记忆（新增）</text>
+  <text x="1377" y="402" text-anchor="middle" font-size="11" fill="#1f6fb5">class_semantic_memory</text>
+  <text x="1377" y="420" text-anchor="middle" font-size="10" fill="#606266">知识点×薄弱度（自动+人工混合）</text>
+  <text x="1377" y="438" text-anchor="middle" font-size="9" fill="#909399">供班主任/教研组长场景召回</text>
+
+  <path d="M403,480 V495 H890 V510" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M890,480 V510" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M1377,480 V495 H890 V510" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Row D: L3 画像确认层 -->
+  <rect x="170" y="510" width="1440" height="90" rx="6" fill="#fdf6ec" stroke="#e6a23c"/>
+  <text x="890" y="534" text-anchor="middle" font-size="13" font-weight="bold" fill="#ad6800">L3 画像确认层（人工在环，推荐但非强制）</text>
+  <text x="890" y="556" text-anchor="middle" font-size="11" fill="#606266">教师/学生可查看并确认蒸馏结果 → 仅「已确认」条目进入下方召回候选池</text>
+  <text x="890" y="576" text-anchor="middle" font-size="10" fill="#909399">目的：降低蒸馏噪声，避免未经确认的推断进入 LLM 请求</text>
+
+  <path d="M890,600 V630" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Row E: 记忆召回服务 -->
+  <rect x="170" y="630" width="1440" height="80" rx="6" fill="#f3e8ff" stroke="#9254de"/>
+  <text x="890" y="655" text-anchor="middle" font-size="13" font-weight="bold" fill="#1f2d3d">记忆召回服务：按 角色×场景×student_id/teacher_id 查询 L2/L3</text>
+  <text x="890" y="677" text-anchor="middle" font-size="11" fill="#606266">组装为匿名化摘要文本 —— 不含姓名/学号，仅结构化标签（如「知识点A 反复错误」）</text>
+  <text x="890" y="695" text-anchor="middle" font-size="9" fill="#909399">关键约束来源：批阅服务 API/流程报告 §7 缓存与个性化关系</text>
+
+  <path d="M890,710 V725 H1265 V740" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Row F: 注入点 -->
+  <rect x="170" y="740" width="710" height="110" rx="6" fill="#f0f9eb" stroke="#67c23a"/>
+  <text x="525" y="764" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">现状不变：题目级共享前缀</text>
+  <text x="525" y="784" text-anchor="middle" font-size="10.5" fill="#5a9216">system prompt + exam:{id}:q:{qn}:context/rubric/rules</text>
+  <text x="525" y="802" text-anchor="middle" font-size="10" fill="#606266">Redis TTL 30d + Anthropic 缓存前缀 —— 只读，不修改</text>
+
+  <rect x="910" y="740" width="710" height="110" rx="6" fill="#fff7e6" stroke="#fa8c16" stroke-width="2"/>
+  <text x="1265" y="764" text-anchor="middle" font-size="12" font-weight="bold" fill="#ad4e00">关键约束：唯一记忆注入点（新增）</text>
+  <text x="1265" y="784" text-anchor="middle" font-size="10.5" fill="#ad4e00">user prompt 尾部追加「记忆摘要段」</text>
+  <text x="1265" y="802" text-anchor="middle" font-size="10" fill="#ad4e00">不进入 system prompt / rubric 文本 → 缓存/成本不变</text>
+
+  <path d="M880,795 H910" fill="none" stroke="#c0c4cc" stroke-width="1.5" stroke-dasharray="3 2"/>
+  <text x="895" y="788" text-anchor="middle" font-size="12" fill="#909399">＋</text>
+
+  <path d="M1265,850 V865" fill="none" stroke="#606266" stroke-width="1.5"/>
+  <path d="M308,865 H1472" fill="none" stroke="#606266" stroke-width="1.5"/>
+  <path d="M308,865 V880" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M599,865 V880" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M890,865 V880" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M1181,865 V880" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M1472,865 V880" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Row G: 角色消费方 -->
+  <rect x="170" y="880" width="276" height="100" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="308" y="904" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">任课教师</text>
+  <text x="308" y="924" text-anchor="middle" font-size="10" fill="#606266">批阅反馈评语+讲评生成</text>
+  <text x="308" y="942" text-anchor="middle" font-size="9" fill="#909399">(Agent4/5反馈段·lecture_talk)</text>
+
+  <rect x="461" y="880" width="276" height="100" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="599" y="904" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">教研组长/备课组长</text>
+  <text x="599" y="924" text-anchor="middle" font-size="10" fill="#606266">跨学生批阅抽检提示</text>
+  <text x="599" y="942" text-anchor="middle" font-size="9" fill="#909399">（可选，P2）</text>
+
+  <rect x="752" y="880" width="276" height="100" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="890" y="904" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">班主任</text>
+  <text x="890" y="924" text-anchor="middle" font-size="10" fill="#606266">班级学情叙述摘要</text>
+  <text x="890" y="942" text-anchor="middle" font-size="9" fill="#909399">（提分模块，未来）</text>
+
+  <rect x="1043" y="880" width="276" height="100" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="1181" y="904" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">校长/教务主任/主管理员</text>
+  <text x="1181" y="924" text-anchor="middle" font-size="10" fill="#606266">学校级教学质量趋势叙述</text>
+  <text x="1181" y="942" text-anchor="middle" font-size="9" fill="#909399">（低优先级，P3）</text>
+
+  <rect x="1334" y="880" width="276" height="100" rx="6" fill="#f4f4f5" stroke="#909399"/>
+  <text x="1472" y="904" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2d3d">学生</text>
+  <text x="1472" y="924" text-anchor="middle" font-size="10" fill="#606266">成长报告文案个性化</text>
+  <text x="1472" y="942" text-anchor="middle" font-size="9" fill="#909399">（/student/exams 报告）</text>
+
+  <!-- 图例 -->
+  <rect x="170" y="1018" width="22" height="14" fill="#f0f9eb" stroke="#67c23a"/>
+  <text x="200" y="1029" font-size="10" fill="#606266">现状复用（已有数据，无需新建）</text>
+
+  <rect x="470" y="1018" width="22" height="14" fill="#ecf5ff" stroke="#409eff"/>
+  <text x="500" y="1029" font-size="10" fill="#606266">新增结构化记忆表（L2）</text>
+
+  <rect x="750" y="1018" width="22" height="14" fill="#f3e8ff" stroke="#9254de"/>
+  <text x="780" y="1029" font-size="10" fill="#606266">记忆召回服务（新增）</text>
+
+  <rect x="1010" y="1018" width="22" height="14" fill="#fdf6ec" stroke="#e6a23c"/>
+  <text x="1040" y="1029" font-size="10" fill="#606266">人工确认层（L3，治理）</text>
+
+  <rect x="1270" y="1018" width="22" height="14" fill="#fff7e6" stroke="#fa8c16" stroke-width="2"/>
+  <text x="1300" y="1029" font-size="10" fill="#606266">关键约束：注入点（新增）</text>
+
+  <path d="M170,1055 H210" fill="none" stroke="#606266" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="218" y="1059" font-size="10" fill="#606266">数据流向 / 蒸馏与召回路径</text>
+</svg>

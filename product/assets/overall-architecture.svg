@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="1700" height="1000">
+ <defs>
+  <marker id="arr" markerHeight="7" markerWidth="7" orient="auto-start-reverse" refX="9" refY="5" viewBox="0 0 10 10">
+   <path d="m0,0l10,5l-10,5l0,-10z" fill="#303133" id="svg_1"/>
+  </marker>
+ </defs>
+ <!-- Zone: 学校侧客户端 -->
+ <!-- Zone: 核心系统 -->
+ <!-- 批阅系统 box -->
+ <!-- 批阅服务 box -->
+ <!-- 交叉点①：批阅系统 <-> 批阅服务 -->
+ <!-- 共享基础设施 band -->
+ <!-- 记忆系统提案 footnote box -->
+ <!-- Zone: 外部依赖系统 -->
+ <!-- Arrows: School -> Core -->
+ <!-- Arrows: 预处理系统 -> 批阅系统(scan) -->
+ <!-- Arrows: 批阅系统 -> 学情数据系统 -->
+ <!-- Legend -->
+ <g class="layer">
+  <title>Layer 1</title>
+  <text fill="#1f2d3d" font-size="20" font-weight="bold" id="svg_3" text-anchor="middle" x="850" y="30">Indievolve 全局软件架构总览：系统目标与交叉点</text>
+  <text fill="#909399" font-size="11" id="svg_4" text-anchor="middle" x="850" y="49">团队自研两仓库（批阅系统 / 批阅服务）+ 两个外部依赖系统（预处理系统 / 学情数据系统）；交叉点=共享存储资源而非共享数据</text>
+  <rect fill="#f4f4f5" height="880" id="svg_5" rx="10" stroke="#909399" stroke-dasharray="6 4" width="280" x="30" y="70"/>
+  <text fill="#606266" font-size="13" font-weight="bold" id="svg_6" x="45" y="92">学校侧客户端</text>
+  <rect fill="#ffffff" height="85" id="svg_7" rx="6" stroke="#606266" width="230" x="55" y="110"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_8" text-anchor="middle" x="170" y="135">教师端多端</text>
+  <text fill="#606266" font-size="9.5" id="svg_9" text-anchor="middle" x="170" y="153">Web / 小程序 / App</text>
+  <text fill="#606266" font-size="9.5" id="svg_10" text-anchor="middle" x="170" y="169">Tauri(Windows) / Capacitor(Android)</text>
+  <text fill="#909399" font-size="9" id="svg_11" text-anchor="middle" x="170" y="185">备课·组卷·批改·讲评·提分</text>
+  <rect fill="#ffffff" height="85" id="svg_12" rx="6" stroke="#606266" width="230" x="55" y="205"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_13" text-anchor="middle" x="170" y="230">学生端</text>
+  <text fill="#606266" font-size="9.5" id="svg_14" text-anchor="middle" x="170" y="248">成绩报告·打卡·成就·班级森林</text>
+  <text fill="#909399" font-size="9" id="svg_15" text-anchor="middle" x="170" y="266">界面与教师/管理端完全隔离</text>
+  <rect fill="#ffffff" height="105" id="svg_16" rx="6" stroke="#606266" width="230" x="55" y="300"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_17" text-anchor="middle" x="170" y="325">校园硬件</text>
+  <text fill="#606266" font-size="9.5" id="svg_18" text-anchor="middle" x="170" y="343">批阅一体机（Win10 触屏）</text>
+  <text fill="#606266" font-size="9.5" id="svg_19" text-anchor="middle" x="170" y="359">高速扫描仪 · 打印机</text>
+  <text fill="#909399" font-size="9" id="svg_20" text-anchor="middle" x="170" y="377">设备端软件：矫正+PDF合成+OTA</text>
+  <text fill="#909399" font-size="9" id="svg_21" text-anchor="middle" x="170" y="393">来源：部署架构</text>
+  <rect fill="#fdf6ec" height="80" id="svg_22" rx="6" stroke="#e6a23c" width="230" x="55" y="850"/>
+  <text fill="#ad6800" font-size="11" font-weight="bold" id="svg_23" text-anchor="middle" x="170" y="870">这一层的目标</text>
+  <text fill="#606266" font-size="9.5" id="svg_24" text-anchor="middle" x="170" y="888">统一多端入口，覆盖 K12 师生</text>
+  <text fill="#606266" font-size="9.5" id="svg_25" text-anchor="middle" x="170" y="904">日常教学与学习全场景</text>
+  <rect fill="#ecf5ff" height="880" id="svg_26" rx="10" stroke="#79bbff" stroke-dasharray="6 4" width="1000" x="330" y="70"/>
+  <text fill="#1f6fb5" font-size="13" font-weight="bold" id="svg_27" x="345" y="92">核心系统（团队自研，双仓库分工）</text>
+  <rect fill="#ffffff" height="430" id="svg_28" rx="8" stroke="#409eff" stroke-width="1.5" width="460" x="350" y="110"/>
+  <text fill="#1f2d3d" font-size="14" font-weight="bold" id="svg_29" text-anchor="middle" x="580" y="135">批阅系统 aireview-grading-system</text>
+  <text fill="#1f6fb5" font-size="10.5" id="svg_30" text-anchor="middle" x="580" y="153">业务编排层 · 多租户 SaaS 门户（对客户开放）</text>
+  <rect fill="#f0f7ff" height="70" id="svg_31" rx="5" stroke="#c6e2ff" width="424" x="368" y="165"/>
+  <text fill="#1f2d3d" font-size="10" font-weight="bold" id="svg_32" text-anchor="middle" x="580" y="182">目标</text>
+  <text fill="#606266" font-size="9.5" id="svg_33" text-anchor="middle" x="580" y="198">组织/权限/多租户隔离、建考-扫描-复核工作流编排、</text>
+  <text fill="#606266" font-size="9.5" id="svg_34" text-anchor="middle" x="580" y="214">教师教学工具（备课/讲评/学情呈现）、学生成长激励</text>
+  <text fill="#606266" font-size="10" font-weight="bold" id="svg_35" text-anchor="middle" x="580" y="252">24 个业务域模块（节选）</text>
+  <text fill="#606266" font-size="9.5" id="svg_36" text-anchor="middle" x="580" y="270">iam·org（组织权限） / exam·scan·marking（批阅主链路）</text>
+  <text fill="#606266" font-size="9.5" id="svg_37" text-anchor="middle" x="580" y="286">analytics（学情本地聚合） / kb·tiku·qbank（内容资产）</text>
+  <text fill="#606266" font-size="9.5" id="svg_38" text-anchor="middle" x="580" y="302">lecture·printing（讲评/留痕） / student（学生端）</text>
+  <rect fill="#fff7e6" height="80" id="svg_39" rx="5" stroke="#ffd591" width="424" x="368" y="318"/>
+  <text fill="#ad6800" font-size="10" font-weight="bold" id="svg_40" text-anchor="middle" x="580" y="336">对外依赖（本图右侧外部系统）</text>
+  <text fill="#606266" font-size="9.5" id="svg_41" text-anchor="middle" x="580" y="352">预处理系统（扫描摄入）· 批阅服务（AI算法）</text>
+  <text fill="#606266" font-size="9.5" id="svg_42" text-anchor="middle" x="580" y="368">学情数据系统（错因归因，代号"小树助教"）</text>
+  <text fill="#909399" font-size="9" id="svg_43" text-anchor="middle" x="580" y="386">三者均为独立契约，故障时优雅降级不阻塞主流程</text>
+  <text fill="#606266" font-size="9.5" id="svg_44" text-anchor="middle" x="580" y="420">数据：独立 MySQL（无 Alembic，幂等补丁演进）</text>
+  <text fill="#606266" font-size="9.5" id="svg_45" text-anchor="middle" x="580" y="436">+ 阿里云 Tair/Redis（DB2） + 共享 OSS 桶</text>
+  <text fill="#909399" font-size="9" id="svg_46" text-anchor="middle" x="580" y="522">详见：软件架构 · API与业务流程 · 数据资产盘点</text>
+  <rect fill="#ffffff" height="430" id="svg_47" rx="8" stroke="#e6a23c" stroke-width="1.5" width="460" x="840" y="110"/>
+  <text fill="#1f2d3d" font-size="14" font-weight="bold" id="svg_48" text-anchor="middle" x="1070" y="135">批阅服务 aireview-grading-service</text>
+  <text fill="#ad6800" font-size="10.5" id="svg_49" text-anchor="middle" x="1070" y="153">AI 算法层 · 内部系统（不对客户开放）</text>
+  <rect fill="#fffaf0" height="70" id="svg_50" rx="5" stroke="#ffe7ba" width="424" x="858" y="165"/>
+  <text fill="#1f2d3d" font-size="10" font-weight="bold" id="svg_51" text-anchor="middle" x="1070" y="182">目标</text>
+  <text fill="#606266" font-size="9.5" id="svg_52" text-anchor="middle" x="1070" y="198">承载全部批阅算法：客观题 VLM 识别、主观题</text>
+  <text fill="#606266" font-size="9.5" id="svg_53" text-anchor="middle" x="1070" y="214">5-Agent 流水线评分、评分细则自优化、成本核算</text>
+  <text fill="#606266" font-size="10" font-weight="bold" id="svg_54" text-anchor="middle" x="1070" y="252">核心机制（节选）</text>
+  <text fill="#606266" font-size="9.5" id="svg_55" text-anchor="middle" x="1070" y="270">五 Agent：题目分析→答案提取→参考生成→评分→验证</text>
+  <text fill="#606266" font-size="9.5" id="svg_56" text-anchor="middle" x="1070" y="286">自研 Redis 任务队列（非 Celery/ARQ）+ MySQL outbox 对账</text>
+  <text fill="#606266" font-size="9.5" id="svg_57" text-anchor="middle" x="1070" y="302">多 Provider 路由（17 MODEL_ROLES）+ Prompt 注册中心</text>
+  <rect fill="#fff1f0" height="80" id="svg_58" rx="5" stroke="#ffccc7" width="424" x="858" y="318"/>
+  <text fill="#c0392b" font-size="10" font-weight="bold" id="svg_59" text-anchor="middle" x="1070" y="336">与批阅系统的边界</text>
+  <text fill="#606266" font-size="9.5" id="svg_60" text-anchor="middle" x="1070" y="352">被动服务：只接收提交、返回结果，不主动触达学校侧</text>
+  <text fill="#606266" font-size="9.5" id="svg_61" text-anchor="middle" x="1070" y="368">学号/姓名/租户仅作元数据落库，不进评分类 LLM prompt</text>
+  <text fill="#909399" font-size="9" id="svg_62" text-anchor="middle" x="1070" y="386">唯二例外：花名册识别、细则优化样本（后者零持久化）</text>
+  <text fill="#606266" font-size="9.5" id="svg_63" text-anchor="middle" x="1070" y="420">数据：独立 MySQL（终态主存）</text>
+  <text fill="#606266" font-size="9.5" id="svg_64" text-anchor="middle" x="1070" y="436">+ 阿里云 Tair/Redis（DB1，队列+缓存） + 共享 OSS 桶</text>
+  <text fill="#909399" font-size="9" id="svg_65" text-anchor="middle" x="1070" y="522">详见：软件架构 · API与业务流程 · 数据资产盘点</text>
+  <path d="m810,290l30,0" fill="none" id="svg_66" marker-end="url(#arr)" stroke="#303133" stroke-width="2"/>
+  <path d="m840,320l-30,0" fill="none" id="svg_67" marker-end="url(#arr)" stroke="#303133" stroke-width="2"/>
+  <text fill="#303133" font-size="8.5" id="svg_68" text-anchor="middle" transform="rotate(-90 825 270)" x="825" y="270">提交预切割试卷</text>
+  <text fill="#303133" font-size="8.5" id="svg_69" text-anchor="middle" transform="rotate(-90 825 345)" x="825" y="345">轮询结果回拉</text>
+  <rect transform="matrix(1 0 0 1 -6 -14)" fill="#f4f4f5" height="60" id="svg_70" rx="6" stroke="#c0c4cc" width="924" x="368" y="461"/>
+  <text transform="matrix(1 0 0 1 -6 -14)" fill="#1f2d3d" font-size="11" font-weight="bold" id="svg_71" text-anchor="middle" x="830" y="481">交叉点①：HTTP + X-API-Key（同步提交 + 异步轮询），共享的是「提交-轮询」契约本身</text>
+  <text transform="matrix(1 0 0 1 -6 -14)" fill="#606266" font-size="9.5" id="svg_72" text-anchor="middle" x="830" y="501">传递字段：paper_id/exam_id/subject/tenant_code·name/学号·姓名（仅元数据，不进评分 prompt，见数据资产盘点勘误）</text>
+  <text fill="#1f6fb5" font-size="12" font-weight="bold" id="svg_73" text-anchor="middle" x="830" y="558">交叉点②：共享基础设施 —— 共享的是存储资源，不是数据本身</text>
+  <rect fill="#fff3e0" height="200" id="svg_74" rx="6" stroke="#e6852a" width="290" x="368" y="570"/>
+  <text fill="#ad4e00" font-size="11" font-weight="bold" id="svg_75" text-anchor="middle" x="513" y="592">对象存储 OSS 共享桶</text>
+  <text fill="#606266" font-size="9.5" id="svg_76" text-anchor="middle" x="513" y="610">indievolve-grade，三方共写共读</text>
+  <text fill="#606266" font-size="9.5" id="svg_77" text-anchor="middle" x="513" y="626">key 规范：{tenant_code}/exam/{id}/{域}/</text>
+  <text fill="#606266" font-size="9.5" id="svg_78" text-anchor="middle" x="513" y="644">（批阅系统/批阅服务/预处理系统三方约定）</text>
+  <text fill="#c0392b" font-size="9" font-weight="bold" id="svg_79" text-anchor="middle" x="513" y="668">⚠ 已知不一致</text>
+  <text fill="#c0392b" font-size="9" id="svg_80" text-anchor="middle" x="513" y="684">预处理服务仍写旧路径</text>
+  <text fill="#c0392b" font-size="9" id="svg_81" text-anchor="middle" x="513" y="700">grading_system/t{n}/scan/，未完全对齐新约定</text>
+  <rect fill="#fff3e0" height="200" id="svg_82" rx="6" stroke="#e6852a" width="290" x="678" y="570"/>
+  <text fill="#ad4e00" font-size="11" font-weight="bold" id="svg_83" text-anchor="middle" x="823" y="592">Redis / 阿里云 Tair</text>
+  <text fill="#606266" font-size="9.5" id="svg_84" text-anchor="middle" x="823" y="610">同一实例，按 DB 编号隔离</text>
+  <text fill="#606266" font-size="9.5" id="svg_85" text-anchor="middle" x="823" y="628">批阅服务 = DB1（队列+缓存+配置投影）</text>
+  <text fill="#606266" font-size="9.5" id="svg_86" text-anchor="middle" x="823" y="644">批阅系统 = DB2（会话/权限/热点配置）</text>
+  <text fill="#606266" font-size="9" id="svg_87" text-anchor="middle" x="823" y="668">共享基础设施，互不可见</text>
+  <text fill="#606266" font-size="9" id="svg_88" text-anchor="middle" x="823" y="684">不共享缓存键空间，无跨库读写</text>
+  <rect fill="#fff3e0" height="200" id="svg_89" rx="6" stroke="#e6852a" width="290" x="988" y="570"/>
+  <text fill="#ad4e00" font-size="11" font-weight="bold" id="svg_90" text-anchor="middle" x="1133" y="592">MySQL 各自独立库</text>
+  <text fill="#606266" font-size="9.5" id="svg_91" text-anchor="middle" x="1133" y="610">无共享表、无跨库外键、无联合查询</text>
+  <text fill="#606266" font-size="9.5" id="svg_92" text-anchor="middle" x="1133" y="628">仅靠 tenant_code 语义软关联</text>
+  <text fill="#606266" font-size="9.5" id="svg_93" text-anchor="middle" x="1133" y="646">（应用层维护一致性，非 DB 级约束）</text>
+  <text fill="#c0392b" font-size="9" font-weight="bold" id="svg_94" text-anchor="middle" x="1133" y="670">这是数据资产盘点的核心结论</text>
+  <text fill="#c0392b" font-size="9" id="svg_95" text-anchor="middle" x="1133" y="686">student_answers/score_audits 在批阅系统</text>
+  <text fill="#c0392b" font-size="9" id="svg_96" text-anchor="middle" x="1133" y="702">grading_task_details.result_json 在批阅服务</text>
+  <rect fill="#f3e8ff" height="130" id="svg_97" rx="6" stroke="#9254de" width="910" x="368" y="790"/>
+  <text fill="#1f2d3d" font-size="11.5" font-weight="bold" id="svg_98" text-anchor="middle" x="823" y="812">规划中：分层记忆管理系统提案（横跨两仓库，尚未实现）</text>
+  <text fill="#606266" font-size="9.5" id="svg_99" text-anchor="middle" x="823" y="832">在不新增交叉点契约的前提下复用现有数据：批阅系统的 student_answers/score_audits（L1 事件记忆）</text>
+  <text fill="#606266" font-size="9.5" id="svg_100" text-anchor="middle" x="823" y="850">→ 异步蒸馏 → 批阅服务侧在 user prompt 尾部追加记忆摘要段（不碰题目级缓存与 system prompt）</text>
+  <text fill="#606266" font-size="9.5" id="svg_101" text-anchor="middle" x="823" y="868">教育类记忆按组织层级广播（校长→学科组→备课组→教师），学生个人学业记忆严格点对点、不进入广播体系</text>
+  <text fill="#909399" font-size="9" id="svg_102" text-anchor="middle" x="823" y="888">详见：记忆系统提案文档</text>
+  <text fill="#909399" font-size="9" id="svg_103" text-anchor="middle" x="823" y="906">（本图未画出新增记忆表/召回服务的具体结构，仅标注其落点在哪两个系统之间）</text>
+  <rect fill="#fdf6ec" height="880" id="svg_104" rx="10" stroke="#e6a23c" stroke-dasharray="6 4" width="300" x="1370" y="70"/>
+  <text fill="#ad6800" font-size="13" font-weight="bold" id="svg_105" x="1385" y="92">外部依赖系统（非团队自研）</text>
+  <rect fill="#ffffff" height="180" id="svg_106" rx="6" stroke="#e6a23c" stroke-width="1.5" width="260" x="1390" y="120"/>
+  <text fill="#1f2d3d" font-size="12.5" font-weight="bold" id="svg_107" text-anchor="middle" x="1520" y="145">预处理系统</text>
+  <text fill="#606266" font-size="9.5" id="svg_108" text-anchor="middle" x="1520" y="163">扫描摄入网关</text>
+  <text fill="#606266" font-size="9" id="svg_109" text-anchor="middle" x="1520" y="185">目标：接收学校侧整份学生</text>
+  <text fill="#606266" font-size="9" id="svg_110" text-anchor="middle" x="1520" y="201">卷推送（开放 API），是批阅</text>
+  <text fill="#606266" font-size="9" id="svg_111" text-anchor="middle" x="1520" y="217">系统扫描入口之一</text>
+  <text fill="#909399" font-size="9" id="svg_112" text-anchor="middle" x="1520" y="239">系统设置里配置 base_url/</text>
+  <text fill="#909399" font-size="9" id="svg_113" text-anchor="middle" x="1520" y="255">api_key，契约独立于本团队</text>
+  <text fill="#c0392b" font-size="9" id="svg_114" text-anchor="middle" x="1520" y="277">⚠ OSS 写入路径未完全对齐</text>
+  <text fill="#c0392b" font-size="9" id="svg_115" text-anchor="middle" x="1520" y="293">新命名空间约定（见交叉点②）</text>
+  <rect fill="#ffffff" height="230" id="svg_116" rx="6" stroke="#e6a23c" stroke-width="1.5" width="260" x="1390" y="330"/>
+  <text fill="#1f2d3d" font-size="12.5" font-weight="bold" id="svg_117" text-anchor="middle" x="1520" y="355">学情数据系统</text>
+  <text fill="#606266" font-size="10" id="svg_118" text-anchor="middle" x="1520" y="373">（内部代号"小树助教"）</text>
+  <text fill="#606266" font-size="9" id="svg_119" text-anchor="middle" x="1520" y="393">目标：错因归因与复习任务</text>
+  <text fill="#606266" font-size="9" id="svg_120" text-anchor="middle" x="1520" y="409">引擎，是批阅系统学情/提分/</text>
+  <text fill="#606266" font-size="9" id="svg_121" text-anchor="middle" x="1520" y="425">学生报告页的只读数据代理</text>
+  <text fill="#909399" font-size="9" id="svg_122" text-anchor="middle" x="1520" y="447">GET 只读 REST，鉴权可选</text>
+  <text fill="#909399" font-size="9" id="svg_123" text-anchor="middle" x="1520" y="463">未配置/不可用时优雅降级</text>
+  <text fill="#909399" font-size="9" id="svg_124" text-anchor="middle" x="1520" y="463"/>
+  <text fill="#c0392b" font-size="9" font-weight="bold" id="svg_125" text-anchor="middle" x="1520" y="485">⚠ 重要发现</text>
+  <text fill="#c0392b" font-size="9" id="svg_126" text-anchor="middle" x="1520" y="501">批阅系统曾有 knowledge_mastery/</text>
+  <text fill="#c0392b" font-size="9" id="svg_127" text-anchor="middle" x="1520" y="517">error_attributions/student_tasks 三表</text>
+  <text fill="#c0392b" font-size="9" id="svg_128" text-anchor="middle" x="1520" y="533">代码已放弃写入，改为直读本系统</text>
+  <text fill="#ad6800" font-size="10" font-weight="bold" id="svg_129" text-anchor="middle" x="1520" y="600">这一层的共同特征</text>
+  <text fill="#606266" font-size="9.5" id="svg_130" text-anchor="middle" x="1520" y="620">故障不阻塞批阅系统主流程</text>
+  <text fill="#606266" font-size="9.5" id="svg_131" text-anchor="middle" x="1520" y="636">（优雅降级是统一设计原则）</text>
+  <text fill="#606266" font-size="9.5" id="svg_132" text-anchor="middle" x="1520" y="656">契约独立，非团队代码可控</text>
+  <path d="m290,240l60,0" fill="none" id="svg_133" marker-end="url(#arr)" stroke="#303133" stroke-width="1.8"/>
+  <text fill="#606266" font-size="8" id="svg_134" text-anchor="middle" x="320" y="232">JWT/多端接入</text>
+  <path d="m290,352l40,0l0,148l20,0" fill="none" id="svg_135" marker-end="url(#arr)" stroke="#303133" stroke-width="1.8"/>
+  <text fill="#606266" font-size="8" id="svg_136" text-anchor="middle" transform="rotate(-90 300 480)" x="300" y="480">扫描直传</text>
+  <path d="m1390,210l-60,0l0,120l0,0l0,170l-52,0" fill="none" id="svg_137" marker-end="url(#arr)" stroke="#303133" stroke-width="1.8"/>
+  <text fill="#606266" font-size="8.5" id="svg_138" text-anchor="middle" transform="rotate(-90 1345 440)" x="1345" y="440">开放 API 推送整份学生卷</text>
+  <path d="m1278,650l52,0l0,-205l60,0" fill="none" id="svg_139" marker-end="url(#arr)" stroke="#303133" stroke-width="1.8"/>
+  <text fill="#606266" font-size="8.5" id="svg_140" text-anchor="middle" transform="rotate(-90 1310 560)" x="1310" y="560">GET 只读代理，可选鉴权</text>
+  <rect fill="none" height="0" id="svg_141" width="1640" x="30" y="965"/>
+  <path d="m40,960l40,0" fill="none" id="svg_142" marker-end="url(#arr)" stroke="#303133" stroke-width="1.8"/>
+  <text fill="#606266" font-size="9.5" id="svg_143" x="88" y="964">业务/数据流（含鉴权方式标注）</text>
+  <rect fill="#fff3e0" height="14" id="svg_144" stroke="#e6852a" width="24" x="330" y="953"/>
+  <text fill="#606266" font-size="9.5" id="svg_145" x="364" y="964">共享存储资源（非共享数据本身）</text>
+  <rect fill="#f3e8ff" height="14" id="svg_146" stroke="#9254de" width="24" x="700" y="953"/>
+  <text fill="#606266" font-size="9.5" id="svg_147" x="734" y="964">规划中（记忆系统提案，尚未实现）</text>
+  <text fill="#c0392b" font-size="9.5" font-weight="bold" id="svg_148" x="1000" y="964">⚠ = 已知不一致/待办事项</text>
+ </g>
+</svg>
