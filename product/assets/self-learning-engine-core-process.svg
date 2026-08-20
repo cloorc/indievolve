@@ -246,7 +246,7 @@
  <text x="535" y="812" text-anchor="middle" font-size="9.5" fill="#606266">kp-svc 建考点身份轴+教材叶位置轴 → item-svc 题目三维标签+候选池(唯一召回入口) →</text>
  <text x="535" y="828" text-anchor="middle" font-size="9.5" fill="#606266">misconception-svc 错误归并+干扰项映射 → rubric-svc 评分结构快照</text>
  <text x="535" y="849" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#ad6800">持续为①②两条闭环提供资产输入，本身不经过 Router/评分/聚类</text>
- <text x="535" y="866" text-anchor="middle" font-size="9.5" fill="#606266">与 education-data-foundation 存在潜在但未实现的资产协同（详见 §8）</text>
+ <text x="535" y="866" text-anchor="middle" font-size="9.5" fill="#606266">与 platform-data-foundation-service 存在潜在但未实现的资产协同（详见 §8）</text>
  <text x="535" y="883" text-anchor="middle" font-size="9" fill="#909399">三级可信晋升门(trust)：仅按序晋升不可降级；L1_generated 题禁自动下发</text>
 
  <line x1="700" y1="768" x2="653" y2="578" stroke="#ad6800" stroke-width="1.3" stroke-dasharray="5 4" marker-end="url(#arrorange)"/>

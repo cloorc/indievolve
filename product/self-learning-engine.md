@@ -14,19 +14,26 @@ type: concept
 
 ## 1. 三个子目录一览
 
+> **命名变更记录（2026-08-20）**：为消除本地文件夹名与 git remote 仓库名不一致造成的认知负担，
+> 已将两个有 remote 的顶层文件夹重命名为与 remote 仓库同名：`education-data-foundation/` →
+> `platform-data-foundation-service/`；`自适应学习引擎-全量实验室-v2/` →
+> `adaptive-learning-engine-lab/`。两者均为纯本地文件系统改名（`mv`），git 历史/remote/分支均未受
+> 影响。`自适应学习引擎/`（无 remote，容器目录）及其内部的 `engine/`、`adaptive-engine/`、
+> `dedup-service/`（均无 remote）保持原名不变。本文档以下全部路径引用均已同步更新为新名字。
+
 | 目录 | git remote | 最后提交 | 定位 |
 |---|---|---|---|
-| `education-data-foundation/` | `github.com/IndievolveLabs/platform-data-foundation-service` | 2026-08-18（活跃） | 公司级知识点与题库资产底座，服务化 API，唯一"生产级"仓库 |
+| `platform-data-foundation-service/` | `github.com/IndievolveLabs/platform-data-foundation-service` | 2026-08-18（活跃） | 公司级知识点与题库资产底座，服务化 API，唯一"生产级"仓库 |
 | `自适应学习引擎/` | 无 remote（本地仓 `engine/` 分支 `feat/pilot-paper-rehearsal`，另有已停用的 `adaptive-engine/`） | 2026-08-19（活跃，但**无远程备份**） | 早期主线：81+ 份方案 HTML + 本地 `engine/` 试点代码 |
-| `自适应学习引擎-全量实验室-v2/` | `github.com/IndievolveLabs/adaptive-learning-engine-lab` | 2026-08-17（活跃，163 提交/68 PR） | 后期主线：多 Agent 编排体系 + 独立 `engine/`（含 teacher-web 前端） |
+| `adaptive-learning-engine-lab/` | `github.com/IndievolveLabs/adaptive-learning-engine-lab` | 2026-08-17（活跃，163 提交/68 PR） | 后期主线：多 Agent 编排体系 + 独立 `engine/`（含 teacher-web 前端） |
 
 **关键澄清（易混淆点）**：`自适应学习引擎/` 目录内部也有一个名为 `engine/` 的子目录，与
-`自适应学习引擎-全量实验室-v2/engine/` **是两套完全独立、无共同提交历史的代码**，只是在
+`adaptive-learning-engine-lab/engine/` **是两套完全独立、无共同提交历史的代码**，只是在
 2026-08-10~08-12 之间从同一份早期代码分叉。两者都在演进，都自称"engine"，阅读或分派任务时必须先确认
-究竟指哪一个。**这个区分不只是命名混淆问题**——`education-data-foundation` 的真实生产集成对象正是
-`自适应学习引擎/engine/`（早期主线）而非 `自适应学习引擎-全量实验室-v2/engine/`，详见 §7.4。
+究竟指哪一个。**这个区分不只是命名混淆问题**——`platform-data-foundation-service` 的真实生产集成对象正是
+`自适应学习引擎/engine/`（早期主线）而非 `adaptive-learning-engine-lab/engine/`，详见 §7.4。
 
-## 2. education-data-foundation ——公司数据底座（生产级）
+## 2. platform-data-foundation-service ——公司数据底座（生产级）
 
 **定位**（AGENTS.md 原话）：建设公司级知识点与题库资产底座；自适应学习引擎是其**首个消费者**，不是
 本仓库的宿主。这是三个仓库里唯一明确走向"公司级共享资产"定位、而非单一产品内部模块的一个。**这不
@@ -166,7 +173,7 @@ v1–v5、知识点资产 v3/v4、技术架构 v1/v2、开源检索调研等）�
 - `对外_产品理念介绍_教育局与县级领导_2026-08-08.html`（对外物料）
 - `工作总账_两条线现状与五个风险_2026-08-18.html` ← 即 §6 引用的关键审计文档
 
-## 5. 自适应学习引擎-全量实验室-v2 ——后期主线（当前唯一有远程且持续交付的 engine）
+## 5. adaptive-learning-engine-lab ——后期主线（当前唯一有远程且持续交付的 engine）
 
 这是三者中**唯一走 GitHub PR 流程、有 CI/CD 心智、且当前仍每日交付**的仓库：8 天内 130+ 提交（
 `main` 分支），另有 9 条功能分支在途（`chore/boot-*`、`feat/i01-claim-ledger`、`feat/o01-controller`
@@ -280,7 +287,7 @@ PostgreSQL 读写实现，非占位契约，且均有专属测试文件（`profi
 **③ 知识点/题库资产治理闭环**：建考点（`kp-svc`，身份轴）→ 挂载教材叶（位置轴，幂等覆盖，支持
 一叶多标签）→ 建题（`item-svc`，三维标签）→ 题目挂载考点（多标签）+步骤拆解 → 三级可信晋升门
 （`trust`，只许逐级向上晋升不可降级）→ `rubric-svc` 导入评分结构快照 → `misconception-svc`
-归并错误模型 + 建立干扰项映射。这条闭环与 §2 的 `education-data-foundation`
+归并错误模型 + 建立干扰项映射。这条闭环与 §2 的 `platform-data-foundation-service`
 在业务概念（知识点、题目资产）上高度相似，但两者代码/数据完全独立，尚未见已实现的协同（详见 §8）。
 
 **④ 试点验收与部署验证闭环**：两班仿真身份消费真实题库 → 3732/3732 后端单元与契约测试通过 →
@@ -797,9 +804,9 @@ API key——这是 §5.5 提到的"教师/学生浏览器安全边界"在进程
 主动断开），尚未完成生产环境的进程部署验收——这意味着上图展示的是"本地已验证可运行"的进程拓扑，
 而非"生产环境已在运行"的拓扑。
 
-> **与 §7.4.1 图的边界说明**：上图范围严格限定在 `自适应学习引擎-全量实验室-v2/engine/` 这一个
-> 独立部署环境，**不包含** education-data-foundation——本次调研在 v2 仓库全文搜索未发现任何底座
-> 相关代码。若需查看 education-data-foundation 真实接入的运行时环境（另一个独立仓库
+> **与 §7.4.1 图的边界说明**：上图范围严格限定在 `adaptive-learning-engine-lab/engine/` 这一个
+> 独立部署环境，**不包含** platform-data-foundation-service——本次调研在 v2 仓库全文搜索未发现任何底座
+> 相关代码。若需查看 platform-data-foundation-service 真实接入的运行时环境（另一个独立仓库
 > `自适应学习引擎/engine/`），请见 §7.4.1 的独立进程图；两张图对应两套互相隔离、不共享部署的
 > 环境，不可直接拼合阅读。
 
@@ -809,7 +816,7 @@ API key——这是 §5.5 提到的"教师/学生浏览器安全边界"在进程
 报告，对三条线的关系给出了比任何 AGENTS.md 都更可信的结论（本报告转引其核心事实，未重新实测）：
 
 - **项目重心已迁出"自适应学习引擎/"这个目录**：真正走 GitHub PR 流程、每天还在提交的是
-  `自适应学习引擎-全量实验室-v2`（08-17，PR #68 已合）与 `education-data-foundation`（08-18）。
+  `adaptive-learning-engine-lab`（08-17，PR #68 已合）与 `platform-data-foundation-service`（08-18）。
   `自适应学习引擎/engine/` 是一份独立、**没有远程**的本地 Git 历史，与实验室 v2 的 `engine/`
   互不相通，两者仅在 2026-08-10~08-12 之间共享过同一份早期代码（可通过三份相同的 08-10 状态文件
   `STATUS`/`AUDIT_FIX_PLAN`/`M0` 印证），此后各自独立演进，**没有任何共同提交**。
@@ -842,26 +849,26 @@ API key——这是 §5.5 提到的"教师/学生浏览器安全边界"在进程
 
 | 仓库 | 正确定位 | 依据 |
 |---|---|---|
-| `自适应学习引擎-全量实验室-v2/` | **本产品当前的生产/交付主线（live repository）** | 唯一有 GitHub remote + PR 流程且持续每日提交的仓库；`teacher-web` 是三仓中唯一有可运行前端产品雏形的部分；`implementation-plans/` 的版本化执行规格（V1.4–V2.6）体现出比其余两仓更强的变更管理纪律 |
-| `education-data-foundation/` | **数据集 + 必要数据处理管道**，当前已有真实生产集成——但消费方是**早期主线 `自适应学习引擎/engine/`**，不是 v2（详见 §7.4 更正说明） | `integrations/` 子包下 `curriculum_importer.py`、`legacy_qbank_importer.py`、`dedup_gateway.py`、`deepseek_annotation.py` 等即为实际数据摄入/清洗/标注管道代码；AGENTS.md 明确自身定位"自适应学习引擎是首个消费者，不是宿主"，且这一定位已通过 `decisions/个性化学习引擎_公司数据底座接入交接手册_2026-08-16.html` 落地为真实运行的集成 |
+| `adaptive-learning-engine-lab/` | **本产品当前的生产/交付主线（live repository）** | 唯一有 GitHub remote + PR 流程且持续每日提交的仓库；`teacher-web` 是三仓中唯一有可运行前端产品雏形的部分；`implementation-plans/` 的版本化执行规格（V1.4–V2.6）体现出比其余两仓更强的变更管理纪律 |
+| `platform-data-foundation-service/` | **数据集 + 必要数据处理管道**，当前已有真实生产集成——但消费方是**早期主线 `自适应学习引擎/engine/`**，不是 v2（详见 §7.4 更正说明） | `integrations/` 子包下 `curriculum_importer.py`、`legacy_qbank_importer.py`、`dedup_gateway.py`、`deepseek_annotation.py` 等即为实际数据摄入/清洗/标注管道代码；AGENTS.md 明确自身定位"自适应学习引擎是首个消费者，不是宿主"，且这一定位已通过 `decisions/个性化学习引擎_公司数据底座接入交接手册_2026-08-16.html` 落地为真实运行的集成 |
 | `自适应学习引擎/` | **仅作 PRD、早期方案与实测证据的参考资料库**，不再是代码开发目录 | 81 份方案 HTML + PRD工作区/PRD附件承载了绝大多数产品理念与裁定历史；其内部 `engine/` 已被 v2 的 `engine/` 事实取代（两者分叉自同一份代码但此后独立演进、无共同提交），且存在无远程备份的高风险（R1），不应再作为新功能的开发落点 |
 
 ### 7.2 三仓关系图（更新版）
 
 ```
-自适应学习引擎/engine/（早期主线）  ◀──（真实生产集成，见 §7.4）──  education-data-foundation/
+自适应学习引擎/engine/（早期主线）  ◀──（真实生产集成，见 §7.4）──  platform-data-foundation-service/
         │ PRD/早期方案/实测证据                                        （数据集 + 处理管道 API）
         │ 参考资料，不再新增功能开发
         ▼
-自适应学习引擎-全量实验室-v2/（生产主线：engine 九微服务 + teacher-web 前端）
-        —— 与 education-data-foundation 之间，本次调研未发现任何代码集成 ——
+adaptive-learning-engine-lab/（生产主线：engine 九微服务 + teacher-web 前端）
+        —— 与 platform-data-foundation-service 之间，本次调研未发现任何代码集成 ——
 ```
 
-**这张关系图需要一处重要更正**：此前版本的报告曾把 `education-data-foundation` 的消费方画成 v2，
+**这张关系图需要一处重要更正**：此前版本的报告曾把 `platform-data-foundation-service` 的消费方画成 v2，
 这是错误的——实测发现真实集成对象是**早期主线 `自适应学习引擎/engine/`**，且集成早于"v2 是生产
 主线"这一定位判断成立的时间窗口。详见 §7.4 的完整更正说明，不要按上面旧箭头方向理解两者关系。
 
-`自适应学习引擎-全量实验室-v2/AGENTS.md` 里"上下文源 `/Users/broadguoping/Desktop/Ai-imac/自适应
+`adaptive-learning-engine-lab/AGENTS.md` 里"上下文源 `/Users/broadguoping/Desktop/Ai-imac/自适应
 学习引擎` 永久只读"这条隔离规则，实际操作含义就是：**v2 可以读取 `自适应学习引擎/` 的方案文档作为
 设计输入，但不应把它当作可修改的代码来源**——这与 7.1 的定位判断一致，只是该仓库自己的 AGENTS.md
 把这条规则局限在"文件系统权限"层面，没有说明白"为什么"，本节补充了背后的产品线定位依据。
@@ -870,22 +877,22 @@ API key——这是 §5.5 提到的"教师/学生浏览器安全边界"在进程
 
 | 任务类型 | 应进入的仓库/目录 | 不应做的事 |
 |---|---|---|
-| 教师端/学生端产品功能、九微服务业务逻辑、当前仍在交付的代码 | `自适应学习引擎-全量实验室-v2/engine/` | 不要误进 `自适应学习引擎/engine/`——两者同名九微服务但已是互不相通的独立历史 |
-| 知识点/题库资产的增删改、去重、课标对齐、发布治理 | `education-data-foundation/` | 不要在 v2 的 `engine/` 里重复实现资产清洗逻辑；v2 应以消费者身份调用其 API，而非直接读取原始数据 |
+| 教师端/学生端产品功能、九微服务业务逻辑、当前仍在交付的代码 | `adaptive-learning-engine-lab/engine/` | 不要误进 `自适应学习引擎/engine/`——两者同名九微服务但已是互不相通的独立历史 |
+| 知识点/题库资产的增删改、去重、课标对齐、发布治理 | `platform-data-foundation-service/` | 不要在 v2 的 `engine/` 里重复实现资产清洗逻辑；v2 应以消费者身份调用其 API，而非直接读取原始数据 |
 | 查历史方案、被裁定过的口径、早期实测证据、PRD 原文 | `自适应学习引擎/`（81 份 HTML + PRD工作区/PRD附件） | 不要在此仓库内新增代码或当作开发目录；发现与 v2 现行方案冲突时以 v2 为准 |
 | 早期 `adaptive-engine/`、`dedup-service/` | 仅供历史参考 | 不要以为它们是"基线"或仍在维护——前者已被 v2 的 `engine/` 取代，后者更新频率极低 |
 
-### 7.4 更正：education-data-foundation 在自适应学习引擎中的真实角色（不是"未见集成"，是已落地的真实数据供给方，但对象是早期主线）
+### 7.4 更正：platform-data-foundation-service 在自适应学习引擎中的真实角色（不是"未见集成"，是已落地的真实数据供给方，但对象是早期主线）
 
 > **命名说明**："早期主线"/"后期主线"仅用来标注 `自适应学习引擎/engine/` 与
-> `自适应学习引擎-全量实验室-v2/engine/` 这两套同源分叉代码的**分叉时间先后**，不代表"早期主线"
+> `adaptive-learning-engine-lab/engine/` 这两套同源分叉代码的**分叉时间先后**，不代表"早期主线"
 > 已停用、已废弃或不再重要——恰恰相反，本节要说明的正是：**该仓库目前仍然承载着一次真实的生产级
-> 数据集成**（与 education-data-foundation 对接），且该集成代码只存在于这一个仓库、无远程备份，
+> 数据集成**（与 platform-data-foundation-service 对接），且该集成代码只存在于这一个仓库、无远程备份，
 > 是当前阶段唯一"现役"的底座消费方（v2 尚未接入）。判断"v2 是生产主线"（§7.1）依据的是新功能
 > 开发的活跃度和 PR 流程，与"早期主线是否还在被使用"是两个独立的问题，不能相互替代。
 
 此前版本的报告（§2、§8 早期表述）曾判断"两者代码/数据完全独立，尚未见已实现的协同"——**这一结论
-已被证伪，属于需要更正的错误**。`education-data-foundation/decisions/` 目录下有一份完整的交接
+已被证伪，属于需要更正的错误**。`platform-data-foundation-service/decisions/` 目录下有一份完整的交接
 验收文档 `个性化学习引擎_公司数据底座接入交接手册_2026-08-16.html`，配套 6 份 JSON 格式的机器
 验收证据（`evidence/p3_1_adaptive_engine_handoff_acceptance_2026-08-16.json` 等），记录了一次
 **真实发生、有 commit hash 可查证的生产级集成**。
@@ -894,8 +901,8 @@ API key——这是 §5.5 提到的"教师/学生浏览器安全边界"在进程
 /Users/broadguoping/Desktop/Ai-imac/自适应学习引擎/engine`、`source_branch:
 feat/mvp-teacher-add-student`、`source_commit: 96b596a9e35a0997c8af746aed05704afac8b983`——
 这是**早期主线**（§3 描述的 `自适应学习引擎/engine/`），**不是**本报告 §7.1 判定为"当前生产
-主线"的 `自适应学习引擎-全量实验室-v2`。本次调研在 v2 仓库全文搜索
-`education-data-foundation`/`EDF_BASE_URL`/`foundation_pilot` 均**无任何匹配**，也在早期主线
+主线"的 `adaptive-learning-engine-lab`。本次调研在 v2 仓库全文搜索
+`platform-data-foundation-service`/`EDF_BASE_URL`/`foundation_pilot` 均**无任何匹配**，也在早期主线
 `engine/` 仓库核实过：该 commit **已被合并进事实主干分支** `feat/pilot-paper-rehearsal`
 （`git merge-base --is-ancestor` 验证通过；注意该仓库的 git 字面 `main` 分支反而落后于
 `feat/pilot-paper-rehearsal`，后者才是团队实际推进新功能、承载本次集成的分支——这也是本仓库\"分支
@@ -904,7 +911,7 @@ feat/mvp-teacher-add-student`、`source_commit: 96b596a9e35a0997c8af746aed05704a
 
 **角色定位**（教育数据底座在自适应学习引擎里扮演的具体角色）：
 
-1. **唯一的题库/知识点资产供给方**：`education-data-foundation` 提供公司级统一的题目库（128.3 万
+1. **唯一的题库/知识点资产供给方**：`platform-data-foundation-service` 提供公司级统一的题目库（128.3 万
    题）与知识资产（7.6 万个），早期主线引擎不再自建题库，而是通过一个**离线投影适配器**
    （`pipelines/load_foundation_pilot_pool.py`）把底座的固定产品包转换成引擎自己的 `item_pool`
    表数据。
@@ -913,7 +920,7 @@ feat/mvp-teacher-add-student`、`source_commit: 96b596a9e35a0997c8af746aed05704a
    三个 catalog（`ETag`/`SHA-256`/血缘）→适配器离线生成引擎专用不可变 `item_pool` 包→引擎热
    路径只读本地池，不跨服务查询、更不直连底座 PostgreSQL」。这与本报告 §5.3 描述的 v2 九服务架构
    中 `item-svc` 的候选池角色（"唯一召回入口，本轮只读"）在设计理念上高度一致，但**目前是两套
-   独立的题库来源**（v2 的 `item-svc` 数据来源与 education-data-foundation 之间未见对接）。
+   独立的题库来源**（v2 的 `item-svc` 数据来源与 platform-data-foundation-service 之间未见对接）。
 3. **知识点身份的桥接层，而非直接复用**：底座用公司 UUID，引擎用 `SH-SX-C-####` 格式的
    `concept_id`——集成没有让两套身份直接互认，而是复用引擎里已存在的 `concept_leaf_map` 表做
    三段映射（公司 UUID → `leaf_ref=MAT-<source_id>` → 引擎 `concept_id`），31 个知识点全部精确
@@ -930,7 +937,7 @@ feat/mvp-teacher-add-student`、`source_commit: 96b596a9e35a0997c8af746aed05704a
    删除任何数据——这是把 §5.6.3 提到的"版本戳驱动可重放"这条决策层设计原则，延伸应用到了数据
    供给层。
 
-**API 参考（基于当前代码实现，`education-data-foundation/src/education_data_foundation/consumer_api/routes.py`）**：
+**API 参考（基于当前代码实现，`platform-data-foundation-service/src/education_data_foundation/consumer_api/routes.py`）**：
 
 底座对外暴露统一前缀 `/api/v1/assets` 的只读消费 API（`Depends(require_service_token)` 服务级
 Bearer Token 鉴权），按用途分四组：
@@ -966,31 +973,31 @@ PR 流程得出的独立结论），但"`自适应学习引擎/` 仅作参考资
 （`pipelines/load_foundation_pilot_pool.py`）与其验证过的映射规则需要作为迁移参考，而非从零
 重新设计。
 
-#### 7.4.1 早期主线运行时权威进程视图（含 education-data-foundation 真实集成）
+#### 7.4.1 早期主线运行时权威进程视图（含 platform-data-foundation-service 真实集成）
 
-§5.10 的运行时进程图仅覆盖 **全量实验室-v2** 环境，且该环境目前未接入 education-data-foundation
-（§7.4 已证实两者互不相通）。为了如实反映 education-data-foundation **实际对接的运行时环境**——
+§5.10 的运行时进程图仅覆盖 **adaptive-learning-engine-lab** 环境，且该环境目前未接入 platform-data-foundation-service
+（§7.4 已证实两者互不相通）。为了如实反映 platform-data-foundation-service **实际对接的运行时环境**——
 早期主线 `自适应学习引擎/engine/`——本报告单独绘制以下进程图，而不是把底座画进 v2 的图里制造\"v2
 已集成底座\"的误导：
 
-![早期主线运行时权威进程视图（含 education-data-foundation）](assets/self-learning-engine-runtime-with-foundation.svg)
+![早期主线运行时权威进程视图（含 platform-data-foundation-service）](assets/self-learning-engine-runtime-with-foundation.svg)
 
 该图的九个领域微服务层与 §5.10 的 v2 进程图在代码、端口、`svcctl`/`boot_all.sh` 编排工具上完全一致
 （同源分叉），可直接对照阅读；核心差异集中在两处：
 
-- **顶部新增 education-data-foundation 独立服务区块**（:8820，独立仓库、独立 PostgreSQL、独立部署，
+- **顶部新增 platform-data-foundation-service 独立服务区块**（:8820，独立仓库、独立 PostgreSQL、独立部署，
   通过 `manifest`/`product-bundle`/`catalog` 系列只读 API 对外提供固定产品包）；
 - **离线批处理适配器 `engine/pipelines/load_foundation_pilot_pool.py`**——这是真实集成的落点，是一个
   命令行工具而非常驻进程，事件触发式运行（灰度上线/回滚时手动执行）：读取本地已安装的 SQLite catalog
   文件，做知识点三段映射与题目准入门禁过滤后，调用引擎自己的 `kp-svc`（★:8813）/`item-svc`（★:8814）
-  HTTP API 写入新的 `pool_version`。适配器**不直连** education-data-foundation 的 PostgreSQL，也
+  HTTP API 写入新的 `pool_version`。适配器**不直连** platform-data-foundation-service 的 PostgreSQL，也
   **不直连**引擎自己的数据库——两次写入都经过各自服务的 HTTP API，物理隔离在设计上贯穿始终。
 
 decision-svc 通过 `policy` 场景在两个 `pool_version` 之间灰度切换（`self.practice.foundation_pilot`
 → 底座投影的新池 65 题/17 考点；`self.practice.daily` → 引擎原生候选池），两者并存、可分别调用、
 出现异常直接切回旧场景，不删除任何数据——这与 §5.6.3 提到的\"版本戳驱动可重放\"决策层设计原则一致。
 
-education-data-foundation 对外暴露的完整 consumer API 分组、以及适配器实际调用哪些端点/哪些接口只是
+platform-data-foundation-service 对外暴露的完整 consumer API 分组、以及适配器实际调用哪些端点/哪些接口只是
 "同步面一次性下载"而非运行时热路径调用，详见 §7.4 中新增的"API 参考"小节。
 
 ### 7.5 遗留但尚未处理的阻塞项（不因本次定位澄清而消失）
@@ -1007,11 +1014,11 @@ education-data-foundation 对外暴露的完整 consumer API 分组、以及适�
 
 目前没有发现自适应学习引擎与批阅系统/批阅服务之间存在代码或数据层面的直接耦合——两条产品线在本地
 是完全独立的目录、独立的 git 历史、独立的技术栈选型（批阅线是 FastAPI+Vue3.5+MySQL，自适应学习线是
-FastAPI+PostgreSQL+React19，`education-data-foundation` 额外强调"不介入批阅系统的题库/知识树"）。
-`education-data-foundation` 的 P0.2 基线数据来源标注为 `adaptive_engine_teacher_analysis_v7`——
+FastAPI+PostgreSQL+React19，`platform-data-foundation-service` 额外强调"不介入批阅系统的题库/知识树"）。
+`platform-data-foundation-service` 的 P0.2 基线数据来源标注为 `adaptive_engine_teacher_analysis_v7`——
 这个命名本身就说明其原始种子数据来自**自适应学习引擎**（"教师分析"场景），而非批阅系统，进一步
 印证两条产品线（批阅 vs 自适应学习）之间没有数据交叉。**注意区分**：这里讨论的是"批阅系统↔自适应
-学习引擎"两条产品线级别的关系（结论：无耦合），不同于 §7.4 发现的"`education-data-foundation`↔
+学习引擎"两条产品线级别的关系（结论：无耦合），不同于 §7.4 发现的"`platform-data-foundation-service`↔
 自适应学习引擎早期主线"这一自适应学习引擎产品线**内部**两个子仓库之间的关系（结论：已有真实集成）
 ——两个问题层级不同，不要混淆。是否应该、以及如何让批阅系统也接入这套知识点/题库资产底座，仍是一个
 尚未见到裁定的产品级问题，建议作为后续与用户确认的问题项。

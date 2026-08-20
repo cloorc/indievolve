@@ -8,16 +8,16 @@
   </marker>
  </defs>
 
- <text x="900" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2d3d">自适应学习引擎（早期主线）运行时权威进程视图 —— 含 education-data-foundation 真实集成</text>
- <text x="900" y="50" text-anchor="middle" font-size="11.5" fill="#606266">这是 education-data-foundation 实际对接的运行时环境：自适应学习引擎/engine/（早期主线），非全量实验室-v2</text>
- <text x="900" y="68" text-anchor="middle" font-size="10" font-style="italic" fill="#c0392b">⚠ 与此前发布的"全量实验室-v2 运行时进程图"是两个独立环境——两套 engine/ 代码几乎相同(同源分叉)但互不相通，v2 未接入本页展示的数据底座</text>
+ <text x="900" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2d3d">自适应学习引擎（早期主线）运行时权威进程视图 —— 含 platform-data-foundation-service 真实集成</text>
+ <text x="900" y="50" text-anchor="middle" font-size="11.5" fill="#606266">这是 platform-data-foundation-service 实际对接的运行时环境：自适应学习引擎/engine/（早期主线），非 adaptive-learning-engine-lab</text>
+ <text x="900" y="68" text-anchor="middle" font-size="10" font-style="italic" fill="#c0392b">⚠ 与此前发布的"adaptive-learning-engine-lab 运行时进程图"是两个独立环境——两套 engine/ 代码几乎相同(同源分叉)但互不相通，该仓库未接入本页展示的数据底座</text>
 
- <!-- ================= education-data-foundation (独立仓库/独立服务) ================= -->
+ <!-- ================= platform-data-foundation-service (独立仓库/独立服务) ================= -->
  <rect x="40" y="88" width="1700" height="150" rx="8" fill="#e6fffb" stroke="#13c2c2" stroke-width="1.5"/>
- <text x="60" y="108" font-size="11.5" font-weight="bold" fill="#08979c">education-data-foundation/（独立仓库 · 独立部署 · github.com/IndievolveLabs/platform-data-foundation-service）</text>
+ <text x="60" y="108" font-size="11.5" font-weight="bold" fill="#08979c">platform-data-foundation-service/（独立仓库 · 独立部署 · github.com/IndievolveLabs/platform-data-foundation-service）</text>
 
  <rect x="80" y="118" width="420" height="105" rx="6" fill="#ffffff" stroke="#13c2c2"/>
- <text x="290" y="138" text-anchor="middle" font-size="11" font-weight="bold" fill="#1f2d3d">education-data-foundation :8820</text>
+ <text x="290" y="138" text-anchor="middle" font-size="11" font-weight="bold" fill="#1f2d3d">platform-data-foundation-service :8820</text>
  <text x="290" y="155" text-anchor="middle" font-size="9" fill="#606266">src/education_data_foundation/app.py</text>
  <text x="290" y="171" text-anchor="middle" font-size="9" fill="#606266">FastAPI 单体 + 独立 PostgreSQL（asset_foundation 库）</text>
  <text x="290" y="187" text-anchor="middle" font-size="9" fill="#606266">仅监听 127.0.0.1，公司 HTTPS 经 foundation-api.indievolve.com</text>
@@ -47,7 +47,7 @@
  <text x="910" y="308" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#1f2d3d">engine/pipelines/load_foundation_pilot_pool.py（分支 feat/mvp-teacher-add-student，commit 96b596a，已合入 feat/pilot-paper-rehearsal 主干）</text>
  <text x="910" y="326" text-anchor="middle" font-size="9" fill="#606266">输入：本地已安装的 3 个 SQLite catalog 文件路径 + --pool-version + --schema + --apply</text>
  <text x="910" y="342" text-anchor="middle" font-size="9" fill="#606266">处理：知识点三段映射（公司UUID → concept_leaf_map.leaf_ref=MAT-* → 引擎concept_id）+ 题目准入门禁过滤（数学/精确挂载/可判分/难度已知/canonical/无匿名图片）</text>
- <text x="910" y="358" text-anchor="middle" font-size="9" fill="#909399">输出：调用引擎自己的 kp-svc/item-svc HTTP API 写入新 pool_version（不可变，同版本禁覆盖）；不直连 education-data-foundation 的 PostgreSQL，不让学生热路径依赖底座 API</text>
+ <text x="910" y="358" text-anchor="middle" font-size="9" fill="#909399">输出：调用引擎自己的 kp-svc/item-svc HTTP API 写入新 pool_version（不可变，同版本禁覆盖）；不直连 platform-data-foundation-service 的 PostgreSQL，不让学生热路径依赖底座 API</text>
 
  <!-- ================= 浏览器客户端 ================= -->
  <rect x="40" y="398" width="1700" height="60" rx="8" fill="#f4f4f5" stroke="#909399" stroke-dasharray="6 4"/>
@@ -148,7 +148,7 @@
 
  <!-- ================= 数据层 ================= -->
  <rect x="40" y="973" width="1700" height="90" rx="8" fill="#fef0f0" stroke="#f56c6c" stroke-dasharray="6 4"/>
- <text x="60" y="993" font-size="11" font-weight="bold" fill="#c0392b">数据层（引擎自己的 PostgreSQL，与 education-data-foundation 的数据库完全独立、物理隔离）</text>
+ <text x="60" y="993" font-size="11" font-weight="bold" fill="#c0392b">数据层（引擎自己的 PostgreSQL，与 platform-data-foundation-service 的数据库完全独立、物理隔离）</text>
  <rect x="80" y="1001" width="700" height="50" rx="6" fill="#ffffff" stroke="#f56c6c"/>
  <text x="430" y="1019" text-anchor="middle" font-size="10" font-weight="bold" fill="#1f2d3d">PostgreSQL（引擎侧）dbname=ale_engine，schema=ale / ale_sim_dxyz</text>
  <text x="430" y="1035" text-anchor="middle" font-size="9" fill="#606266">九服务共同读写；kp-svc 的 concept/concept_leaf_map、item-svc 的 item_pool 是本次集成的写入落点</text>
@@ -163,7 +163,7 @@
  <text x="60" y="1128" font-size="9.5" fill="#606266">· 31/31 知识点绑定精确命中；65 道题（147 候选中排除 82 道未鉴权匿名图片题）覆盖 17 个知识点，写入幂等（二次执行 created_binding_assets=0）</text>
  <text x="60" y="1147" font-size="9.5" fill="#606266">· 服务器现场复核：education-data-foundation.service active，GET /api/v1/readyz 200，快速校验/深度校验/每日备份 timer 均 active；sim_dxyz 真实推荐返回 3 道题且未弃权</text>
  <text x="60" y="1166" font-size="9.5" fill="#606266">· 责任边界：底座只管公司ID/版本/血缘/产品包/质量标签/校验恢复；引擎自己管知识编码定义/池准入策略/装载/影子/切流/回滚/推荐结果；双方共管知识绑定规则与 pool_version 合同</text>
- <text x="60" y="1185" font-size="9" font-style="italic" fill="#c0392b">⚠ 本图展示的是"早期主线"环境；全量实验室-v2 与本页 education-data-foundation 之间未见任何集成代码，v2 若要接入需重新对接（详见 self-learning-engine.md §7.4）</text>
+ <text x="60" y="1185" font-size="9" font-style="italic" fill="#c0392b">⚠ 本图展示的是"早期主线"环境；adaptive-learning-engine-lab 与本页 platform-data-foundation-service 之间未见任何集成代码，若要接入需重新对接（详见 self-learning-engine.md §7.4）</text>
 
- <text x="900" y="1260" text-anchor="middle" font-size="9" fill="#909399">数据来源：本地代码实测 + education-data-foundation/decisions/个性化学习引擎_公司数据底座接入交接手册_2026-08-16.html + evidence/p3_1_*.json · 2026-08-19</text>
+ <text x="900" y="1260" text-anchor="middle" font-size="9" fill="#909399">数据来源：本地代码实测 + platform-data-foundation-service/decisions/个性化学习引擎_公司数据底座接入交接手册_2026-08-16.html + evidence/p3_1_*.json · 2026-08-19</text>
 </svg>

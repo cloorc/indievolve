@@ -47,9 +47,9 @@
  <text x="430" y="561" text-anchor="middle" font-size="10" font-weight="bold" fill="#606266">这一层的目标</text>
  <text x="430" y="577" text-anchor="middle" font-size="9.5" fill="#909399">早期方案沉淀 + 本地试点验证，工程治理最薄弱</text>
 
- <!-- RIGHT ZONE: 自适应学习引擎-全量实验室-v2 (后期主线) -->
+ <!-- RIGHT ZONE: adaptive-learning-engine-lab (后期主线) -->
  <rect x="880" y="80" width="780" height="520" rx="10" fill="#f0f9eb" stroke="#67c23a" stroke-dasharray="6 4"/>
- <text x="1270" y="102" text-anchor="middle" font-size="14" font-weight="bold" fill="#3c8618">自适应学习引擎-全量实验室-v2/（后期主线）</text>
+ <text x="1270" y="102" text-anchor="middle" font-size="14" font-weight="bold" fill="#3c8618">adaptive-learning-engine-lab/（后期主线）</text>
  <text x="1270" y="119" text-anchor="middle" font-size="10" fill="#67c23a">github.com/IndievolveLabs/adaptive-learning-engine-lab</text>
 
  <!-- Box A: engine 九微服务 -->
@@ -84,9 +84,9 @@
  <text x="1270" y="561" text-anchor="middle" font-size="10" font-weight="bold" fill="#3c8618">这一层的目标</text>
  <text x="1270" y="577" text-anchor="middle" font-size="9.5" fill="#529b2e">产品化交付 + 多 Agent 工程化编排，纪律最完整</text>
 
- <!-- FOUNDATION: education-data-foundation -->
+ <!-- FOUNDATION: platform-data-foundation-service -->
  <rect x="440" y="625" width="800" height="165" rx="8" fill="#e6fffb" stroke="#13c2c2" stroke-width="1.5"/>
- <text x="840" y="648" text-anchor="middle" font-size="14" font-weight="bold" fill="#08979c">education-data-foundation/（公司数据底座）</text>
+ <text x="840" y="648" text-anchor="middle" font-size="14" font-weight="bold" fill="#08979c">platform-data-foundation-service/（公司数据底座）</text>
  <text x="840" y="665" text-anchor="middle" font-size="10" fill="#13c2c2">github.com/IndievolveLabs/platform-data-foundation-service · 2026-08-18 活跃</text>
  <text x="840" y="686" text-anchor="middle" font-size="10.5" fill="#606266">128.3 万题目 · 7.6 万知识资产 · 1,140 条课标条款</text>
  <text x="840" y="702" text-anchor="middle" font-size="10.5" fill="#606266">内容寻址（SHA-256 + RFC 8785）+ append-only 发布治理</text>

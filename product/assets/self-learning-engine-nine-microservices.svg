@@ -8,7 +8,7 @@
   </marker>
  </defs>
 
- <text x="850" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2d3d">自适应学习引擎-全量实验室-v2：九微服务实现现状</text>
+ <text x="850" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2d3d">adaptive-learning-engine-lab：九微服务实现现状</text>
  <text x="850" y="49" text-anchor="middle" font-size="11" fill="#909399">L2事实层→L3资产层→L4模型聚合层→L5诊断层→L6决策层；九服务均有真实 PostgreSQL 读写与完整测试，非占位契约</text>
 
  <!-- CLIENT LAYER -->
@@ -144,7 +144,7 @@
  <text x="450" y="1131" text-anchor="middle" font-size="9.5" fill="#606266">建考点(kp-svc)身份轴 → 挂载教材叶(位置轴,幂等覆盖) → 建题(item-svc)三维标签</text>
  <text x="450" y="1147" text-anchor="middle" font-size="9.5" fill="#606266">→ 题目挂载考点(多标签)+步骤拆解 → 三级可信晋升门(trust,只许逐级向上)</text>
  <text x="450" y="1163" text-anchor="middle" font-size="9.5" fill="#606266">→ rubric-svc 导入评分结构快照 → misconception-svc 归并错误模型+干扰项映射</text>
- <text x="450" y="1183" text-anchor="middle" font-size="10" font-weight="bold" fill="#3c8618">状态：已实现+测试覆盖，与 education-data-foundation 存在潜在但未实现的资产协同</text>
+ <text x="450" y="1183" text-anchor="middle" font-size="10" font-weight="bold" fill="#3c8618">状态：已实现+测试覆盖，与 platform-data-foundation-service 之间未见任何集成代码（详见 §7.4）</text>
 
  <!-- Process 4 -->
  <rect x="870" y="1090" width="760" height="120" rx="6" fill="#ffffff" stroke="#e6a23c"/>
