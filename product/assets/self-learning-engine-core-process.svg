@@ -1,0 +1,326 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="1800" height="1440">
+ <defs>
+  <marker id="arrgray" markerHeight="7" markerWidth="7" orient="auto-start-reverse" refX="9" refY="5" viewBox="0 0 10 10">
+   <path d="m0,0l10,5l-10,5l0,-10z" fill="#606266"/>
+  </marker>
+  <marker id="arrblue" markerHeight="6" markerWidth="6" orient="auto-start-reverse" refX="8" refY="5" viewBox="0 0 10 10">
+   <path d="m0,0l10,5l-10,5l0,-10z" fill="#1f6fb5"/>
+  </marker>
+  <marker id="arrgreen" markerHeight="6" markerWidth="6" orient="auto-start-reverse" refX="8" refY="5" viewBox="0 0 10 10">
+   <path d="m0,0l10,5l-10,5l0,-10z" fill="#3c8618"/>
+  </marker>
+  <marker id="arrorange" markerHeight="6" markerWidth="6" orient="auto-start-reverse" refX="8" refY="5" viewBox="0 0 10 10">
+   <path d="m0,0l10,5l-10,5l0,-10z" fill="#ad6800"/>
+  </marker>
+ </defs>
+
+ <text x="900" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2d3d">自适应学习引擎核心决策流程 × 四个已支持业务场景（含逐阶段输入/输出）</text>
+ <text x="900" y="50" text-anchor="middle" font-size="11.5" fill="#606266">同一套七阶段确定性算法流水线被四个真实场景复用——这不是相似度推荐，而是词典序规则判定 + 受约束多目标评分的教学决策系统</text>
+ <text x="900" y="68" text-anchor="middle" font-size="10" font-style="italic" fill="#909399">蓝=① 教师课后讲评　绿=② 学生自主练习　橙=③ 知识资产治理(旁路输入，不流经决策链)　红=④ 试点验收(全链路验证)　字段名逐字取自 services/CONTRACT.md</text>
+
+ <text x="30" y="88" font-size="11.5" font-weight="bold" fill="#1f2d3d">核心算法流水线（L2 证据 → L4 六轴 → L5 诊断 → L6 决策路由 → 选题评分 → 聚类/弃权 → 交付，contract-v1 全部真实实现，各阶段输入/输出字段名逐字取自契约）</text>
+
+ <!-- ===== Pipeline header row (7 columns), taller boxes with I/O ===== -->
+ <!-- col x: 30,284,538,792,1046,1300,1554  width 230, height 300 -->
+
+ <rect x="30" y="98" width="230" height="300" rx="6" fill="#ffffff" stroke="#606266" stroke-width="1.3"/>
+ <text x="145" y="118" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1f2d3d">L2 证据层</text>
+ <text x="145" y="134" text-anchor="middle" font-size="9.5" fill="#909399">evidence-svc</text>
+ <line x1="42" y1="142" x2="248" y2="142" stroke="#e4e7ed"/>
+ <text x="42" y="158" font-size="9" font-weight="bold" fill="#1f6fb5">输入 POST /attempts</text>
+ <text x="42" y="172" font-size="8.5" fill="#606266">student_id, item_id, answered_at,</text>
+ <text x="42" y="184" font-size="8.5" fill="#606266">scene_ctx, vis, exposure_src,</text>
+ <text x="42" y="196" font-size="8.5" fill="#606266">total_score/max_score,</text>
+ <text x="42" y="208" font-size="8.5" fill="#606266">step_scores[], source_task_id</text>
+ <line x1="42" y1="218" x2="248" y2="218" stroke="#e4e7ed"/>
+ <text x="42" y="234" font-size="9" font-weight="bold" fill="#3c8618">输出</text>
+ <text x="42" y="248" font-size="8.5" fill="#606266">attempt_id(服务生成)+created_at</text>
+ <text x="42" y="260" font-size="8.5" fill="#606266">幂等：source_task_id 重复且</text>
+ <text x="42" y="272" font-size="8.5" fill="#606266">字段一致→200 idempotent:true；</text>
+ <text x="42" y="284" font-size="8.5" fill="#606266">不一致→409 拒绝，禁静默覆盖</text>
+ <text x="42" y="298" font-size="8.5" font-style="italic" fill="#909399">写入即真源，永不被推断覆盖</text>
+
+ <rect x="284" y="98" width="230" height="300" rx="6" fill="#ffffff" stroke="#606266" stroke-width="1.3"/>
+ <text x="399" y="118" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1f2d3d">L4 六轴学生状态</text>
+ <text x="399" y="134" text-anchor="middle" font-size="9.5" fill="#909399">profile-svc → memory-svc</text>
+ <line x1="296" y1="142" x2="502" y2="142" stroke="#e4e7ed"/>
+ <text x="296" y="158" font-size="9" font-weight="bold" fill="#1f6fb5">输入 POST /profile/recompute</text>
+ <text x="296" y="172" font-size="8.5" fill="#606266">student_id, concept_ids[](可省)，</text>
+ <text x="296" y="184" font-size="8.5" fill="#606266">as_of, dry_run, scene_ctx(class/self)</text>
+ <text x="296" y="196" font-size="8.5" fill="#606266">← 只读 evidence-svc(attempt/</text>
+ <text x="296" y="208" font-size="8.5" fill="#606266">self_report) + kp-svc(概念存在性)</text>
+ <line x1="296" y1="218" x2="502" y2="218" stroke="#e4e7ed"/>
+ <text x="296" y="234" font-size="9" font-weight="bold" fill="#3c8618">输出 写入 state</text>
+ <text x="296" y="248" font-size="8.5" fill="#606266">k/c/d/r/t/h(六轴全填,禁null)</text>
+ <text x="296" y="260" font-size="8.5" fill="#606266">+context{evidence,estimator,</text>
+ <text x="296" y="272" font-size="8.5" fill="#606266">situational} + downgraded[]</text>
+ <text x="296" y="284" font-size="8.5" fill="#606266">+skipped[] + params_written[]</text>
+ <text x="296" y="298" font-size="8.5" font-style="italic" fill="#909399">重算=追加新as_of行，禁覆盖旧值</text>
+
+ <rect x="538" y="98" width="230" height="300" rx="6" fill="#ffffff" stroke="#606266" stroke-width="1.3"/>
+ <text x="653" y="118" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1f2d3d">L5 诊断假设集</text>
+ <text x="653" y="134" text-anchor="middle" font-size="9.5" fill="#909399">diagnosis-svc</text>
+ <line x1="550" y1="142" x2="756" y2="142" stroke="#e4e7ed"/>
+ <text x="550" y="158" font-size="9" font-weight="bold" fill="#1f6fb5">输入 POST /diagnoses</text>
+ <text x="550" y="172" font-size="8.5" fill="#606266">scope_kind, affected.student_ids[],</text>
+ <text x="550" y="184" font-size="8.5" fill="#606266">concept_id, dx_type(九值),</text>
+ <text x="550" y="196" font-size="8.5" fill="#606266">confidence, claim(A/B/C/D级),</text>
+ <text x="550" y="208" font-size="8.5" fill="#606266">supporting_evidence[]，六轴状态</text>
+ <line x1="550" y1="218" x2="756" y2="218" stroke="#e4e7ed"/>
+ <text x="550" y="234" font-size="9" font-weight="bold" fill="#3c8618">输出</text>
+ <text x="550" y="248" font-size="8.5" fill="#606266">diagnosis_id(服务生成)+</text>
+ <text x="550" y="260" font-size="8.5" fill="#606266">alternative_hypotheses[]+</text>
+ <text x="550" y="272" font-size="8.5" fill="#606266">status(draft/ai_generated→</text>
+ <text x="550" y="284" font-size="8.5" fill="#606266">confirmed/modified/rejected)</text>
+ <text x="550" y="298" font-size="8.5" font-style="italic" fill="#909399">证据量随claim等级递增(37203)</text>
+
+ <rect x="792" y="98" width="230" height="300" rx="6" fill="#ffffff" stroke="#606266" stroke-width="1.3"/>
+ <text x="907" y="118" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1f2d3d">L6a 决策路由</text>
+ <text x="907" y="134" text-anchor="middle" font-size="9.5" fill="#909399">decision-svc · Router</text>
+ <line x1="804" y1="142" x2="1010" y2="142" stroke="#e4e7ed"/>
+ <text x="804" y="158" font-size="9" font-weight="bold" fill="#1f6fb5">输入 POST /decisions(部分)</text>
+ <text x="804" y="172" font-size="8.5" fill="#606266">scene_key(policy唯一入口),</text>
+ <text x="804" y="184" font-size="8.5" fill="#606266">student_ids[](1-100), concept_ids[],</text>
+ <text x="804" y="196" font-size="8.5" fill="#606266">as_of, budget{n_items,minutes}</text>
+ <text x="804" y="208" font-size="8.5" fill="#606266">← 读六轴state + 诊断结果</text>
+ <line x1="804" y1="218" x2="1010" y2="218" stroke="#e4e7ed"/>
+ <text x="804" y="234" font-size="9" font-weight="bold" fill="#3c8618">输出</text>
+ <text x="804" y="248" font-size="8.5" fill="#606266">behavior_goal(8值)→</text>
+ <text x="804" y="260" font-size="8.5" fill="#606266">learning_action(16值)→</text>
+ <text x="804" y="272" font-size="8.5" fill="#606266">task_type(PT01-10) 逐人产出</text>
+ <text x="804" y="284" font-size="8.5" fill="#606266">P0-P16 命中记录(优先级号)</text>
+ <text x="804" y="298" font-size="8.5" font-style="italic" fill="#c0392b">词典序命中即停，禁折算权重</text>
+
+ <rect x="1046" y="98" width="230" height="300" rx="6" fill="#ffffff" stroke="#606266" stroke-width="1.3"/>
+ <text x="1161" y="118" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1f2d3d">L6b 选题评分</text>
+ <text x="1161" y="134" text-anchor="middle" font-size="9.5" fill="#909399">decision-svc · 五分量</text>
+ <line x1="1058" y1="142" x2="1264" y2="142" stroke="#e4e7ed"/>
+ <text x="1058" y="158" font-size="9" font-weight="bold" fill="#1f6fb5">输入</text>
+ <text x="1058" y="172" font-size="8.5" fill="#606266">L6a 的 action/task_type +</text>
+ <text x="1058" y="184" font-size="8.5" fill="#606266">exclude_item_ids[](已做过的题)+</text>
+ <text x="1058" y="196" font-size="8.5" fill="#606266">候选池(item-svc /pool 只读)+</text>
+ <text x="1058" y="208" font-size="8.5" fill="#606266">policy权重(weights，禁调用方传)</text>
+ <line x1="1058" y1="218" x2="1264" y2="218" stroke="#e4e7ed"/>
+ <text x="1058" y="234" font-size="9" font-weight="bold" fill="#3c8618">输出</text>
+ <text x="1058" y="248" font-size="8.5" fill="#606266">decision_item[]：item_id,rank,</text>
+ <text x="1058" y="260" font-size="8.5" fill="#606266">score,breakdown{f_match,f_prob,</text>
+ <text x="1058" y="272" font-size="8.5" fill="#606266">f_retention,f_coverage,f_infogain}</text>
+ <text x="1058" y="284" font-size="8.5" fill="#606266">+dropped_components[]+relax_steps[]</text>
+ <text x="1058" y="298" font-size="8.5" font-style="italic" fill="#c0392b">缺失分量剔除重归一，禁0填充</text>
+
+ <rect x="1300" y="98" width="230" height="300" rx="6" fill="#ffffff" stroke="#606266" stroke-width="1.3"/>
+ <text x="1415" y="118" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1f2d3d">L6c 聚类与弃权</text>
+ <text x="1415" y="134" text-anchor="middle" font-size="9.5" fill="#909399">decision-svc(同事务)</text>
+ <line x1="1312" y1="142" x2="1518" y2="142" stroke="#e4e7ed"/>
+ <text x="1312" y="158" font-size="9" font-weight="bold" fill="#1f6fb5">输入</text>
+ <text x="1312" y="172" font-size="8.5" fill="#606266">全班每人的(goal,action,</text>
+ <text x="1312" y="184" font-size="8.5" fill="#606266">help_level)三元组</text>
+ <text x="1312" y="196" font-size="8.5" fill="#606266">+ L6b 各人 decision_item</text>
+ <line x1="1312" y1="218" x2="1518" y2="218" stroke="#e4e7ed"/>
+ <text x="1312" y="234" font-size="9" font-weight="bold" fill="#3c8618">输出</text>
+ <text x="1312" y="248" font-size="8.5" fill="#606266">groups[]：group_id,goal,action,</text>
+ <text x="1312" y="260" font-size="8.5" fill="#606266">task,is_common_layer,</text>
+ <text x="1312" y="272" font-size="8.5" fill="#606266">member_students[],shuffle_seed</text>
+ <text x="1312" y="284" font-size="8.5" fill="#606266">+is_stop/is_abstain+abstain_reasons[]</text>
+ <text x="1312" y="298" font-size="8.5" font-style="italic" fill="#c0392b">STOP≠弃权，两套独立统计字段</text>
+
+ <rect x="1554" y="98" width="230" height="300" rx="6" fill="#ffffff" stroke="#606266" stroke-width="1.3"/>
+ <text x="1669" y="118" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1f2d3d">交付 Delivery</text>
+ <text x="1669" y="134" text-anchor="middle" font-size="9.5" fill="#909399">teacher-bff / student-bff</text>
+ <line x1="1566" y1="142" x2="1772" y2="142" stroke="#e4e7ed"/>
+ <text x="1566" y="158" font-size="9" font-weight="bold" fill="#1f6fb5">输入</text>
+ <text x="1566" y="172" font-size="8.5" fill="#606266">L6c 的 groups[]/decision_item[]</text>
+ <text x="1566" y="184" font-size="8.5" fill="#606266">+ 教师 TaskPicker 覆盖值</text>
+ <text x="1566" y="196" font-size="8.5" fill="#606266">(teacher_override，可选)</text>
+ <line x1="1566" y1="218" x2="1772" y2="218" stroke="#e4e7ed"/>
+ <text x="1566" y="234" font-size="9" font-weight="bold" fill="#3c8618">输出</text>
+ <text x="1566" y="248" font-size="8.5" fill="#606266">teacher_action{ai_route,</text>
+ <text x="1566" y="260" font-size="8.5" fill="#606266">teacher_override,final_route}</text>
+ <text x="1566" y="272" font-size="8.5" fill="#606266">写回 evidence-svc(留痕三层)</text>
+ <text x="1566" y="284" font-size="8.5" fill="#606266">+课堂材料/打印任务</text>
+ <text x="1566" y="298" font-size="8.5" font-style="italic" fill="#909399">P0教师锁定路由，引擎不覆盖</text>
+
+ <!-- inter-column arrows -->
+ <line x1="260" y1="248" x2="284" y2="248" stroke="#606266" stroke-width="1.5" marker-end="url(#arrgray)"/>
+ <line x1="514" y1="248" x2="538" y2="248" stroke="#606266" stroke-width="1.5" marker-end="url(#arrgray)"/>
+ <line x1="768" y1="248" x2="792" y2="248" stroke="#606266" stroke-width="1.5" marker-end="url(#arrgray)"/>
+ <line x1="1022" y1="248" x2="1046" y2="248" stroke="#606266" stroke-width="1.5" marker-end="url(#arrgray)"/>
+ <line x1="1276" y1="248" x2="1300" y2="248" stroke="#606266" stroke-width="1.5" marker-end="url(#arrgray)"/>
+ <line x1="1530" y1="248" x2="1554" y2="248" stroke="#606266" stroke-width="1.5" marker-end="url(#arrgray)"/>
+
+ <!-- ===== Scenario ① row ===== -->
+ <text x="30" y="428" font-size="12.5" font-weight="bold" fill="#1f6fb5">① 教师课后讲评闭环 —— policy scene_key = class.review.after_exam，scene_ctx = class</text>
+
+ <rect x="30" y="438" width="230" height="140" rx="6" fill="#ecf5ff" stroke="#79bbff"/>
+ <text x="145" y="458" text-anchor="middle" font-size="9.5" fill="#1f2d3d">学生交卷记录</text>
+ <text x="145" y="474" text-anchor="middle" font-size="9.5" fill="#1f2d3d">已写入 evidence-svc</text>
+ <text x="145" y="490" text-anchor="middle" font-size="9.5" fill="#1f2d3d">(批阅系统/纸笔回收)</text>
+
+ <rect x="284" y="438" width="230" height="140" rx="6" fill="#ecf5ff" stroke="#79bbff"/>
+ <text x="399" y="458" text-anchor="middle" font-size="9.5" fill="#1f2d3d">教师侧 scene_ctx=class</text>
+ <text x="399" y="474" text-anchor="middle" font-size="9.5" fill="#1f2d3d">即时重算六轴</text>
+ <text x="399" y="490" text-anchor="middle" font-size="9.5" fill="#1f2d3d">(dry_run 防自主证据外泄)</text>
+
+ <rect x="538" y="438" width="230" height="140" rx="6" fill="#ecf5ff" stroke="#79bbff"/>
+ <text x="653" y="458" text-anchor="middle" font-size="9.5" fill="#1f2d3d">diagnosis-svc 产出</text>
+ <text x="653" y="474" text-anchor="middle" font-size="9.5" fill="#1f2d3d">结构化假设</text>
+ <text x="653" y="490" text-anchor="middle" font-size="9.5" fill="#1f2d3d">供教师确认/否认线索</text>
+
+ <rect x="792" y="438" width="230" height="140" rx="6" fill="#ecf5ff" stroke="#79bbff"/>
+ <text x="907" y="458" text-anchor="middle" font-size="9.5" fill="#1f2d3d">mode = diagnose</text>
+ <text x="907" y="474" text-anchor="middle" font-size="9.5" fill="#1f2d3d">考点由试卷/教师给定</text>
+ <text x="907" y="490" text-anchor="middle" font-size="9.5" fill="#1f2d3d">诊断优先于练习</text>
+
+ <rect x="1046" y="438" width="230" height="140" rx="6" fill="#ecf5ff" stroke="#79bbff"/>
+ <text x="1161" y="458" text-anchor="middle" font-size="9.5" fill="#1f2d3d">weights 偏</text>
+ <text x="1161" y="474" text-anchor="middle" font-size="9.5" fill="#1f2d3d">f_match + f_coverage</text>
+ <text x="1161" y="490" text-anchor="middle" font-size="9.5" fill="#1f2d3d">覆盖面优先于精练</text>
+
+ <rect x="1300" y="438" width="230" height="140" rx="6" fill="#ecf5ff" stroke="#79bbff"/>
+ <text x="1415" y="458" text-anchor="middle" font-size="9.5" fill="#1f2d3d">high_stakes 场景强制</text>
+ <text x="1415" y="474" text-anchor="middle" font-size="9.5" fill="#1f2d3d">恰好一个共同层</text>
+ <text x="1415" y="490" text-anchor="middle" font-size="9.5" fill="#1f2d3d">且 rank 最小，3+N 分组</text>
+
+ <rect x="1554" y="438" width="230" height="140" rx="6" fill="#ecf5ff" stroke="#79bbff"/>
+ <text x="1669" y="458" text-anchor="middle" font-size="9.5" fill="#1f2d3d">教师 TaskPicker 改任务</text>
+ <text x="1669" y="474" text-anchor="middle" font-size="9.5" fill="#1f2d3d">→打印课堂材料</text>
+ <text x="1669" y="490" text-anchor="middle" font-size="9.5" fill="#1f2d3d">→复核记录 outcome</text>
+
+ <line x1="145" y1="403" x2="145" y2="438" stroke="#1f6fb5" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrblue)"/>
+ <line x1="399" y1="403" x2="399" y2="438" stroke="#1f6fb5" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrblue)"/>
+ <line x1="653" y1="403" x2="653" y2="438" stroke="#1f6fb5" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrblue)"/>
+ <line x1="907" y1="403" x2="907" y2="438" stroke="#1f6fb5" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrblue)"/>
+ <line x1="1161" y1="403" x2="1161" y2="438" stroke="#1f6fb5" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrblue)"/>
+ <line x1="1415" y1="403" x2="1415" y2="438" stroke="#1f6fb5" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrblue)"/>
+ <line x1="1669" y1="403" x2="1669" y2="438" stroke="#1f6fb5" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrblue)"/>
+
+ <!-- ===== Scenario ② row ===== -->
+ <text x="30" y="598" font-size="12.5" font-weight="bold" fill="#3c8618">② 学生自主练习闭环 —— policy scene_key = self.practice.daily，scene_ctx = self</text>
+
+ <rect x="30" y="608" width="230" height="140" rx="6" fill="#f0f9eb" stroke="#95d475"/>
+ <text x="145" y="628" text-anchor="middle" font-size="9.5" fill="#1f2d3d">POST /attempts 写入</text>
+ <text x="145" y="644" text-anchor="middle" font-size="9.5" fill="#1f2d3d">scene_ctx 服务端钉死 self</text>
+ <text x="145" y="660" text-anchor="middle" font-size="9.5" fill="#1f2d3d">不接受客户端指定</text>
+
+ <rect x="284" y="608" width="230" height="140" rx="6" fill="#f0f9eb" stroke="#95d475"/>
+ <text x="399" y="628" text-anchor="middle" font-size="9.5" fill="#1f2d3d">profile-svc 只用学生</text>
+ <text x="399" y="644" text-anchor="middle" font-size="9.5" fill="#1f2d3d">自身证据重算</text>
+ <text x="399" y="660" text-anchor="middle" font-size="9.5" fill="#1f2d3d">默认不进教师视野(C10甲)</text>
+
+ <rect x="538" y="608" width="230" height="140" rx="6" fill="#f0f9eb" stroke="#95d475"/>
+ <text x="653" y="628" text-anchor="middle" font-size="9.5" fill="#1f2d3d">诊断弃权时</text>
+ <text x="653" y="644" text-anchor="middle" font-size="9.5" fill="#1f2d3d">escalate_to = student</text>
+ <text x="653" y="660" text-anchor="middle" font-size="9.5" fill="#1f2d3d">升级终点是学生本人</text>
+
+ <rect x="792" y="608" width="230" height="140" rx="6" fill="#f0f9eb" stroke="#95d475"/>
+ <text x="907" y="628" text-anchor="middle" font-size="9.5" fill="#1f2d3d">mode 以教学为主</text>
+ <text x="907" y="644" text-anchor="middle" font-size="9.5" fill="#1f2d3d">high_stakes=false</text>
+ <text x="907" y="660" text-anchor="middle" font-size="9.5" fill="#1f2d3d">允许个体异题</text>
+
+ <rect x="1046" y="608" width="230" height="140" rx="6" fill="#f0f9eb" stroke="#95d475"/>
+ <text x="1161" y="628" text-anchor="middle" font-size="9.5" fill="#1f2d3d">weights 偏</text>
+ <text x="1161" y="644" text-anchor="middle" font-size="9.5" fill="#1f2d3d">f_retention + f_prob</text>
+ <text x="1161" y="660" text-anchor="middle" font-size="9.5" fill="#1f2d3d">due/fresh 双模式防重推</text>
+
+ <rect x="1300" y="608" width="230" height="140" rx="6" fill="#f0f9eb" stroke="#95d475"/>
+ <text x="1415" y="628" text-anchor="middle" font-size="9.5" fill="#1f2d3d">无分组(个人任务)</text>
+ <text x="1415" y="644" text-anchor="middle" font-size="9.5" fill="#1f2d3d">STOP 命中提示：</text>
+ <text x="1415" y="660" text-anchor="middle" font-size="9.5" fill="#1f2d3d">"这部分不用继续练了"</text>
+
+ <rect x="1554" y="608" width="230" height="140" rx="6" fill="#f0f9eb" stroke="#95d475"/>
+ <text x="1669" y="628" text-anchor="middle" font-size="9.5" fill="#1f2d3d">GET /next 返回下一题</text>
+ <text x="1669" y="644" text-anchor="middle" font-size="9.5" fill="#1f2d3d">不给概率/排名</text>
+ <text x="1669" y="660" text-anchor="middle" font-size="9.5" fill="#1f2d3d">仅给档带式措辞</text>
+
+ <line x1="145" y1="573" x2="145" y2="608" stroke="#3c8618" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrgreen)"/>
+ <line x1="399" y1="573" x2="399" y2="608" stroke="#3c8618" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrgreen)"/>
+ <line x1="653" y1="573" x2="653" y2="608" stroke="#3c8618" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrgreen)"/>
+ <line x1="907" y1="573" x2="907" y2="608" stroke="#3c8618" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrgreen)"/>
+ <line x1="1161" y1="573" x2="1161" y2="608" stroke="#3c8618" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrgreen)"/>
+ <line x1="1415" y1="573" x2="1415" y2="608" stroke="#3c8618" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrgreen)"/>
+ <line x1="1669" y1="573" x2="1669" y2="608" stroke="#3c8618" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrgreen)"/>
+
+ <!-- ===== ③ tributary box ===== -->
+ <rect x="30" y="768" width="1010" height="145" rx="8" fill="#fff7e6" stroke="#e6a23c" stroke-width="1.3"/>
+ <text x="535" y="791" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#ad6800">③ 知识点/题库资产治理闭环 —— 旁路输入，不流经决策链本身</text>
+ <text x="535" y="812" text-anchor="middle" font-size="9.5" fill="#606266">kp-svc 建考点身份轴+教材叶位置轴 → item-svc 题目三维标签+候选池(唯一召回入口) →</text>
+ <text x="535" y="828" text-anchor="middle" font-size="9.5" fill="#606266">misconception-svc 错误归并+干扰项映射 → rubric-svc 评分结构快照</text>
+ <text x="535" y="849" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#ad6800">持续为①②两条闭环提供资产输入，本身不经过 Router/评分/聚类</text>
+ <text x="535" y="866" text-anchor="middle" font-size="9.5" fill="#606266">与 education-data-foundation 存在潜在但未实现的资产协同（详见 §8）</text>
+ <text x="535" y="883" text-anchor="middle" font-size="9" fill="#909399">三级可信晋升门(trust)：仅按序晋升不可降级；L1_generated 题禁自动下发</text>
+
+ <line x1="700" y1="768" x2="653" y2="578" stroke="#ad6800" stroke-width="1.3" stroke-dasharray="5 4" marker-end="url(#arrorange)"/>
+ <text x="720" y="740" font-size="9" fill="#ad6800">供给概念/题目 role</text>
+ <line x1="900" y1="768" x2="1161" y2="748" stroke="#ad6800" stroke-width="1.3" stroke-dasharray="5 4" marker-end="url(#arrorange)"/>
+ <text x="960" y="760" font-size="9" fill="#ad6800">供给候选池/挂载质量</text>
+
+ <!-- ===== ④ footer banner ===== -->
+ <rect x="1055" y="768" width="729" height="145" rx="8" fill="#fef0f0" stroke="#f56c6c" stroke-width="1.3"/>
+ <text x="1419" y="791" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#c0392b">④ 试点验收与部署验证闭环 —— 验证①②③全链路真实可用</text>
+ <text x="1419" y="814" text-anchor="middle" font-size="9.5" fill="#606266">两班仿真身份消费真实题库 → 3732/3732 后端测试通过</text>
+ <text x="1419" y="830" text-anchor="middle" font-size="9.5" fill="#606266">→ 102/102 全链验收 → 48/48 变异测试 0 红项</text>
+ <text x="1419" y="846" text-anchor="middle" font-size="9.5" fill="#606266">→ 部署包密钥扫描 → 原卷归档回放+备份校验</text>
+ <text x="1419" y="867" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#c0392b">状态：本地候选已通过，08-18 服务器</text>
+ <text x="1419" y="883" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#c0392b">SSH 阻断部署，尚未完成生产环境验收</text>
+
+ <!-- ===== Legend / principles box ===== -->
+ <rect x="30" y="933" width="1754" height="175" rx="8" fill="#f4f4f5" stroke="#909399" stroke-dasharray="6 4"/>
+ <text x="907" y="957" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#1f2d3d">核心算法原则（贯穿全部四个场景，非可选项 —— 这是它与"相似度推荐系统"的本质区别）</text>
+ <text x="60" y="982" font-size="10.5" fill="#606266">· 决策不是相似度推荐：P0–P16 词典序优先级命中即停，禁止折算成加权分数——离散约束一旦编码进连续函数就可能被"优化"掉且不可观测</text>
+ <text x="60" y="1004" font-size="10.5" fill="#606266">· 六轴(K/C/D/R/T/H)全部必须给值，禁省略/填 null；unknown 与 evidence_conflict 是一等合法状态，不是异常分支</text>
+ <text x="60" y="1026" font-size="10.5" fill="#606266">· 弃权(给不出)是一等输出，与 STOP(不该给)分开统计；弃权率过低比过高更可疑——它是唯一能暴露候选池深度不足问题的观测量</text>
+ <text x="60" y="1048" font-size="10.5" fill="#606266">· 五分量不可算即剔除并重归一化，禁 0 填充——0 会被误读成"匹配度差"而非"数据缺失"，系统性偏向有历史数据的题</text>
+ <text x="60" y="1070" font-size="10.5" fill="#606266">· 六条反模式写进系统测试：禁无限刷题(AP01)/即答对宣布掌握(AP02)/无证据贴错因(AP03)/默认给完整解析(AP04)/</text>
+ <text x="90" y="1090" font-size="10.5" fill="#606266">45人45套材料过度个性化(AP05，明确反对)/AI未经教师确认改变全班任务(AP06)</text>
+
+ <!-- ===== I/O summary table ===== -->
+ <rect x="30" y="1128" width="1754" height="285" rx="8" fill="#ffffff" stroke="#909399" stroke-width="1.3"/>
+ <text x="907" y="1153" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#1f2d3d">七阶段输入/输出速查表（字段名逐字取自 engine/services/CONTRACT.md，contract-v1）</text>
+
+ <line x1="45" y1="1163" x2="1769" y2="1163" stroke="#c0c4cc"/>
+ <text x="60" y="1180" font-size="10" font-weight="bold" fill="#1f2d3d">阶段</text>
+ <text x="230" y="1180" font-size="10" font-weight="bold" fill="#1f2d3d">服务/端点</text>
+ <text x="560" y="1180" font-size="10" font-weight="bold" fill="#1f2d3d">关键输入</text>
+ <text x="1160" y="1180" font-size="10" font-weight="bold" fill="#1f2d3d">关键输出</text>
+ <line x1="45" y1="1188" x2="1769" y2="1188" stroke="#e4e7ed"/>
+
+ <text x="60" y="1206" font-size="9.5" fill="#1f2d3d">L2 证据</text>
+ <text x="230" y="1206" font-size="9.5" fill="#606266">evidence-svc POST /attempts</text>
+ <text x="560" y="1206" font-size="9.5" fill="#606266">student_id, item_id, scene_ctx, exposure_src, total_score/max_score, step_scores[]</text>
+ <text x="1160" y="1206" font-size="9.5" fill="#606266">attempt_id + created_at；幂等校验 source_task_id</text>
+
+ <text x="60" y="1224" font-size="9.5" fill="#1f2d3d">L4 六轴</text>
+ <text x="230" y="1224" font-size="9.5" fill="#606266">profile-svc POST /profile/recompute</text>
+ <text x="560" y="1224" font-size="9.5" fill="#606266">student_id, concept_ids[], scene_ctx, dry_run ← 只读 evidence-svc+kp-svc</text>
+ <text x="1160" y="1224" font-size="9.5" fill="#606266">k/c/d/r/t/h(全填) + downgraded[]/skipped[] → 写 memory-svc state</text>
+
+ <text x="60" y="1242" font-size="9.5" fill="#1f2d3d">L5 诊断</text>
+ <text x="230" y="1242" font-size="9.5" fill="#606266">diagnosis-svc POST /diagnoses</text>
+ <text x="560" y="1242" font-size="9.5" fill="#606266">scope_kind, affected.student_ids[], dx_type(九值), claim(A-D级), supporting_evidence[]</text>
+ <text x="1160" y="1242" font-size="9.5" fill="#606266">diagnosis_id + alternative_hypotheses[] + status(状态机)</text>
+
+ <text x="60" y="1260" font-size="9.5" fill="#1f2d3d">L6a 路由</text>
+ <text x="230" y="1260" font-size="9.5" fill="#606266">decision-svc POST /decisions(路由部分)</text>
+ <text x="560" y="1260" font-size="9.5" fill="#606266">scene_key, student_ids[], concept_ids[], budget ← 读六轴+诊断</text>
+ <text x="1160" y="1260" font-size="9.5" fill="#606266">behavior_goal→learning_action→task_type(逐人)，P0-P16 命中记录</text>
+
+ <text x="60" y="1278" font-size="9.5" fill="#1f2d3d">L6b 评分</text>
+ <text x="230" y="1278" font-size="9.5" fill="#606266">decision-svc(同请求，评分部分)</text>
+ <text x="560" y="1278" font-size="9.5" fill="#606266">L6a动作+exclude_item_ids[]+候选池(item-svc只读)+policy权重</text>
+ <text x="1160" y="1278" font-size="9.5" fill="#606266">decision_item[]{item_id,rank,score,breakdown{五分量},dropped_components[]}</text>
+
+ <text x="60" y="1296" font-size="9.5" fill="#1f2d3d">L6c 聚类</text>
+ <text x="230" y="1296" font-size="9.5" fill="#606266">decision-svc(同事务，聚类部分)</text>
+ <text x="560" y="1296" font-size="9.5" fill="#606266">全班(goal,action,help_level)三元组 + 各人decision_item</text>
+ <text x="1160" y="1296" font-size="9.5" fill="#606266">groups[]{group_id,is_common_layer,member_students[]} + is_stop/is_abstain</text>
+
+ <text x="60" y="1314" font-size="9.5" fill="#1f2d3d">交付</text>
+ <text x="230" y="1314" font-size="9.5" fill="#606266">teacher-bff/student-bff</text>
+ <text x="560" y="1314" font-size="9.5" fill="#606266">groups[]/decision_item[] + 教师teacher_override(可选)</text>
+ <text x="1160" y="1314" font-size="9.5" fill="#606266">teacher_action{ai_route,teacher_override,final_route} 写回evidence-svc</text>
+
+ <line x1="45" y1="1324" x2="1769" y2="1324" stroke="#e4e7ed"/>
+ <text x="907" y="1345" text-anchor="middle" font-size="9.5" font-style="italic" fill="#909399">每阶段的输出即下一阶段的输入之一；跨阶段还需读取六轴状态/诊断结果等横向依赖，完整字段清单见 self-learning-engine.md §5.8</text>
+
+ <text x="907" y="1425" text-anchor="middle" font-size="9" fill="#909399">数据来源：本地代码实测（services/*/app.py + CONTRACT.md + 自适应学习引擎_完整系统架构_2026-08-08.html）· 2026-08-19 · 完整分析见 self-learning-engine.md §5.6/§5.7/§5.8/§9</text>
+</svg>

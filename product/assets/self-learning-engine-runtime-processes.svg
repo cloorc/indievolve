@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="1780" height="1220">
+ <defs>
+  <marker id="arr" markerHeight="7" markerWidth="7" orient="auto-start-reverse" refX="9" refY="5" viewBox="0 0 10 10">
+   <path d="m0,0l10,5l-10,5l0,-10z" fill="#606266"/>
+  </marker>
+  <marker id="arrred" markerHeight="6" markerWidth="6" orient="auto-start-reverse" refX="8" refY="5" viewBox="0 0 10 10">
+   <path d="m0,0l10,5l-10,5l0,-10z" fill="#c0392b"/>
+  </marker>
+ </defs>
+
+ <text x="890" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2d3d">自适应学习引擎（全量实验室-v2）运行时权威进程视图</text>
+ <text x="890" y="50" text-anchor="middle" font-size="11.5" fill="#606266">全部 15 个进程 · 仅监听 127.0.0.1 · 端口取自 engine/frozen_v3.yaml + engine/config/services.d/*.yaml · 路径均相对 engine/ 根目录</text>
+ <text x="890" y="68" text-anchor="middle" font-size="10" font-style="italic" fill="#909399">启动顺序=依赖顺序(自底向上)：数据层 → 九领域微服务(svcctl管理) → 网关/身份/BFF层(boot-all管理) → 浏览器客户端</text>
+
+ <!-- ================= LAYER 0: 浏览器客户端 ================= -->
+ <rect x="40" y="88" width="1700" height="70" rx="8" fill="#f4f4f5" stroke="#909399" stroke-dasharray="6 4"/>
+ <text x="60" y="108" font-size="11" font-weight="bold" fill="#606266">浏览器客户端（静态资源由 static-pages 进程托管，非独立 Node 进程）</text>
+ <rect x="80" y="118" width="360" height="30" rx="4" fill="#ffffff" stroke="#909399"/>
+ <text x="260" y="138" text-anchor="middle" font-size="10" fill="#1f2d3d">teacher-web（React SPA，构建产物）</text>
+ <text x="470" y="138" font-size="9.5" fill="#606266">engine/teacher-web/dist/（`npm run build` 产物，由 static-pages 服务托管）</text>
+
+ <!-- ================= LAYER 1: 网关/身份/BFF (boot-all managed) ================= -->
+ <rect x="40" y="168" width="1700" height="230" rx="8" fill="#ecf5ff" stroke="#79bbff" stroke-dasharray="6 4"/>
+ <text x="60" y="188" font-size="11" font-weight="bold" fill="#1f6fb5">网关 / 身份 / BFF 层 —— manager: boot-all（tools/boot_all.sh 统一拉起，非 svcctl 管理）</text>
+
+ <rect x="80" y="198" width="320" height="82" rx="6" fill="#ffffff" stroke="#409eff"/>
+ <text x="240" y="216" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#1f2d3d">static-pages :8798</text>
+ <text x="240" y="232" text-anchor="middle" font-size="9" fill="#606266">engine/server/web_app_server.py</text>
+ <text x="240" y="246" text-anchor="middle" font-size="9" fill="#606266">order=91 · 托管 teacher-web/dist</text>
+ <text x="240" y="260" text-anchor="middle" font-size="9" fill="#606266">+ engine/pages/ 旧页面</text>
+ <text x="240" y="273" text-anchor="middle" font-size="8.5" fill="#909399">免鉴权静态资源服务</text>
+
+ <rect x="420" y="198" width="320" height="82" rx="6" fill="#ffffff" stroke="#409eff"/>
+ <text x="580" y="216" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#1f2d3d">mvp-gateway :8799</text>
+ <text x="580" y="232" text-anchor="middle" font-size="9" fill="#606266">engine/server/mvp_api_server.py</text>
+ <text x="580" y="246" text-anchor="middle" font-size="9" fill="#606266">order=92 · 数学MVP闭环验证网关</text>
+ <text x="580" y="260" text-anchor="middle" font-size="9" fill="#606266">对应"数学学习闭环验证台"页</text>
+ <text x="580" y="273" text-anchor="middle" font-size="8.5" fill="#909399">内部验收专用，非终端用户产品面</text>
+
+ <rect x="760" y="198" width="320" height="82" rx="6" fill="#ffffff" stroke="#409eff"/>
+ <text x="920" y="216" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#1f2d3d">identity-svc :8810</text>
+ <text x="920" y="232" text-anchor="middle" font-size="9" fill="#606266">engine/server/identity_svc.py</text>
+ <text x="920" y="246" text-anchor="middle" font-size="9" fill="#606266">order=93 · 会话令牌+租户鉴权</text>
+ <text x="920" y="260" text-anchor="middle" font-size="9" fill="#606266">不是九服务之一，独立注册</text>
+ <text x="920" y="273" text-anchor="middle" font-size="8.5" fill="#909399">三个BFF共同依赖的认证权威</text>
+
+ <rect x="1100" y="198" width="300" height="82" rx="6" fill="#ffffff" stroke="#409eff"/>
+ <text x="1250" y="216" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#1f2d3d">teacher-bff :8801</text>
+ <text x="1250" y="232" text-anchor="middle" font-size="9" fill="#606266">engine/server/teacher_bff.py</text>
+ <text x="1250" y="246" text-anchor="middle" font-size="9" fill="#606266">order=94 · 2969行 · 教师端聚合层</text>
+ <text x="1250" y="260" text-anchor="middle" font-size="9" fill="#606266">出站白名单仅5条已登记边</text>
+ <text x="1250" y="273" text-anchor="middle" font-size="8.5" fill="#909399">CALLER="teacher-bff"</text>
+
+ <rect x="1420" y="198" width="150" height="82" rx="6" fill="#ffffff" stroke="#409eff"/>
+ <text x="1495" y="216" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#1f2d3d">student-bff</text>
+ <text x="1495" y="230" text-anchor="middle" font-size="9" fill="#606266">:8802</text>
+ <text x="1495" y="244" text-anchor="middle" font-size="8.5" fill="#606266">server/student_bff.py</text>
+ <text x="1495" y="257" text-anchor="middle" font-size="8.5" fill="#606266">order=95·1890行</text>
+ <text x="1495" y="270" text-anchor="middle" font-size="8.5" fill="#909399">scene_ctx钉死self</text>
+
+ <rect x="1580" y="198" width="140" height="82" rx="6" fill="#ffffff" stroke="#409eff"/>
+ <text x="1650" y="216" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#1f2d3d">region-bff</text>
+ <text x="1650" y="230" text-anchor="middle" font-size="9" fill="#606266">:8803</text>
+ <text x="1650" y="244" text-anchor="middle" font-size="8.5" fill="#606266">server/region_bff.py</text>
+ <text x="1650" y="257" text-anchor="middle" font-size="8.5" fill="#606266">order=96·398行</text>
+ <text x="1650" y="270" text-anchor="middle" font-size="8.5" fill="#909399">只读观察台</text>
+
+ <text x="60" y="310" font-size="10" font-style="italic" fill="#1f6fb5">教师/学生端浏览器只能拿到会话令牌（BFF 用自己的服务 key 向 identity-svc 换主体），永远拿不到能调九服务的服务 key</text>
+ <text x="60" y="330" font-size="10" font-style="italic" fill="#1f6fb5">三个 BFF（teacher-bff/student-bff/region-bff）均横向依赖同一个 identity-svc 换取主体身份，图中未画连线以避免与方框重叠，依赖关系见本行文字</text>
+
+ <!-- ================= LAYER 2: 九个领域微服务 (svcctl managed) ================= -->
+ <rect x="40" y="408" width="1700" height="360" rx="8" fill="#f0f9eb" stroke="#67c23a" stroke-dasharray="6 4"/>
+ <text x="60" y="428" font-size="11" font-weight="bold" fill="#3c8618">九个领域微服务层 —— manager: svcctl（engine/tools/svcctl.py 独立进程管理，启动顺序=依赖DAG自底向上）</text>
+
+ <!-- L2 row -->
+ <text x="60" y="450" font-size="9.5" font-weight="bold" fill="#606266">L2 事实层（service_class=memory，不可重算，必须备份）</text>
+ <rect x="80" y="458" width="380" height="60" rx="6" fill="#ffffff" stroke="#67c23a"/>
+ <text x="270" y="475" text-anchor="middle" font-size="10" font-weight="bold" fill="#1f2d3d">evidence-svc :8811</text>
+ <text x="270" y="490" text-anchor="middle" font-size="9" fill="#606266">engine/services/evidence_svc/app.py</text>
+ <text x="270" y="503" text-anchor="middle" font-size="8.5" fill="#909399">order=10 · 依赖图的底，不调用任何其它服务</text>
+
+ <rect x="480" y="458" width="380" height="60" rx="6" fill="#ffffff" stroke="#67c23a"/>
+ <text x="670" y="475" text-anchor="middle" font-size="10" font-weight="bold" fill="#1f2d3d">memory-svc :8812</text>
+ <text x="670" y="490" text-anchor="middle" font-size="9" fill="#606266">engine/services/memory_svc/app.py</text>
+ <text x="670" y="503" text-anchor="middle" font-size="8.5" fill="#909399">order=20 · 唯一写方限 X-Engine-Caller: profile-svc</text>
+
+ <!-- L3 row -->
+ <text x="60" y="540" font-size="9.5" font-weight="bold" fill="#606266">L3 资产层（service_class=asset，半可重建，有人工投入，禁DELETE）</text>
+ <rect x="80" y="548" width="185" height="60" rx="6" fill="#ffffff" stroke="#67c23a"/>
+ <text x="172" y="565" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#1f2d3d">kp-svc :8813</text>
+ <text x="172" y="580" text-anchor="middle" font-size="8" fill="#606266">services/kp_svc/app.py</text>
+ <text x="172" y="593" text-anchor="middle" font-size="8" fill="#909399">order=30</text>
+
+ <rect x="275" y="548" width="185" height="60" rx="6" fill="#ffffff" stroke="#67c23a"/>
+ <text x="367" y="565" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#1f2d3d">item-svc :8814</text>
+ <text x="367" y="580" text-anchor="middle" font-size="8" fill="#606266">services/item_svc/app.py</text>
+ <text x="367" y="593" text-anchor="middle" font-size="8" fill="#909399">order=40</text>
+
+ <rect x="470" y="548" width="185" height="60" rx="6" fill="#ffffff" stroke="#67c23a"/>
+ <text x="562" y="565" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#1f2d3d">rubric-svc :8815</text>
+ <text x="562" y="580" text-anchor="middle" font-size="8" fill="#606266">services/rubric_svc/app.py</text>
+ <text x="562" y="593" text-anchor="middle" font-size="8" fill="#909399">order=50</text>
+
+ <rect x="665" y="548" width="195" height="60" rx="6" fill="#ffffff" stroke="#67c23a"/>
+ <text x="762" y="565" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#1f2d3d">misconception-svc :8816</text>
+ <text x="762" y="580" text-anchor="middle" font-size="8" fill="#606266">services/misconception_svc/app.py</text>
+ <text x="762" y="593" text-anchor="middle" font-size="8" fill="#909399">order=60</text>
+
+ <!-- L4/L5/L6 row -->
+ <text x="60" y="630" font-size="9.5" font-weight="bold" fill="#606266">L4/L5/L6 计算层（service_class=compute，完全可重建，无自有表或只写自己的决策记录）</text>
+ <rect x="80" y="638" width="245" height="70" rx="6" fill="#ffffff" stroke="#67c23a"/>
+ <text x="202" y="655" text-anchor="middle" font-size="10" font-weight="bold" fill="#1f2d3d">profile-svc :8817</text>
+ <text x="202" y="670" text-anchor="middle" font-size="8.5" fill="#606266">services/profile_svc/app.py</text>
+ <text x="202" y="683" text-anchor="middle" font-size="8.5" fill="#909399">order=70 · 无自有表，不连库</text>
+ <text x="202" y="696" text-anchor="middle" font-size="8" fill="#909399">L4 六轴唯一写方</text>
+
+ <rect x="335" y="638" width="245" height="70" rx="6" fill="#ffffff" stroke="#67c23a"/>
+ <text x="457" y="655" text-anchor="middle" font-size="10" font-weight="bold" fill="#1f2d3d">diagnosis-svc :8818</text>
+ <text x="457" y="670" text-anchor="middle" font-size="8.5" fill="#606266">services/diagnosis_svc/app.py</text>
+ <text x="457" y="683" text-anchor="middle" font-size="8.5" fill="#909399">order=80 · 861行·8端点</text>
+ <text x="457" y="696" text-anchor="middle" font-size="8" fill="#909399">L5 诊断假设集+状态机</text>
+
+ <rect x="590" y="638" width="270" height="70" rx="6" fill="#ffffff" stroke="#67c23a" stroke-width="1.5"/>
+ <text x="725" y="655" text-anchor="middle" font-size="10" font-weight="bold" fill="#1f2d3d">decision-svc :8819</text>
+ <text x="725" y="670" text-anchor="middle" font-size="8.5" fill="#606266">services/decision_svc/app.py</text>
+ <text x="725" y="683" text-anchor="middle" font-size="8.5" fill="#909399">order=90 · 1478行·6端点</text>
+ <text x="725" y="696" text-anchor="middle" font-size="8" fill="#c0392b">L6 决策路由+选题+聚类，按记忆类备份</text>
+
+ <text x="60" y="740" font-size="9" font-style="italic" fill="#3c8618">九服务共用一把 API key（.ale/engine_api_key，0600），服务间仅经 HTTP 互通，_shared/client.py 按已登记出站边在运行时拦截越权调用</text>
+ <text x="60" y="755" font-size="9" font-style="italic" fill="#3c8618">启动顺序=依赖顺序：被调方必须先起（evidence→memory→kp/item/rubric/misconception→profile→diagnosis→decision），否则启动期健康探测会失败</text>
+
+ <!-- ================= LAYER 3: 数据层 ================= -->
+ <rect x="40" y="778" width="1700" height="120" rx="8" fill="#fef0f0" stroke="#f56c6c" stroke-dasharray="6 4"/>
+ <text x="60" y="798" font-size="11" font-weight="bold" fill="#c0392b">数据层</text>
+ <rect x="80" y="808" width="500" height="75" rx="6" fill="#ffffff" stroke="#f56c6c"/>
+ <text x="330" y="828" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#1f2d3d">PostgreSQL 16 :5433（非默认5432）</text>
+ <text x="330" y="844" text-anchor="middle" font-size="9" fill="#606266">数据目录：$HOME/pgdata（ALE_PGDATA 可覆盖）</text>
+ <text x="330" y="858" text-anchor="middle" font-size="9" fill="#606266">socket：$HOME/pgsock（ALE_PGHOST 可覆盖）</text>
+ <text x="330" y="872" text-anchor="middle" font-size="9" fill="#909399">dbname=ale_engine，schema=ale，23张表，14次迁移(engine/migrations/pg/)</text>
+
+ <rect x="600" y="808" width="500" height="75" rx="6" fill="#ffffff" stroke="#f56c6c"/>
+ <text x="850" y="828" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#1f2d3d">engine/policies/policies.yaml</text>
+ <text x="850" y="844" text-anchor="middle" font-size="9" fill="#606266">decision-svc 唯一只读，非数据库表</text>
+ <text x="850" y="858" text-anchor="middle" font-size="9" fill="#606266">3 条策略场景 + weights，禁调用方传</text>
+ <text x="850" y="872" text-anchor="middle" font-size="9" fill="#909399">修改此文件须同步升 policy_version</text>
+
+ <rect x="1120" y="808" width="600" height="75" rx="6" fill="#ffffff" stroke="#f56c6c"/>
+ <text x="1420" y="828" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#1f2d3d">engine/frozen_v3.yaml + config/services.d/*.yaml</text>
+ <text x="1420" y="844" text-anchor="middle" font-size="9" fill="#606266">唯一权威枚举源 + 15 个服务描述符（name/module/port/order/manager）</text>
+ <text x="1420" y="858" text-anchor="middle" font-size="9" fill="#909399">进程管理靠 tools/svcctl.py（九服务）+ tools/boot_all.sh（全链，含PG/网关/BFF）</text>
+
+ <text x="60" y="898" font-size="9" font-style="italic" fill="#c0392b">数据层为九服务提供底层存储/策略/服务发现依据（PostgreSQL 被全部九服务读写；policies.yaml 仅 decision-svc 只读）；图中省略与九服务的连线以避免遮挡上方方框</text>
+
+ <!-- ================= Deployment/process management notes ================= -->
+ <rect x="40" y="918" width="1700" height="145" rx="8" fill="#fff7e6" stroke="#e6a23c" stroke-dasharray="6 4"/>
+ <text x="890" y="941" text-anchor="middle" font-size="12" font-weight="bold" fill="#ad6800">进程管理与部署现状（tools/svcctl.py 注释原文）</text>
+ <text x="60" y="963" font-size="9.5" fill="#606266">· 无 systemd（服务器账号不在 sudoers），用 crontab @reboot 做开机自启（不需要 root），不做自动重启守护——进程崩溃时如实报告，不自动拉起掩盖故障</text>
+ <text x="60" y="982" font-size="9.5" fill="#606266">· 就绪判据 = healthz 返回且 data.db=="ok"（而非"有响应即就绪"——曾出现"九进程活着但业务端点全503"被误记为启动成功的真实事故）</text>
+ <text x="60" y="1001" font-size="9.5" fill="#606266">· 正式模式为 caller-edge-v1：每条已登记出站边独立随机凭据，进程只取得自己的 0600 主体材料文件；shared-loopback 仅供历史测试迁移，正式启动不会静默选用</text>
+ <text x="60" y="1020" font-size="9.5" fill="#606266">· 服务器状态（截至 §5.3.3）：本地候选已通过 3732/3732 测试 + 102/102 全链验收，但 08-18 因服务器 SSH 被阻断（TCP可达但协议握手前断开），尚未完成生产环境部署验收</text>
+ <text x="60" y="1043" font-size="9" font-style="italic" fill="#ad6800">全部端口/模块路径信息来自本地代码实测（engine/frozen_v3.yaml + engine/config/services.d/*.yaml + engine/tools/boot_all.sh + engine/tools/svcctl.py），非文档转述</text>
+
+ <text x="890" y="1200" text-anchor="middle" font-size="9" fill="#909399">数据来源：本地代码实测（2026-08-19）· 完整分析见 self-learning-engine.md §5.3/§5.6/§5.9</text>
+</svg>

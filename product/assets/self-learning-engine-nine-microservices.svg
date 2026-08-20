@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="1700" height="1320">
+ <defs>
+  <marker id="arr" markerHeight="7" markerWidth="7" orient="auto-start-reverse" refX="9" refY="5" viewBox="0 0 10 10">
+   <path d="m0,0l10,5l-10,5l0,-10z" fill="#303133"/>
+  </marker>
+  <marker id="arrgreen" markerHeight="7" markerWidth="7" orient="auto-start-reverse" refX="9" refY="5" viewBox="0 0 10 10">
+   <path d="m0,0l10,5l-10,5l0,-10z" fill="#3c8618"/>
+  </marker>
+ </defs>
+
+ <text x="850" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2d3d">自适应学习引擎-全量实验室-v2：九微服务实现现状</text>
+ <text x="850" y="49" text-anchor="middle" font-size="11" fill="#909399">L2事实层→L3资产层→L4模型聚合层→L5诊断层→L6决策层；九服务均有真实 PostgreSQL 读写与完整测试，非占位契约</text>
+
+ <!-- CLIENT LAYER -->
+ <rect x="40" y="70" width="1620" height="70" rx="8" fill="#f4f4f5" stroke="#909399" stroke-dasharray="6 4"/>
+ <text x="60" y="90" font-size="11" font-weight="bold" fill="#606266">客户端层</text>
+ <rect x="80" y="98" width="280" height="34" rx="5" fill="#ffffff" stroke="#909399"/>
+ <text x="220" y="119" text-anchor="middle" font-size="11" fill="#1f2d3d">teacher-web（React19，已实现，含测试）</text>
+ <rect x="380" y="98" width="240" height="34" rx="5" fill="#ffffff" stroke="#909399"/>
+ <text x="500" y="119" text-anchor="middle" font-size="11" fill="#1f2d3d">学生端 PWA（student-bff 对接）</text>
+ <rect x="640" y="98" width="240" height="34" rx="5" fill="#fafafa" stroke="#c0c4cc" stroke-dasharray="3 3"/>
+ <text x="760" y="119" text-anchor="middle" font-size="10.5" fill="#909399">区域/校管只读入口（region-bff）</text>
+
+ <!-- BFF LAYER -->
+ <rect x="40" y="155" width="1620" height="105" rx="8" fill="#ecf5ff" stroke="#79bbff" stroke-dasharray="6 4"/>
+ <text x="60" y="175" font-size="11" font-weight="bold" fill="#1f6fb5">BFF 聚合层（聚合+裁剪+口径收口，不做画像/推荐判断）</text>
+
+ <rect x="80" y="185" width="280" height="60" rx="6" fill="#ffffff" stroke="#409eff"/>
+ <text x="220" y="202" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1f2d3d">teacher-bff :8801</text>
+ <text x="220" y="218" text-anchor="middle" font-size="9.5" fill="#606266">2969 行·班级/分组/干预/教案/</text>
+ <text x="220" y="232" text-anchor="middle" font-size="9.5" fill="#606266">打印/反思/成长认领/评价请求</text>
+
+ <rect x="380" y="185" width="280" height="60" rx="6" fill="#ffffff" stroke="#409eff"/>
+ <text x="520" y="202" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1f2d3d">student-bff :8802</text>
+ <text x="520" y="218" text-anchor="middle" font-size="9.5" fill="#606266">1890 行·登录/下一题/交卷/</text>
+ <text x="520" y="232" text-anchor="middle" font-size="9.5" fill="#606266">自报/授权分享/自学旅程契约</text>
+
+ <rect x="680" y="185" width="200" height="60" rx="6" fill="#ffffff" stroke="#409eff"/>
+ <text x="780" y="202" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1f2d3d">identity-svc</text>
+ <text x="780" y="218" text-anchor="middle" font-size="9.5" fill="#606266">579 行·会话令牌/</text>
+ <text x="780" y="232" text-anchor="middle" font-size="9.5" fill="#606266">租户与身份鉴权</text>
+
+ <rect x="900" y="185" width="200" height="60" rx="6" fill="#fafafa" stroke="#c0c4cc"/>
+ <text x="1000" y="202" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#606266">region-bff</text>
+ <text x="1000" y="218" text-anchor="middle" font-size="9.5" fill="#909399">398 行·区域/学校</text>
+ <text x="1000" y="232" text-anchor="middle" font-size="9.5" fill="#909399">活动聚合只读视图</text>
+
+ <rect x="1120" y="185" width="540" height="60" rx="6" fill="#fff7e6" stroke="#e6a23c" stroke-dasharray="4 3"/>
+ <text x="1390" y="202" text-anchor="middle" font-size="11" font-weight="bold" fill="#ad6800">learning_episode/ + student_domain/ + teacher_domain/（业务编排层）</text>
+ <text x="1390" y="218" text-anchor="middle" font-size="9.5" fill="#606266">数学 MVP 干预/任务/会话/复核状态机 · S01学生旅程契约 · T01教师写命令守卫</text>
+ <text x="1390" y="232" text-anchor="middle" font-size="9.5" fill="#606266">是当前学校试点（定西一中两班）真正在跑的业务闭环所在位置</text>
+
+ <!-- NINE MICROSERVICES -->
+ <rect x="40" y="275" width="1620" height="470" rx="8" fill="#f0f9eb" stroke="#67c23a" stroke-dasharray="6 4"/>
+ <text x="60" y="295" font-size="12" font-weight="bold" fill="#3c8618">九个领域微服务（services/，contract-v1，全部真实 PostgreSQL 实现+完整测试，服务间仅经 HTTP 互通）</text>
+
+ <!-- L2 evidence -->
+ <rect x="80" y="310" width="1560" height="80" rx="6" fill="#ffffff" stroke="#67c23a" stroke-width="1.5"/>
+ <text x="95" y="330" font-size="10.5" font-weight="bold" fill="#3c8618">L2 事实层（依赖图的底，不调用任何其它服务，禁修改禁删除）</text>
+ <rect x="95" y="338" width="450" height="42" rx="4" fill="#f6ffed" stroke="#95d475"/>
+ <text x="320" y="353" text-anchor="middle" font-size="11" font-weight="bold" fill="#1f2d3d">evidence-svc（715行·6端点）</text>
+ <text x="320" y="368" text-anchor="middle" font-size="9.5" fill="#606266">attempt/attempt-assessment/self-report/teacher-action 写入+查询</text>
+
+ <!-- L3 assets -->
+ <rect x="80" y="398" width="1560" height="90" rx="6" fill="#ffffff" stroke="#67c23a" stroke-width="1.5"/>
+ <text x="95" y="416" font-size="10.5" font-weight="bold" fill="#3c8618">L3 资产层（人工投入资产，允许 PATCH/PUT，一律不提供 DELETE，误改靠覆盖修正）</text>
+ <rect x="95" y="425" width="370" height="52" rx="4" fill="#f6ffed" stroke="#95d475"/>
+ <text x="280" y="440" text-anchor="middle" font-size="11" font-weight="bold" fill="#1f2d3d">kp-svc（369行·7端点）</text>
+ <text x="280" y="454" text-anchor="middle" font-size="9.5" fill="#606266">考点双轴：身份轴(concept)+</text>
+ <text x="280" y="467" text-anchor="middle" font-size="9.5" fill="#606266">位置轴(教材叶挂载)</text>
+
+ <rect x="475" y="425" width="370" height="52" rx="4" fill="#f6ffed" stroke="#95d475"/>
+ <text x="660" y="440" text-anchor="middle" font-size="11" font-weight="bold" fill="#1f2d3d">item-svc（697行·11端点）</text>
+ <text x="660" y="454" text-anchor="middle" font-size="9.5" fill="#606266">题目三维标签+步骤级诊断前提+</text>
+ <text x="660" y="467" text-anchor="middle" font-size="9.5" fill="#606266">候选池(唯一召回入口,本轮只读)</text>
+
+ <rect x="855" y="425" width="370" height="52" rx="4" fill="#f6ffed" stroke="#95d475"/>
+ <text x="1040" y="440" text-anchor="middle" font-size="11" font-weight="bold" fill="#1f2d3d">misconception-svc（425行·8端点）</text>
+ <text x="1040" y="454" text-anchor="middle" font-size="9.5" fill="#606266">错误模型库+归并层(k_code)+</text>
+ <text x="1040" y="467" text-anchor="middle" font-size="9.5" fill="#606266">干扰项映射</text>
+
+ <rect x="1235" y="425" width="370" height="52" rx="4" fill="#f6ffed" stroke="#95d475"/>
+ <text x="1420" y="440" text-anchor="middle" font-size="11" font-weight="bold" fill="#1f2d3d">rubric-svc（229行·3端点）</text>
+ <text x="1420" y="454" text-anchor="middle" font-size="9.5" fill="#606266">评分结构快照，读懂扣分对应的</text>
+ <text x="1420" y="467" text-anchor="middle" font-size="9.5" fill="#606266">知识步骤，上游批阅侧防腐层</text>
+
+ <!-- L4 model aggregation -->
+ <rect x="80" y="496" width="1560" height="80" rx="6" fill="#ffffff" stroke="#67c23a" stroke-width="1.5"/>
+ <text x="95" y="514" font-size="10.5" font-weight="bold" fill="#3c8618">L4 模型聚合层（profile 无自有表，读 evidence 写 memory；memory 只增不改不删，追加新时点行）</text>
+ <rect x="95" y="522" width="750" height="46" rx="4" fill="#f6ffed" stroke="#95d475"/>
+ <text x="470" y="538" text-anchor="middle" font-size="11" font-weight="bold" fill="#1f2d3d">profile-svc（1628行·3端点：recompute / tier / explain）</text>
+ <text x="470" y="553" text-anchor="middle" font-size="9.5" fill="#606266">六轴状态与调度参数的唯一写方；读 evidence+item+kp，写 memory；纯计算无 SQL</text>
+
+ <rect x="855" y="522" width="750" height="46" rx="4" fill="#f6ffed" stroke="#95d475"/>
+ <text x="1230" y="538" text-anchor="middle" font-size="11" font-weight="bold" fill="#1f2d3d">memory-svc（337行·6端点）</text>
+ <text x="1230" y="553" text-anchor="middle" font-size="9.5" fill="#606266">learner_goal_state/student_param 时点账本；仅 INSERT+SELECT，唯一写方限 profile-svc</text>
+
+ <!-- L5 diagnosis -->
+ <rect x="80" y="584" width="1560" height="75" rx="6" fill="#ffffff" stroke="#67c23a" stroke-width="1.5"/>
+ <text x="95" y="602" font-size="10.5" font-weight="bold" fill="#3c8618">L5 诊断层（结构化假设集，防止"一题错→贴标签"，状态机含 confirmed/modified/rejected/disputed）</text>
+ <rect x="95" y="610" width="1540" height="42" rx="4" fill="#f6ffed" stroke="#95d475"/>
+ <text x="865" y="626" text-anchor="middle" font-size="11" font-weight="bold" fill="#1f2d3d">diagnosis-svc（861行·8端点：诊断CRUD+状态迁移+三角验证+线索裁定+裁定投影）</text>
+ <text x="865" y="641" text-anchor="middle" font-size="9.5" fill="#606266">主假设+概率+替代假设+可回溯证据；只读 evidence-svc(证据)与 item-svc(题目role)</text>
+
+ <!-- L6 decision -->
+ <rect x="80" y="668" width="1560" height="65" rx="6" fill="#ffffff" stroke="#67c23a" stroke-width="1.5"/>
+ <text x="95" y="686" font-size="10.5" font-weight="bold" fill="#3c8618">L6 决策层（只读模型层，只写自己的决策记录，每条决策可 bit 级重放）</text>
+ <rect x="95" y="693" width="1540" height="32" rx="4" fill="#f6ffed" stroke="#95d475"/>
+ <text x="865" y="713" text-anchor="middle" font-size="11" fill="#1f2d3d"><tspan font-weight="bold">decision-svc（1478行·6端点）</tspan> —— 选题决策：Router四层/五分量选题/3+N聚类/STOP与弃权；已配置 3 条策略场景（考后讲评/月考/自主日常练习）</text>
+
+ <!-- DATA LAYER -->
+ <rect x="40" y="765" width="1620" height="120" rx="8" fill="#fef0f0" stroke="#f56c6c" stroke-dasharray="6 4"/>
+ <text x="60" y="785" font-size="11" font-weight="bold" fill="#c0392b">数据层：单一 PostgreSQL(ale_engine/ale schema) · 23 张表 · 14 次批次化迁移(001-014)</text>
+ <text x="80" y="805" font-size="10" fill="#606266">001核心9表族(attempt/self_report/concept/item/rubric/misconception/learner_goal_state/diagnosis/decision 等23表) → 002诊断mis_key修正</text>
+ <text x="80" y="822" font-size="10" fill="#606266">→ 003-008 身份与租户注册/凭证会话/幂等/身份连续性/引用扩展/清洁安装门（六次迭代，身份治理是投入最多修订轮次的子域）</text>
+ <text x="80" y="839" font-size="10" fill="#606266">→ 009-010 数学MVP学习会话+干预验证（当前学校试点的核心业务表）→ 011-012 作答评估+诊断线索裁定 → 013 区域学校活动聚合 → 014 定期验证任务(1-3-7天)</text>
+ <text x="80" y="860" font-size="10" font-weight="bold" fill="#c0392b">全部约束条目均本机 PostgreSQL 实测过（非从 DDL 文本推断），CONTRACT.md 2242 行逐条记录实测边界值</text>
+
+ <!-- BUSINESS PROCESS PANEL -->
+ <rect x="40" y="905" width="1620" height="330" rx="10" fill="#fffbe6" stroke="#e6a23c" stroke-dasharray="6 4"/>
+ <text x="850" y="930" text-anchor="middle" font-size="13" font-weight="bold" fill="#ad6800">已支持的端到端业务流程（基于真实代码路径与近期 git 提交，非规划）</text>
+
+ <!-- Process 1 -->
+ <rect x="70" y="945" width="760" height="130" rx="6" fill="#ffffff" stroke="#e6a23c"/>
+ <text x="450" y="967" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#ad6800">① 教师课后讲评闭环（class.review.after_exam 场景）</text>
+ <text x="450" y="986" text-anchor="middle" font-size="9.5" fill="#606266">教师登录(identity-svc) → 查看班级/学生(teacher-bff) → 交卷记录已在 evidence-svc</text>
+ <text x="450" y="1002" text-anchor="middle" font-size="9.5" fill="#606266">→ profile-svc 六轴重算 → decision-svc 按诊断优先策略选题 → diagnosis-svc 出结构化假设</text>
+ <text x="450" y="1018" text-anchor="middle" font-size="9.5" fill="#606266">→ 教师端发起干预(intervention)/分组(group)/教案(lesson_plan) → 打印课堂材料(print_job)</text>
+ <text x="450" y="1038" text-anchor="middle" font-size="9.5" fill="#606266">→ 复核状态机记录 outcome/correction/followup（learning_episode 状态机实测覆盖）</text>
+ <text x="450" y="1058" text-anchor="middle" font-size="10" font-weight="bold" fill="#3c8618">状态：已实现+测试覆盖，近期真实提交(教师课堂闭环/区域门控)</text>
+
+ <!-- Process 2 -->
+ <rect x="870" y="945" width="760" height="130" rx="6" fill="#ffffff" stroke="#e6a23c"/>
+ <text x="1250" y="967" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#ad6800">② 学生自主练习闭环（self.practice.daily 场景）</text>
+ <text x="1250" y="986" text-anchor="middle" font-size="9.5" fill="#606266">学生登录(student-bff) → GET /next 向 decision-svc 要下一题(scene_ctx 钉死 self)</text>
+ <text x="1250" y="1002" text-anchor="middle" font-size="9.5" fill="#606266">→ 提交作答 POST /attempts(写入 evidence-svc) → 自报 self-report(会不会/卡在哪)</text>
+ <text x="1250" y="1018" text-anchor="middle" font-size="9.5" fill="#606266">→ 查看进度 progress（面向学生措辞的档带，不给概率/排名）→ 可选：授权分享给老师</text>
+ <text x="1250" y="1038" text-anchor="middle" font-size="9.5" fill="#606266">→ S01 学生学习旅程契约(自学选项/布置任务/自学会话/记忆纠错/数据权利请求)已定义</text>
+ <text x="1250" y="1058" text-anchor="middle" font-size="10" font-weight="bold" fill="#3c8618">状态：已实现+测试覆盖，三角函数/几何内容资产近期新增交付</text>
+
+ <!-- Process 3 -->
+ <rect x="70" y="1090" width="760" height="120" rx="6" fill="#ffffff" stroke="#e6a23c"/>
+ <text x="450" y="1112" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#ad6800">③ 知识点/题库资产治理闭环</text>
+ <text x="450" y="1131" text-anchor="middle" font-size="9.5" fill="#606266">建考点(kp-svc)身份轴 → 挂载教材叶(位置轴,幂等覆盖) → 建题(item-svc)三维标签</text>
+ <text x="450" y="1147" text-anchor="middle" font-size="9.5" fill="#606266">→ 题目挂载考点(多标签)+步骤拆解 → 三级可信晋升门(trust,只许逐级向上)</text>
+ <text x="450" y="1163" text-anchor="middle" font-size="9.5" fill="#606266">→ rubric-svc 导入评分结构快照 → misconception-svc 归并错误模型+干扰项映射</text>
+ <text x="450" y="1183" text-anchor="middle" font-size="10" font-weight="bold" fill="#3c8618">状态：已实现+测试覆盖，与 education-data-foundation 存在潜在但未实现的资产协同</text>
+
+ <!-- Process 4 -->
+ <rect x="870" y="1090" width="760" height="120" rx="6" fill="#ffffff" stroke="#e6a23c"/>
+ <text x="1250" y="1112" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#ad6800">④ 试点验收与部署验证闭环</text>
+ <text x="1250" y="1131" text-anchor="middle" font-size="9.5" fill="#606266">两班仿真身份消费真实题库 → 3732/3732 后端单元与契约测试 → 102/102 本机全链验收</text>
+ <text x="1250" y="1147" text-anchor="middle" font-size="9.5" fill="#606266">→ 48/48 变异测试全部捕获0红项 → 部署包密钥扫描 → 原卷归档回放+备份校验</text>
+ <text x="1250" y="1163" text-anchor="middle" font-size="9.5" fill="#606266">→ 定期验证任务(1/3/7天)已建表(014迁移)，用于近/远迁移与延迟验证生命周期</text>
+ <text x="1250" y="1183" text-anchor="middle" font-size="10" font-weight="bold" fill="#c0392b">状态：本地候选已通过，08-18 服务器 SSH 阻断部署，尚未完成生产环境验收</text>
+
+ <!-- Footer -->
+ <text x="850" y="1300" text-anchor="middle" font-size="9" fill="#909399">数据来源：本地代码实测（services/*/app.py + server/*.py + migrations/pg/*.sql + tests/）· 2026-08-19 · 完整分析见 self-learning-engine.md</text>
+</svg>
