@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="1442" height="1195">
+ <defs>
+  <marker id="arr" markerHeight="7" markerWidth="7" orient="auto-start-reverse" refX="9" refY="5" viewBox="0 0 10 10">
+   <path d="m0,0l10,5l-10,5l0,-10z" fill="#606266" id="svg_1"/>
+  </marker>
+ </defs>
+ <!-- ============ PANEL 1: profile-svc ============ -->
+ <!-- ============ PANEL 2: diagnosis-svc ============ -->
+ <!-- ============ PANEL 3: decision-svc ============ -->
+ <g class="layer">
+  <title>Layer 1</title>
+  <text fill="#1f2d3d" font-size="22" font-weight="bold" id="svg_2" text-anchor="middle" x="720.75" y="21.5">三个"大脑"服务各自怎么处理一次请求</text>
+  <text fill="#606266" font-size="12" id="svg_3" text-anchor="middle" x="720.75" y="44.5">每个框代表一步操作，箭头表示"接下来做什么"</text>
+  <rect fill="#fdf6ec" height="330" id="svg_4" rx="10" stroke="#e6a23c" stroke-width="1.5" width="1440" x="0.75" y="71.5"/>
+  <text fill="#ad6800" font-size="16" font-weight="bold" id="svg_5" x="25.75" y="98.5">① profile-svc（状态判断科）：算一个学生现在的状态</text>
+  <text fill="#606266" font-size="11" id="svg_6" x="25.75" y="117.5">收到"给我算一下这个学生的状态"的请求（可以只是试算，不真的写库）</text>
+  <rect fill="#ffffff" height="60" id="svg_7" rx="8" stroke="#e6a23c" width="200" x="30.75" y="134.5"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_8" text-anchor="middle" x="130.75" y="159.5">① 收到请求</text>
+  <text fill="#606266" font-size="9.5" id="svg_9" text-anchor="middle" x="130.75" y="176.5">要算哪个学生、哪些考点</text>
+  <rect fill="#ffffff" height="60" id="svg_10" rx="8" stroke="#e6a23c" width="220" x="270.75" y="134.5"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_11" text-anchor="middle" x="380.75" y="156.5">② 问事实科要原始记录</text>
+  <text fill="#606266" font-size="9.5" id="svg_12" text-anchor="middle" x="380.75" y="174.5">这个学生做过的所有相关作答</text>
+  <text fill="#909399" font-size="9" id="svg_13" text-anchor="middle" x="380.75" y="189.5">→ evidence-svc</text>
+  <rect fill="#ffffff" height="60" id="svg_14" rx="8" stroke="#e6a23c" width="230" x="530.75" y="134.5"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_15" text-anchor="middle" x="645.75" y="156.5">③ 六个维度各自计算</text>
+  <text fill="#606266" font-size="9.5" id="svg_16" text-anchor="middle" x="645.75" y="174.5">按样本量+正确率算出六个值</text>
+  <text fill="#909399" font-size="9" id="svg_17" text-anchor="middle" x="645.75" y="189.5">某维度算不出就填"未知"，不留空</text>
+  <rect fill="#ffffff" height="60" id="svg_18" rx="8" stroke="#e6a23c" width="230" x="800.75" y="134.5"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_19" text-anchor="middle" x="915.75" y="156.5">④ 只试算，还是真的写？</text>
+  <text fill="#606266" font-size="9.5" id="svg_20" text-anchor="middle" x="915.75" y="174.5">只试算 → 算完就返回，不碰数据库</text>
+  <rect fill="#ffffff" height="60" id="svg_21" rx="8" stroke="#e6a23c" stroke-width="1.5" width="330" x="1070.75" y="134.5"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_22" text-anchor="middle" x="1235.75" y="156.5">⑤ 真的写：交给记忆科存一条新记录</text>
+  <text fill="#606266" font-size="9.5" id="svg_23" text-anchor="middle" x="1235.75" y="174.5">不改旧记录，只加一条带时间戳的新记录</text>
+  <text fill="#909399" font-size="9" id="svg_24" text-anchor="middle" x="1235.75" y="189.5">→ memory-svc（只有本服务能写这里）</text>
+  <line id="svg_25" marker-end="url(#arr)" stroke="#606266" stroke-width="1.3" x1="230.75" x2="270.75" y1="164.5" y2="164.5"/>
+  <line id="svg_26" marker-end="url(#arr)" stroke="#606266" stroke-width="1.3" x1="490.75" x2="530.75" y1="164.5" y2="164.5"/>
+  <line id="svg_27" marker-end="url(#arr)" stroke="#606266" stroke-width="1.3" x1="760.75" x2="800.75" y1="164.5" y2="164.5"/>
+  <line id="svg_28" marker-end="url(#arr)" stroke="#606266" stroke-width="1.3" x1="1030.75" x2="1070.75" y1="164.5" y2="164.5"/>
+  <rect fill="#ffffff" height="160" id="svg_29" rx="8" stroke="#e6a23c" stroke-dasharray="3 2" width="1370" x="30.75" y="224.5"/>
+  <text fill="#ad6800" font-size="12" font-weight="bold" id="svg_30" x="50.75" y="246.5">六个维度分别怎么算（简单说）</text>
+  <text fill="#1f2d3d" font-size="10.5" id="svg_31" x="50.75" y="268.5">· 掌握程度：看这个学生做过多少题、平均对了多少——次数多且正确率高才算"稳固掌握"，不是做一次对了就算会</text>
+  <text fill="#1f2d3d" font-size="10.5" id="svg_32" x="50.75" y="286.5">· 自信程度：诚实返回"未知"——因为学生自己填的置信度还没有统一的换算规则，宁可说不知道也不瞎猜</text>
+  <text fill="#1f2d3d" font-size="10.5" id="svg_33" x="50.75" y="304.5">· 错误类型：只识别"同一题一次做对一次做错"这种矛盾情况，别的错误类型交给诊断科去判断，不越权</text>
+  <text fill="#1f2d3d" font-size="10.5" id="svg_34" x="50.75" y="322.5">· 记不记得住：看间隔7天以上还能不能做对同类题，能就算"延迟后仍记得"</text>
+  <text fill="#1f2d3d" font-size="10.5" id="svg_35" x="50.75" y="340.5">· 能否迁移：看做没做过"变式题"（换个说法的同类题），做对了才算能迁移到新场景</text>
+  <text fill="#1f2d3d" font-size="10.5" id="svg_36" x="50.75" y="358.5">· 需要多少提示：目前恒定为"最低档"——因为系统还没收集"学生用了几次提示"这种过程数据，如实标注这是能力缺口</text>
+  <rect fill="#eef7ff" height="340" id="svg_37" rx="10" stroke="#409eff" stroke-width="1.5" width="1440" x="0.75" y="426.5"/>
+  <text fill="#1f6fb5" font-size="16" font-weight="bold" id="svg_38" x="25.75" y="453.5">② diagnosis-svc（诊断科）：判断学生到底哪里不会</text>
+  <text fill="#606266" font-size="11" id="svg_39" x="25.75" y="472.5">收到"建一条诊断"的请求（老师/系统怀疑某个学生有某种问题）</text>
+  <rect fill="#ffffff" height="60" id="svg_40" rx="8" stroke="#409eff" width="220" x="30.75" y="489.5"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_41" text-anchor="middle" x="140.75" y="511.5">① 收到怀疑</text>
+  <text fill="#606266" font-size="9.5" id="svg_42" text-anchor="middle" x="140.75" y="529.5">哪个学生、猜测是哪种错误类型</text>
+  <text fill="#909399" font-size="9" id="svg_43" text-anchor="middle" x="140.75" y="544.5">必须带证据，不能空口下结论</text>
+  <rect fill="#ffffff" height="60" id="svg_44" rx="8" stroke="#409eff" width="240" x="290.75" y="489.5"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_45" text-anchor="middle" x="410.75" y="511.5">② 核对这些证据是不是真的</text>
+  <text fill="#606266" font-size="9.5" id="svg_46" text-anchor="middle" x="410.75" y="529.5">去事实科核对作答记录真的存在</text>
+  <text fill="#909399" font-size="9" id="svg_47" text-anchor="middle" x="410.75" y="544.5">→ evidence-svc（只读）</text>
+  <rect fill="#ffffff" height="60" id="svg_48" rx="8" stroke="#409eff" width="240" x="570.75" y="489.5"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_49" text-anchor="middle" x="690.75" y="511.5">③ 核对错误类型名字对不对</text>
+  <text fill="#606266" font-size="9.5" id="svg_50" text-anchor="middle" x="690.75" y="529.5">如果猜测是"某种错误想法"</text>
+  <text fill="#909399" font-size="9" id="svg_51" text-anchor="middle" x="690.75" y="544.5">→ misconception-svc（只读）</text>
+  <rect fill="#ffffff" height="60" id="svg_52" rx="8" stroke="#409eff" width="260" x="850.75" y="489.5"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_53" text-anchor="middle" x="980.75" y="511.5">④ 存一条"草稿状态"的诊断</text>
+  <text fill="#606266" font-size="9.5" id="svg_54" text-anchor="middle" x="980.75" y="529.5">带概率、带证据、带"也可能是别的原因"</text>
+  <text fill="#909399" font-size="9" id="svg_55" text-anchor="middle" x="980.75" y="544.5">状态：草稿</text>
+  <rect fill="#ffffff" height="60" id="svg_56" rx="8" stroke="#409eff" stroke-width="1.5" width="250" x="1150.75" y="489.5"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_57" text-anchor="middle" x="1275.75" y="511.5">⑤ 老师确认或反驳</text>
+  <text fill="#606266" font-size="9.5" id="svg_58" text-anchor="middle" x="1275.75" y="529.5">状态变为"已确认/已修改/已否定/有异议"</text>
+  <line id="svg_59" marker-end="url(#arr)" stroke="#606266" stroke-width="1.3" x1="250.75" x2="290.75" y1="519.5" y2="519.5"/>
+  <line id="svg_60" marker-end="url(#arr)" stroke="#606266" stroke-width="1.3" x1="530.75" x2="570.75" y1="519.5" y2="519.5"/>
+  <line id="svg_61" marker-end="url(#arr)" stroke="#606266" stroke-width="1.3" x1="810.75" x2="850.75" y1="519.5" y2="519.5"/>
+  <line id="svg_62" marker-end="url(#arr)" stroke="#606266" stroke-width="1.3" x1="1110.75" x2="1150.75" y1="519.5" y2="519.5"/>
+  <rect fill="#ffffff" height="160" id="svg_63" rx="8" stroke="#409eff" stroke-dasharray="3 2" width="1370" x="30.75" y="579.5"/>
+  <text fill="#1f6fb5" font-size="12" font-weight="bold" id="svg_64" x="50.75" y="601.5">另一件事：把"草稿"升级成"全班公认的结论"，要过三道关（三角验证）</text>
+  <text fill="#1f2d3d" font-size="10.5" id="svg_65" x="50.75" y="624.5">诊断科不会自己判断"这个结论够不够可信"，而是明确检查三个来源是否同时齐备：</text>
+  <text fill="#1f2d3d" font-size="10.5" id="svg_66" x="50.75" y="646.5">① 学生自己的作答本身　② 专门用来验证这个猜测的探针题作答　③ 老师的人工判断</text>
+  <text fill="#1f2d3d" font-size="10.5" id="svg_67" x="50.75" y="668.5">三者全部齐备，才允许把诊断标记为"可以确认"；只要缺一个，就明确说"证据还不够"，并给出具体建议</text>
+  <text fill="#1f2d3d" font-size="10.5" id="svg_68" x="50.75" y="690.5">（比如"再加一道探针题"），绝不在证据不足时硬给一个看起来像结论的说法</text>
+  <text fill="#909399" font-size="10" id="svg_69" x="50.75" y="718.5">这一步不改数据库，只是回答"现在能不能确认"这个问题，供老师参考后再决定是否confirm</text>
+  <rect fill="#fef0f0" height="408" id="svg_70" rx="10" stroke="#f56c6c" stroke-width="1.5" width="1440" x="0.75" y="786.5"/>
+  <text fill="#c0392b" font-size="16" font-weight="bold" id="svg_71" x="25.75" y="813.5">③ decision-svc（决策科）：决定该给学生出什么题</text>
+  <text fill="#606266" font-size="11" id="svg_72" x="25.75" y="832.5">收到"给这些学生做一次选题决策"的请求（可以是一个学生，也可以是一整个班）</text>
+  <rect fill="#ffffff" height="60" id="svg_73" rx="8" stroke="#f56c6c" width="220" x="30.75" y="849.5"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_74" text-anchor="middle" x="140.75" y="871.5">① 收到请求</text>
+  <text fill="#606266" font-size="9.5" id="svg_75" text-anchor="middle" x="140.75" y="889.5">哪些学生、按什么场景规则</text>
+  <text fill="#909399" font-size="9" id="svg_76" text-anchor="middle" x="140.75" y="904.5">场景决定后面用哪套权重</text>
+  <rect fill="#ffffff" height="60" id="svg_77" rx="8" stroke="#f56c6c" width="260" x="290.75" y="849.5"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_78" text-anchor="middle" x="420.75" y="871.5">② 逐个学生收集状态</text>
+  <text fill="#606266" font-size="9.5" id="svg_79" text-anchor="middle" x="420.75" y="889.5">问记忆科要六维度状态，问诊断科要当前诊断</text>
+  <text fill="#909399" font-size="9" id="svg_80" text-anchor="middle" x="420.75" y="904.5">→ memory-svc、diagnosis-svc（只读）</text>
+  <rect fill="#ffffff" height="60" id="svg_81" rx="8" stroke="#f56c6c" stroke-width="1.5" width="270" x="590.75" y="849.5"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_82" text-anchor="middle" x="725.75" y="871.5">③ 按写死的规则表判断下一步</text>
+  <text fill="#606266" font-size="9.5" id="svg_83" text-anchor="middle" x="725.75" y="889.5">"掌握不够→先补基础"永远优先于"已经会了→挑战新题"</text>
+  <text fill="#909399" font-size="9" id="svg_84" text-anchor="middle" x="725.75" y="904.5">规则有严格先后顺序，不是打分比大小</text>
+  <rect fill="#ffffff" height="60" id="svg_85" rx="8" stroke="#f56c6c" width="270" x="900.75" y="849.5"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_86" text-anchor="middle" x="1035.75" y="871.5">④ 该停就停</text>
+  <text fill="#606266" font-size="9.5" id="svg_87" text-anchor="middle" x="1035.75" y="889.5">已经完全掌握 → 不用再出题，判"停止"</text>
+  <text fill="#909399" font-size="9" id="svg_88" text-anchor="middle" x="1035.75" y="904.5">这条命中就跳到最后一步，不选题了</text>
+  <rect fill="#ffffff" height="60" id="svg_89" rx="8" stroke="#f56c6c" width="200" x="1200.75" y="849.5"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_90" text-anchor="middle" x="1300.75" y="871.5">继续往下走</text>
+  <text fill="#606266" font-size="9.5" id="svg_91" text-anchor="middle" x="1300.75" y="889.5">没到"该停"，进入挑题环节</text>
+  <line id="svg_92" marker-end="url(#arr)" stroke="#606266" stroke-width="1.3" x1="250.75" x2="290.75" y1="879.5" y2="879.5"/>
+  <line id="svg_93" marker-end="url(#arr)" stroke="#606266" stroke-width="1.3" x1="550.75" x2="590.75" y1="879.5" y2="879.5"/>
+  <line id="svg_94" marker-end="url(#arr)" stroke="#606266" stroke-width="1.3" x1="860.75" x2="900.75" y1="879.5" y2="879.5"/>
+  <line id="svg_95" marker-end="url(#arr)" stroke="#606266" stroke-width="1.3" x1="1170.75" x2="1200.75" y1="879.5" y2="879.5"/>
+  <rect fill="#ffffff" height="160" id="svg_96" rx="8" stroke="#f56c6c" stroke-dasharray="3 2" width="670" x="30.75" y="939.5"/>
+  <text fill="#c0392b" font-size="12" font-weight="bold" id="svg_97" x="50.75" y="961.5">⑤ 找候选题目，五个角度分别打分</text>
+  <text fill="#1f2d3d" font-size="10" id="svg_98" x="50.75" y="983.5">问题目科要候选池（唯一入口，本轮候选题不会再变），逐题从五个角度评分：</text>
+  <text fill="#1f2d3d" font-size="10" id="svg_99" x="50.75" y="1003.5">对不对症、难度是否合适、是不是该复习的时机、是否覆盖冷门考点、能否帮助诊断</text>
+  <text fill="#1f2d3d" font-size="10" id="svg_100" x="50.75" y="1023.5">某个角度算不出来就从公式里去掉、不硬凑0分（0分会被误读成"不合适"，其实是"不知道"）</text>
+  <text fill="#1f2d3d" font-size="10" id="svg_101" x="50.75" y="1043.5">→ item-svc（只读候选池）</text>
+  <text fill="#909399" font-size="10" id="svg_102" x="50.75" y="1068.5">诊断阶段更看重"能帮助诊断"这一项；日常练习阶段更看重"难度合适+该复习了"这两项</text>
+  <text fill="#909399" font-size="10" id="svg_103" x="50.75" y="1086.5">找不到合适题目时明确"放弃出题"，绝不用不合适的题凑数</text>
+  <rect fill="#ffffff" height="160" id="svg_104" rx="8" stroke="#f56c6c" stroke-dasharray="3 2" width="670" x="730.75" y="939.5"/>
+  <text fill="#c0392b" font-size="12" font-weight="bold" id="svg_105" x="750.75" y="961.5">⑥ 把学生分组，方便老师在课堂上用</text>
+  <text fill="#1f2d3d" font-size="10" id="svg_106" x="750.75" y="983.5">同一批学生里，"要做的事情一样"的人分到一组</text>
+  <text fill="#1f2d3d" font-size="10" id="svg_107" x="750.75" y="1003.5">一组人数不到3个 → 拆开变成各自的单人任务，不硬凑组</text>
+  <text fill="#1f2d3d" font-size="10" id="svg_108" x="750.75" y="1023.5">整班场景下，必须留一组是"全班共同要做的事"，且排在最前面</text>
+  <text fill="#1f2d3d" font-size="10" id="svg_109" x="750.75" y="1043.5">——这样保证全班至少有一块内容是一起学的，不会被算法拆得七零八落</text>
+  <text fill="#909399" font-size="10" id="svg_110" x="750.75" y="1068.5">组内选题顺序随机打乱（留一个随机种子），方便日后统计分析</text>
+  <rect fill="#ffffff" height="60" id="svg_111" rx="8" stroke="#f56c6c" stroke-width="1.5" width="1370" x="30.75" y="1114.5"/>
+  <text fill="#1f2d3d" font-size="12" font-weight="bold" id="svg_112" text-anchor="middle" x="715.75" y="1136.5">⑦ 把这次决策完整存下来</text>
+  <text fill="#606266" font-size="9.5" id="svg_113" text-anchor="middle" x="715.75" y="1154.5">存决策结果 + 当时用的规则版本号，之后任何时候都能原样重放这次决策，核对是否一致</text>
+  <line id="svg_114" marker-end="url(#arr)" stroke="#606266" stroke-width="1.3" x1="365.75" x2="365.75" y1="909.5" y2="939.5"/>
+  <line id="svg_115" marker-end="url(#arr)" stroke="#606266" stroke-width="1.3" x1="1065.75" x2="1065.75" y1="1099.5" y2="1114.5"/>
+  <line id="svg_116" marker-end="url(#arr)" stroke="#909399" stroke-dasharray="3 2" x1="1035.75" x2="1300.75" y1="909.5" y2="1136.5"/>
+  <text fill="#909399" font-size="9" id="svg_117" transform="rotate(35 1219.95 983.25)" x="1170.75" y="986.5">"该停"直接跳到最后存档</text>
+ </g>
+</svg>
