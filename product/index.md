@@ -10,6 +10,8 @@
 - [codebase-grading-service.md](codebase-grading-service.md) — 批阅服务代码库调研报告（aireview-grading-service：架构/技术栈/批阅流程/成本/Prompt/部署）
 - [codebase-grading-system.md](codebase-grading-system.md) — 批阅系统代码库调研报告（aireview-grading-system：架构/技术栈/核心流程/部署/压测/代码质量/与既有文档对照）
 - [architecture-grading-system.md](architecture-grading-system.md) — 批阅系统软件架构深化（分层与依赖方向、25 域模块依赖图与 4 组循环依赖、数据模型、external_tasks 任务骨架、权限与多租户、前端架构、安全设计、技术债）
+- [grading-system-exam-workflow.md](grading-system-exam-workflow.md) — 高中大型考试全流程用例清单（基于 aireview-grading-system 的 `modules/exam`/`scan`/`marking`/`manual_marking`/`analytics`/`lecture`/`printing` 七模块路由与状态机代码实测，2026-08-20 更新纳入此前遗漏的人工批阅模块）：按建考准备（含批阅方式AI/人工选择）→答题卡标注确认→现场扫描接收→**两条平行批阅路径**（阶段四/五：AI批阅+三模式人工核对；阶段四A：独立的人工批阅模块——题块分发/双评仲裁/租约领题/质量监控/问题卷处理，31个路由端点，27条用户用例）→学情分析→讲评→留痕打印共 9 个阶段，53 条用户用例，每条给出用户操作/预期结果/数据变化三要素；附贯穿全流程的权限拦截/状态机拦截/幂等去重/撤销强约束/人工批阅双层授权五类异常护栏，及人工批阅模块 4 项已确认的实现缺口（权限校验粒度不足/问题卷未真正隔离/草稿文案与实现不符/总分收敛两套口径）
+- [manual-marking-rehearsal-checklist.md](manual-marking-rehearsal-checklist.md) — 交付前全流程演练分层检查清单（人工批阅·单日版·定稿v5）：与考试全流程用例清单的"阶段四A：人工批阅"配套，是该章节全部用例的一次端到端真人演练排期（10:30–18:00，5人分工+1名机动，覆盖语文/数学/英语/理综物化合卷4场考试、2班60人规模），按人员拆分任务表格并补全起止时间（部分时刻为原文档硬性节点：11:15/14:00检查点①/14:30精评分表截止/16:10检查点②，其余按时间区块估算切分）；含5类人为制造的异常卷（缺考/空白卷/客观涂改/单选多涂/问题卷）及其预期归宿、6项风险预案与剧本表字段规格
 
 - [architecture-grading-service.md](architecture-grading-service.md) — 批阅服务软件架构深化（七层分层与依赖方向、五 Agent 流水线接口契约与编排、自研 Redis 队列引擎与 MySQL outbox/fence 一致性设计、MODEL_ROLES 多 Provider 路由、三存储分工、Prompt 注册中心、成本追踪、技术债）
 - [api-and-process-grading-system.md](api-and-process-grading-system.md) — 批阅系统 API 清单与核心业务流程（完整内部/开放 API 分域清单、7 条业务路径端到端流程、每条路径到 LLM 调用点追踪、modules/llm 网关与 grading_service provider_manager 关系、用户上下文/记忆现状排查）
