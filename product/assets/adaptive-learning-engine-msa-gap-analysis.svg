@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1560 1020">
+  <style> text { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; } </style>
+  <defs>
+    <marker id="a1" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#374151"/>
+    </marker>
+  </defs>
+  <rect width="1560" height="1020" fill="#ffffff"/>
+  <text x="780" y="34" text-anchor="middle" font-size="24" font-weight="700" fill="#111827">当前"九服务"现状 vs 目标 SaaS 云 + 桌面 Agent 架构</text>
+  <text x="780" y="58" text-anchor="middle" font-size="13.5" fill="#6b7280">九服务是分布式单体（同机/同库/同步耦合），不是可独立部署的微服务边界</text>
+
+  <!-- current state box -->
+  <rect x="40" y="86" width="700" height="360" rx="14" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="390" y="116" text-anchor="middle" font-size="16" font-weight="700" fill="#991b1b">现状：分布式单体（单机 13 进程）</text>
+  <rect x="70" y="136" width="640" height="60" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="1.3"/>
+  <text x="390" y="158" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">全部只绑 127.0.0.1，硬编码，不能拆容器</text>
+  <text x="390" y="176" text-anchor="middle" font-size="11" fill="#7f1d1d">一台机器崩 = 教学/诊断/推题/BFF 全部下线</text>
+  <rect x="70" y="206" width="640" height="60" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="1.3"/>
+  <text x="390" y="228" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">共享一个 PG 连接池，靠 search_path 软隔离租户</text>
+  <text x="390" y="246" text-anchor="middle" font-size="11" fill="#7f1d1d">没有数据库级权限边界，隔离靠代码审查+静态测试</text>
+  <rect x="70" y="276" width="640" height="60" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="1.3"/>
+  <text x="390" y="298" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">同步 HTTP 调用链，无消息队列/无熔断</text>
+  <text x="390" y="316" text-anchor="middle" font-size="11" fill="#7f1d1d">BFF→decision→item→kp 任一环挂，整链 502</text>
+  <rect x="70" y="346" width="640" height="60" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="1.3"/>
+  <text x="390" y="368" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7f1d1d">代码体量小（376~2033行/服务），不构成独立部署理由</text>
+  <text x="390" y="386" text-anchor="middle" font-size="11" fill="#7f1d1d">真实价值是"单向依赖分层纪律"，被误实现成进程边界</text>
+  <text x="390" y="425" text-anchor="middle" font-size="12" font-style="italic" fill="#991b1b">→ 这套东西离线能跑，但离"能上云、能多租户物理隔离、</text>
+  <text x="390" y="443" text-anchor="middle" font-size="12" font-style="italic" fill="#991b1b">   能扛边缘设备间歇网络"这个目标还差一次真正的架构重组</text>
+
+  <!-- target state box -->
+  <rect x="820" y="86" width="700" height="360" rx="14" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+  <text x="1170" y="116" text-anchor="middle" font-size="16" font-weight="700" fill="#065f46">目标：桌面 Agent + 云端 SaaS 核心</text>
+  <rect x="850" y="136" width="640" height="70" rx="8" fill="#ffffff" stroke="#059669" stroke-width="1.3"/>
+  <text x="1170" y="158" text-anchor="middle" font-size="12.5" font-weight="700" fill="#064e3b">桌面 Agent = 瘦客户端 + 若干 edge functions</text>
+  <text x="1170" y="176" text-anchor="middle" font-size="11" fill="#064e3b">离线缓存/本地推理小模型/断网续做/本地敏感数据脱敏</text>
+  <text x="1170" y="192" text-anchor="middle" font-size="11" fill="#064e3b">融合教育功能：本地批注/语音交互/离线练习包</text>
+  <rect x="850" y="216" width="640" height="70" rx="8" fill="#ffffff" stroke="#059669" stroke-width="1.3"/>
+  <text x="1170" y="238" text-anchor="middle" font-size="12.5" font-weight="700" fill="#064e3b">云端核心 = 少数几个"粗粒度"服务，每个有真实边界</text>
+  <text x="1170" y="256" text-anchor="middle" font-size="11" fill="#064e3b">按"独立扩缩容/独立数据主权/独立发布节奏"合并现有九服务</text>
+  <text x="1170" y="272" text-anchor="middle" font-size="11" fill="#064e3b">而非按"哪张表归哪个模块"这种领域内部切分单位</text>
+  <rect x="850" y="296" width="640" height="70" rx="8" fill="#ffffff" stroke="#059669" stroke-width="1.3"/>
+  <text x="1170" y="318" text-anchor="middle" font-size="12.5" font-weight="700" fill="#064e3b">Agent↔云 走异步协议：离线优先、断点续传、幂等重放</text>
+  <text x="1170" y="336" text-anchor="middle" font-size="11" fill="#064e3b">不能假设 Agent 永远在线（学校网络/教师个人设备场景）</text>
+  <rect x="850" y="366" width="640" height="70" rx="8" fill="#ffffff" stroke="#059669" stroke-width="1.3"/>
+  <text x="1170" y="388" text-anchor="middle" font-size="12.5" font-weight="700" fill="#064e3b">多租户靠数据库级强隔离（RLS/独立schema/独立库）</text>
+  <text x="1170" y="406" text-anchor="middle" font-size="11" fill="#064e3b">而非仅靠 search_path 这种应用层软约定</text>
+
+  <line x1="740" y1="266" x2="820" y2="266" stroke="#374151" stroke-width="2.5" marker-end="url(#a1)"/>
+  <text x="780" y="256" text-anchor="middle" font-size="11" fill="#374151" font-weight="700">重组</text>
+
+  <!-- Recommended regrouping -->
+  <rect x="40" y="480" width="1480" height="500" rx="14" fill="#f9fafb" stroke="#9ca3af" stroke-width="1.5"/>
+  <text x="790" y="512" text-anchor="middle" font-size="17" font-weight="700" fill="#111827">建议的重组方向：按"云端边界"而非"领域内部表"合并</text>
+
+  <!-- col headers -->
+  <text x="220" y="546" text-anchor="middle" font-size="13" font-weight="700" fill="#4b5563">现有九服务（细粒度，同机耦合）</text>
+  <text x="790" y="546" text-anchor="middle" font-size="13" font-weight="700" fill="#4b5563">→ 合并原则</text>
+  <text x="1330" y="546" text-anchor="middle" font-size="13" font-weight="700" fill="#4b5563">云端粗粒度边界（可独立部署）</text>
+
+  <!-- Group 1: fact/memory -->
+  <rect x="70" y="566" width="300" height="76" rx="8" fill="#eff6ff" stroke="#2563eb"/>
+  <text x="220" y="590" text-anchor="middle" font-size="12" font-weight="700" fill="#1e40af">evidence-svc + memory-svc</text>
+  <text x="220" y="608" text-anchor="middle" font-size="10.5" fill="#1e40af">只存事实、append-only、无判断逻辑</text>
+  <text x="220" y="624" text-anchor="middle" font-size="10.5" fill="#1e40af">写入量大、读多写多、需要强一致</text>
+  <line x1="375" y1="604" x2="640" y2="604" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#a1)"/>
+  <text x="500" y="595" text-anchor="middle" font-size="10" fill="#6b7280">数据主权+写入模式相同</text>
+  <rect x="1030" y="566" width="450" height="76" rx="8" fill="#dbeafe" stroke="#1d4ed8" stroke-width="1.5"/>
+  <text x="1255" y="596" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Evidence &amp; State Service</text>
+  <text x="1255" y="616" text-anchor="middle" font-size="11" fill="#1e3a8a">独立扩容（写多）、独立备份策略、事件溯源存储</text>
+
+  <!-- Group 2: assets -->
+  <rect x="70" y="656" width="300" height="76" rx="8" fill="#fff7ed" stroke="#ea580c"/>
+  <text x="220" y="680" text-anchor="middle" font-size="12" font-weight="700" fill="#9a3412">kp + item + rubric + misconception</text>
+  <text x="220" y="698" text-anchor="middle" font-size="10.5" fill="#9a3412">教学资产仓库，读多写少，可强缓存</text>
+  <text x="220" y="714" text-anchor="middle" font-size="10.5" fill="#9a3412">应与 DFS 融合而非重复维护题库</text>
+  <line x1="375" y1="694" x2="640" y2="694" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#a1)"/>
+  <text x="500" y="685" text-anchor="middle" font-size="10" fill="#6b7280">与 DFS 是同一资产域，合并读模型</text>
+  <rect x="1030" y="656" width="450" height="76" rx="8" fill="#ffedd5" stroke="#c2410c" stroke-width="1.5"/>
+  <text x="1255" y="686" text-anchor="middle" font-size="13" font-weight="700" fill="#7c2d12">Content Asset Service（与 DFS 消费者投影共用）</text>
+  <text x="1255" y="706" text-anchor="middle" font-size="11" fill="#7c2d12">CDN 级缓存、可下发到 Agent 本地做离线练习包</text>
+
+  <!-- Group 3: brains -->
+  <rect x="70" y="746" width="300" height="90" rx="8" fill="#fef2f2" stroke="#dc2626"/>
+  <text x="220" y="770" text-anchor="middle" font-size="12" font-weight="700" fill="#7f1d1d">profile + diagnosis + decision-svc</text>
+  <text x="220" y="788" text-anchor="middle" font-size="10.5" fill="#7f1d1d">计算密集、强依赖顺序、算法迭代快</text>
+  <text x="220" y="804" text-anchor="middle" font-size="10.5" fill="#7f1d1d">是产品核心壁垒，必须留在云端不下放</text>
+  <text x="220" y="820" text-anchor="middle" font-size="10.5" fill="#7f1d1d">彼此紧耦合，拆分反而增加延迟</text>
+  <line x1="375" y1="791" x2="640" y2="791" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#a1)"/>
+  <text x="500" y="782" text-anchor="middle" font-size="10" fill="#6b7280">算法迭代单元，同批发布同批回滚</text>
+  <rect x="1030" y="746" width="450" height="90" rx="8" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.5"/>
+  <text x="1255" y="776" text-anchor="middle" font-size="13" font-weight="700" fill="#7f1d1d">Learning Intelligence Service（核心壁垒）</text>
+  <text x="1255" y="796" text-anchor="middle" font-size="11" fill="#7f1d1d">独立灰度发布、A/B 测试、模型版本化</text>
+  <text x="1255" y="812" text-anchor="middle" font-size="11" fill="#7f1d1d">保持强一致内部调用（同进程/同事务），对外仅一个入口</text>
+
+  <!-- Group 4: identity/bff -->
+  <rect x="70" y="856" width="300" height="90" rx="8" fill="#f5f3ff" stroke="#7c3aed"/>
+  <text x="220" y="880" text-anchor="middle" font-size="12" font-weight="700" fill="#5b21b6">identity-svc + 三个 BFF</text>
+  <text x="220" y="898" text-anchor="middle" font-size="10.5" fill="#5b21b6">面向端侧的接入层，随客户端形态变化</text>
+  <text x="220" y="914" text-anchor="middle" font-size="10.5" fill="#5b21b6">桌面Agent接入后，这层要重写</text>
+  <text x="220" y="930" text-anchor="middle" font-size="10.5" fill="#5b21b6">而不是照搬浏览器BFF模式</text>
+  <line x1="375" y1="901" x2="640" y2="901" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#a1)"/>
+  <text x="500" y="892" text-anchor="middle" font-size="10" fill="#6b7280">接入协议随客户端换代，独立生命周期</text>
+  <rect x="1030" y="856" width="450" height="90" rx="8" fill="#ede9fe" stroke="#6d28d9" stroke-width="1.5"/>
+  <text x="1255" y="882" text-anchor="middle" font-size="13" font-weight="700" fill="#4c1d95">Edge Gateway（Agent 同步协议 + 鉴权）</text>
+  <text x="1255" y="902" text-anchor="middle" font-size="11" fill="#4c1d95">承载 Agent 的离线队列/增量同步/断点续传</text>
+  <text x="1255" y="918" text-anchor="middle" font-size="11" fill="#4c1d95">这里才是"Agent 自带 edge functions"真正对接的地方</text>
+
+  <text x="790" y="970" text-anchor="middle" font-size="12" font-style="italic" fill="#6b7280">四个云端边界 = 四种独立的扩缩容/发布/数据一致性需求；不是"九张表切九份"，是"四种运维特性切四份"</text>
+</svg>

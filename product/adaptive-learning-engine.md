@@ -380,6 +380,14 @@ decision-svc 通过 `policy` 场景在两个 `pool_version` 之间灰度切换�
 尤其应优先关注风险 1（本地未备份代码，现已知承载真实生产集成）与风险 2（明文凭据未轮换），两者
 均具有不可逆性质。
 
+> **目标架构提案（2026-08-21）**：本节及 §3/§4 记录的九个领域微服务，经代码实测证实是"分布式
+> 单体"而非真正的微服务边界（同机硬编码 127.0.0.1、代码体量小、`search_path` 软隔离、同步 HTTP
+> 无熔断）。往"桌面 Agent 客户端 + 核心逻辑落地远程 SaaS 云"演进的目标架构设计，见独立文档
+> [adaptive-learning-engine-target-architecture-v2.1.md](./adaptive-learning-engine-target-architecture-v2.1.md)——
+> 含九服务合并为四个 DDD 限界上下文的方案、国家/区域/省/校四级数据主权的 PostgreSQL 物理布局、
+> MinIO 非结构化/冷存储分层，以及新增的 Edge Gateway/Tenant-Aware Router/Identity&Tenancy
+> 三个关键组件。该文档是**提案**，与本节的**现状调研**互补而非重复。
+
 ## 3. Adaptive Learning Engine（代码与产品实现）
 
 ### 3.1 顶层方案文档主题分组
@@ -714,6 +722,12 @@ knowledge / item_bank / semantic / release / ai_ops / read_model，全部落在�
 - **明确的 4 个非目标**：不修改自适应引擎/不写引擎库/不介入推题策略或学生状态；不修改任何原始题目
   /知识树/历史课标映射/旧 catalog；近似重复与模型标签保持候选语义，不升格为事实；unknown/unmapped
   /冲突/未唯一解析是正式数据状态，不用模型猜测补齐。
+
+**新数据/文件如何接入 PostgreSQL**：详见独立展开的
+[platform-data-foundation-service-ingestion.md](./platform-data-foundation-service-ingestion.md)——
+从原始文件到可消费数据的五阶段管线（Source Vault 内容寻址落盘 → 导入工具重放校验 → 单事务身份
+解析与内容版本化 → PostgreSQL），及身份稳定/内容去重/append-only/漂移即拒四条不变量，配两张
+SVG 流程图。
 
 **Agent 编排合同**（AGENTS.md）：默认单个 Codex Lead 串行完成核心开发（契约/迁移/导入/鉴权/API/
 安全/集成/验收状态不拆给其他模型）；里程碑结束可加一个非作者 Codex 只读审查；Claude/DeepSeek 仅在

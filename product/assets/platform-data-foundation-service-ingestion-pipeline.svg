@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 480">
+  <style>
+    text { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+  </style>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#374151"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1600" height="480" fill="#ffffff"/>
+
+  <text x="800" y="36" text-anchor="middle" font-size="26" font-weight="700" fill="#111827">Education Data Foundation：从原始文件到 PostgreSQL 可用数据</text>
+  <text x="800" y="62" text-anchor="middle" font-size="14" fill="#6b7280">离线批处理管线（无公网写入 API）· 每一步独立可验证，任一步失败即整批拒绝</text>
+
+  <!-- Stage 1 -->
+  <g>
+    <rect x="40" y="90" width="260" height="330" rx="14" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="170" y="124" text-anchor="middle" font-size="17" font-weight="700" fill="#2563eb">① 源文件 / 快照</text>
+    <line x1="56" y1="140" x2="284" y2="140" stroke="#2563eb" stroke-opacity="0.35"/>
+    <text x="62" y="170" font-size="13.5" fill="#1f2937">• MySQL 导出快照</text>
+    <text x="62" y="196" font-size="13.5" fill="#1f2937">  (edu_question.jsonl.gz)</text>
+    <text x="62" y="222" font-size="13.5" fill="#1f2937">• 课标 PDF + 结构化 JSON</text>
+    <text x="62" y="248" font-size="13.5" fill="#1f2937">• 教师分析产物 (html)</text>
+    <text x="62" y="274" font-size="13.5" fill="#1f2937">• 未经任何清洗，原始字节</text>
+  </g>
+
+  <!-- Stage 2 -->
+  <g>
+    <rect x="350" y="90" width="260" height="330" rx="14" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+    <text x="480" y="124" text-anchor="middle" font-size="17" font-weight="700" fill="#7c3aed">② Source Vault 落盘</text>
+    <line x1="366" y1="140" x2="594" y2="140" stroke="#7c3aed" stroke-opacity="0.35"/>
+    <text x="372" y="170" font-size="13.5" fill="#1f2937">• governance/source_vault.py</text>
+    <text x="372" y="196" font-size="13.5" fill="#1f2937">• SHA-256 内容寻址路径</text>
+    <text x="372" y="222" font-size="13.5" fill="#1f2937">• 临时文件→fsync→原子rename</text>
+    <text x="372" y="248" font-size="13.5" fill="#1f2937">• chmod 0o440 只读</text>
+    <text x="372" y="274" font-size="13.5" fill="#1f2937">• 哈希冲突⇒拒绝覆盖</text>
+  </g>
+
+  <!-- Stage 3 -->
+  <g>
+    <rect x="660" y="90" width="260" height="330" rx="14" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+    <text x="790" y="124" text-anchor="middle" font-size="17" font-weight="700" fill="#ea580c">③ 导入工具校验</text>
+    <line x1="676" y1="140" x2="904" y2="140" stroke="#ea580c" stroke-opacity="0.35"/>
+    <text x="682" y="170" font-size="13.5" fill="#1f2937">• tools/import_*.py</text>
+    <text x="682" y="196" font-size="13.5" fill="#1f2937">• 重新解析 + 重算哈希</text>
+    <text x="682" y="222" font-size="13.5" fill="#1f2937">• manifest 声明 vs 实际比对</text>
+    <text x="682" y="248" font-size="13.5" fill="#1f2937">• 核对冻结基线(行数/分布)</text>
+    <text x="682" y="274" font-size="13.5" fill="#1f2937">• 非 --allow-live 不可写生产库</text>
+    <text x="682" y="300" font-size="13.5" fill="#1f2937">• 任一不符⇒直接报错退出</text>
+  </g>
+
+  <!-- Stage 4 -->
+  <g>
+    <rect x="970" y="90" width="260" height="330" rx="14" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+    <text x="1100" y="124" text-anchor="middle" font-size="17" font-weight="700" fill="#059669">④ 单事务导入</text>
+    <line x1="986" y1="140" x2="1214" y2="140" stroke="#059669" stroke-opacity="0.35"/>
+    <text x="992" y="170" font-size="13.5" fill="#1f2937">• P0_2Importer（单事务）</text>
+    <text x="992" y="196" font-size="13.5" fill="#1f2937">• source_system 去重注册</text>
+    <text x="992" y="222" font-size="13.5" fill="#1f2937">• 外部ID集合比对(漂移⇒拒)</text>
+    <text x="992" y="248" font-size="13.5" fill="#1f2937">• source_snapshot 按哈希去重</text>
+    <text x="992" y="274" font-size="13.5" fill="#1f2937">• 身份解析:复用或新建uuid5</text>
+    <text x="992" y="300" font-size="13.5" fill="#1f2937">• revision:哈希同复用/否则+1</text>
+    <text x="992" y="326" font-size="13.5" fill="#1f2937">• advisory lock 防并发冲突</text>
+    <text x="992" y="352" font-size="13.5" fill="#1f2937">• 任一步失败⇒整批回滚</text>
+  </g>
+
+  <!-- Stage 5 -->
+  <g>
+    <rect x="1280" y="90" width="260" height="330" rx="14" fill="#f0fdfa" stroke="#0f766e" stroke-width="2"/>
+    <text x="1410" y="124" text-anchor="middle" font-size="17" font-weight="700" fill="#0f766e">⑤ PostgreSQL 可用</text>
+    <line x1="1296" y1="140" x2="1524" y2="140" stroke="#0f766e" stroke-opacity="0.35"/>
+    <text x="1302" y="170" font-size="13.5" fill="#1f2937">• governance.source_snapshot</text>
+    <text x="1302" y="196" font-size="13.5" fill="#1f2937">• knowledge.knowledge_revision</text>
+    <text x="1302" y="222" font-size="13.5" fill="#1f2937">• item_bank.item_revision</text>
+    <text x="1302" y="248" font-size="13.5" fill="#1f2937">• external_identifier 绑定表</text>
+    <text x="1302" y="274" font-size="13.5" fill="#1f2937">• 供 release 打包 /</text>
+    <text x="1302" y="300" font-size="13.5" fill="#1f2937">  消费者 API 读取</text>
+  </g>
+
+  <!-- Arrows between stages (card vertical center y=255) -->
+  <line x1="302" y1="255" x2="348" y2="255" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="612" y1="255" x2="658" y2="255" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="922" y1="255" x2="968" y2="255" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="1232" y1="255" x2="1278" y2="255" stroke="#374151" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <text x="800" y="452" text-anchor="middle" font-size="13" font-style="italic" fill="#6b7280">全程 append-only：没有 UPDATE，只有新增 revision；内容哈希不变则复用旧版本</text>
+</svg>
